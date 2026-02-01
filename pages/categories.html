@@ -3,12 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catégories - E-S COMPANY</title>
+    <title>Tous les produits - E-S COMPANY</title>
     <link rel="icon" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Styles spécifiques à la page catégories */
+        /* Variables CSS */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --text-color: #333;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset et styles de base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .logo-text span {
+            color: var(--secondary-color);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            font-weight: 600;
+            color: var(--dark-color);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icons i {
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .header-icons i:hover {
+            color: var(--secondary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Page Header */
         .page-header {
             background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
@@ -30,123 +216,402 @@
             opacity: 0.9;
         }
 
-        .categories-page {
+        /* Produits */
+        .products-section {
             padding: 80px 0;
         }
 
-        .category-title {
-            text-align: center;
+        /* Filtres */
+        .filters {
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
             margin-bottom: 40px;
-            color: var(--primary-color);
-            font-size: 2rem;
         }
 
-        .category-filters {
+        .filters h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .filter-item select,
+        .filter-item input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            min-height: 50px;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1rem;
+        }
+
+        .new-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stock {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .in-stock {
+            background-color: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .out-of-stock {
+            background-color: #fdebd0;
+            color: #f39c12;
+        }
+
+        /* Pagination */
+        .pagination {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 40px;
+            gap: 10px;
+            margin-top: 40px;
         }
 
-        .category-filter {
-            padding: 10px 25px;
+        .pagination button {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
             background-color: white;
-            border: 2px solid var(--light-color);
-            border-radius: 30px;
-            font-weight: 600;
+            border-radius: var(--border-radius);
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .category-filter:hover,
-        .category-filter.active {
+        .pagination button:hover {
+            background-color: var(--light-color);
+        }
+
+        .pagination button.active {
             background-color: var(--secondary-color);
             color: white;
             border-color: var(--secondary-color);
         }
 
-        .category-details {
-            margin-bottom: 80px;
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            grid-column: 1 / -1;
         }
 
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--light-color);
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        .category-header h2 {
-            color: var(--primary-color);
-            font-size: 1.8rem;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .category-count {
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        .products-empty {
+        .empty-state {
             text-align: center;
             padding: 60px 20px;
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+            grid-column: 1 / -1;
         }
 
-        .empty-icon {
+        .empty-state i {
             font-size: 4rem;
             color: #ddd;
             margin-bottom: 20px;
         }
 
-        .products-empty h3 {
-            margin-bottom: 15px;
-            color: var(--primary-color);
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #666;
         }
 
-        .products-empty p {
-            color: #777;
-            max-width: 600px;
-            margin: 0 auto 30px;
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
         }
 
-        .coming-soon {
-            background-color: #f8f9fa;
-            padding: 80px 0;
-            text-align: center;
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
         }
 
-        .coming-soon h2 {
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             margin-bottom: 20px;
-            color: var(--primary-color);
         }
 
-        .coming-soon p {
-            max-width: 700px;
-            margin: 0 auto 30px;
-            color: #555;
+        .footer-logo-img {
+            height: 40px;
+            width: auto;
         }
 
+        .footer-logo-text {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .footer-logo-text span {
+            color: var(--secondary-color);
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                transition: var(--transition);
+                z-index: 999;
+            }
+
+            nav.active {
+                left: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                padding: 30px;
+                gap: 20px;
+            }
+
             .page-header h1 {
                 font-size: 2rem;
             }
-            
+
             .page-header p {
                 font-size: 1rem;
             }
-            
-            .category-filters {
-                gap: 10px;
+
+            .filter-group {
+                flex-direction: column;
             }
-            
-            .category-filter {
-                padding: 8px 15px;
-                font-size: 0.9rem;
+
+            .filter-item {
+                min-width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+            }
+
+            .filter-buttons button {
+                width: 100%;
             }
         }
     </style>
@@ -167,9 +632,9 @@
             <nav>
                 <ul>
                     <li><a href="index.html">Accueil</a></li>
-                    <li><a href="categories.html" class="active">Catégories</a></li>
-                    <li><a href="about.html">À propos</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="categories.html" class="active">Produits</a></li>
+                    <li><a href="index.html#about">À propos</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
                 </ul>
             </nav>
 
@@ -181,126 +646,86 @@
         </div>
     </header>
 
-    <main>
-        <!-- Page Header -->
-        <section class="page-header">
-            <div class="container">
-                <h1>Nos Catégories de Produits</h1>
-                <p>Découvrez notre large sélection de vêtements, chaussures et accessoires tendance pour toutes les occasions.</p>
-            </div>
-        </section>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Nos Produits</h1>
+            <p>Découvrez notre collection complète de vêtements, chaussures et accessoires tendance.</p>
+        </div>
+    </section>
 
-        <!-- Catégories -->
-        <section class="categories-page">
-            <div class="container">
-                <h2 class="category-title">Toutes les catégories</h2>
+    <!-- Produits -->
+    <section class="products-section">
+        <div class="container">
+            <!-- Filtres -->
+            <div class="filters">
+                <h3><i class="fas fa-filter"></i> Filtrer les produits</h3>
+                <div class="filter-group">
+                    <div class="filter-item">
+                        <label for="categoryFilter">Catégorie</label>
+                        <select id="categoryFilter">
+                            <option value="">Toutes les catégories</option>
+                            <option value="robes">Robes</option>
+                            <option value="pantalons">Pantalons</option>
+                            <option value="jupes">Jupes</option>
+                            <option value="chaussures">Chaussures</option>
+                            <option value="bijoux">Bijoux</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-item">
+                        <label for="priceFilter">Prix maximum</label>
+                        <select id="priceFilter">
+                            <option value="">Tous les prix</option>
+                            <option value="1000">Moins de 1,000 HTG</option>
+                            <option value="2000">Moins de 2,000 HTG</option>
+                            <option value="5000">Moins de 5,000 HTG</option>
+                            <option value="10000">Moins de 10,000 HTG</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-item">
+                        <label for="sortFilter">Trier par</label>
+                        <select id="sortFilter">
+                            <option value="-createdAt">Nouveautés</option>
+                            <option value="price">Prix croissant</option>
+                            <option value="-price">Prix décroissant</option>
+                            <option value="name">Nom A-Z</option>
+                            <option value="-name">Nom Z-A</option>
+                        </select>
+                    </div>
+                </div>
                 
-                <div class="category-filters">
-                    <a href="#" class="category-filter active" data-category="all">Tous</a>
-                    <a href="#robes" class="category-filter" data-category="robes">Robes</a>
-                    <a href="#pantalons" class="category-filter" data-category="pantalons">Pantalons</a>
-                    <a href="#jupes" class="category-filter" data-category="jupes">Jupes</a>
-                    <a href="#chaussures" class="category-filter" data-category="chaussures">Chaussures</a>
-                    <a href="#bijoux" class="category-filter" data-category="bijoux">Bijoux</a>
-                </div>
-
-                <!-- Section Robes -->
-                <div class="category-details" id="robes">
-                    <div class="category-header">
-                        <h2>Robes</h2>
-                        <span class="category-count">0 produits</span>
-                    </div>
-                    
-                    <div class="products-empty">
-                        <div class="empty-icon">
-                            <i class="fas fa-tshirt"></i>
-                        </div>
-                        <h3>Collection de robes en préparation</h3>
-                        <p>Notre collection de robes élégantes pour toutes les occasions sera bientôt disponible. Nous travaillons sur une sélection variée allant des robes de soirée aux robes décontractées pour votre quotidien.</p>
-                        <a href="contact.html" class="btn btn-outline notify-btn">Être notifié</a>
-                    </div>
-                </div>
-
-                <!-- Section Pantalons -->
-                <div class="category-details" id="pantalons">
-                    <div class="category-header">
-                        <h2>Pantalons</h2>
-                        <span class="category-count">0 produits</span>
-                    </div>
-                    
-                    <div class="products-empty">
-                        <div class="empty-icon">
-                            <i class="fas fa-vest"></i>
-                        </div>
-                        <h3>Collection de pantalons en préparation</h3>
-                        <p>Découvrez bientôt notre gamme de pantalons confortables et stylés, parfaits pour le bureau, les sorties ou les moments de détente. Des coupes modernes pour toutes les morphologies.</p>
-                        <a href="contact.html" class="btn btn-outline notify-btn">Être notifié</a>
-                    </div>
-                </div>
-
-                <!-- Section Jupes -->
-                <div class="category-details" id="jupes">
-                    <div class="category-header">
-                        <h2>Jupes</h2>
-                        <span class="category-count">0 produits</span>
-                    </div>
-                    
-                    <div class="products-empty">
-                        <div class="empty-icon">
-                            <i class="fas fa-female"></i>
-                        </div>
-                        <h3>Collection de jupes en préparation</h3>
-                        <p>Notre collection de jupes modernes et tendances arrive bientôt. Des modèles variés pour compléter votre garde-robe et créer des looks uniques pour chaque occasion.</p>
-                        <a href="contact.html" class="btn btn-outline notify-btn">Être notifié</a>
-                    </div>
-                </div>
-
-                <!-- Section Chaussures -->
-                <div class="category-details" id="chaussures">
-                    <div class="category-header">
-                        <h2>Chaussures</h2>
-                        <span class="category-count">0 produits</span>
-                    </div>
-                    
-                    <div class="products-empty">
-                        <div class="empty-icon">
-                            <i class="fas fa-shoe-prints"></i>
-                        </div>
-                        <h3>Collection de chaussures en préparation</h3>
-                        <p>Bientôt, découvrez notre sélection de chaussures tendance pour toutes vos sorties. Des baskets confortables aux escarpins élégants, nous avons ce qu'il vous faut.</p>
-                        <a href="contact.html" class="btn btn-outline notify-btn">Être notifié</a>
-                    </div>
-                </div>
-
-                <!-- Section Bijoux -->
-                <div class="category-details" id="bijoux">
-                    <div class="category-header">
-                        <h2>Bijoux</h2>
-                        <span class="category-count">0 produits</span>
-                    </div>
-                    
-                    <div class="products-empty">
-                        <div class="empty-icon">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <h3>Collection de bijoux en préparation</h3>
-                        <p>Notre collection d'accessoires raffinés arrive bientôt. Des bijoux élégants pour sublimer votre style et compléter vos tenues avec subtilité et originalité.</p>
-                        <a href="contact.html" class="btn btn-outline notify-btn">Être notifié</a>
-                    </div>
+                <div class="filter-buttons">
+                    <button id="applyFilters" class="btn">
+                        <i class="fas fa-check"></i> Appliquer les filtres
+                    </button>
+                    <button id="resetFilters" class="btn btn-outline">
+                        <i class="fas fa-redo"></i> Réinitialiser
+                    </button>
                 </div>
             </div>
-        </section>
 
-        <!-- Section à venir -->
-        <section class="coming-soon">
-            <div class="container">
-                <h2 class="section-title">Bientôt Disponible</h2>
-                <p>Notre boutique en ligne est en cours de développement. Les produits seront ajoutés prochainement via notre panel d'administration.</p>
-                <p>Nous travaillons dur pour vous offrir une expérience shopping exceptionnelle avec une large sélection de produits de qualité.</p>
-                <a href="index.html" class="btn">Retour à l'accueil</a>
+            <!-- Résultats -->
+            <div class="products-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 id="productsTitle">Tous les produits</h2>
+                <div id="productsCount" style="color: #666; font-size: 0.9rem;">Chargement...</div>
             </div>
-        </section>
-    </main>
+
+            <!-- Grille de produits -->
+            <div class="products-grid" id="productsGrid">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement des produits...</p>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- La pagination sera générée ici -->
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
@@ -313,7 +738,7 @@
                     </div>
                     <p>Votre destination shopping en ligne pour la mode, l'élégance et le style.</p>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fas fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-pinterest"></i></a>
@@ -324,20 +749,20 @@
                     <h3>Liens rapides</h3>
                     <ul class="footer-links">
                         <li><a href="index.html">Accueil</a></li>
-                        <li><a href="categories.html">Catégories</a></li>
-                        <li><a href="about.html">À propos</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="categories.html">Produits</a></li>
+                        <li><a href="index.html#about">À propos</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-column">
                     <h3>Catégories</h3>
                     <ul class="footer-links">
-                        <li><a href="#robes">Robes</a></li>
-                        <li><a href="#pantalons">Pantalons</a></li>
-                        <li><a href="#jupes">Jupes</a></li>
-                        <li><a href="#chaussures">Chaussures</a></li>
-                        <li><a href="#bijoux">Bijoux</a></li>
+                        <li><a href="categories.html?category=robes">Robes</a></li>
+                        <li><a href="categories.html?category=pantalons">Pantalons</a></li>
+                        <li><a href="categories.html?category=jupes">Jupes</a></li>
+                        <li><a href="categories.html?category=chaussures">Chaussures</a></li>
+                        <li><a href="categories.html?category=bijoux">Bijoux</a></li>
                     </ul>
                 </div>
 
@@ -352,11 +777,339 @@
             </div>
 
             <div class="copyright">
-                <p>&copy; 2023 E-S COMPANY. Tous droits réservés. | Site développé pour hébergement sur Netlify (frontend) et Render (backend API)</p>
+                <p>&copy; 2023 E-S COMPANY. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- API Configuration et logique -->
+    <script>
+        // Configuration de l'API
+        const API_URL = 'https://es-company-api.onrender.com'; // Remplacez par votre URL Render
+        
+        // État de l'application
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let totalProducts = 0;
+        let currentFilters = {};
+        let currentCategory = '';
+
+        // Récupérer la catégorie depuis l'URL
+        function getCategoryFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            if (category) {
+                currentCategory = category;
+                document.getElementById('categoryFilter').value = category;
+                updateProductsTitle(category);
+            }
+            return category;
+        }
+
+        // Mettre à jour le titre selon la catégorie
+        function updateProductsTitle(category) {
+            const titles = {
+                'robes': 'Robes',
+                'pantalons': 'Pantalons',
+                'jupes': 'Jupes',
+                'chaussures': 'Chaussures',
+                'bijoux': 'Bijoux'
+            };
+            
+            const title = titles[category] || 'Tous les produits';
+            document.getElementById('productsTitle').textContent = title;
+        }
+
+        // Charger les produits depuis l'API
+        async function loadProducts(page = 1) {
+            const productsGrid = document.getElementById('productsGrid');
+            
+            // Afficher le loading
+            productsGrid.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Chargement des produits...</p>
+                </div>
+            `;
+            
+            try {
+                // Préparer les filtres
+                const filters = {
+                    page: page,
+                    limit: productsPerPage,
+                    ...currentFilters
+                };
+                
+                // Ajouter la catégorie si spécifiée
+                if (currentCategory) {
+                    filters.category = currentCategory;
+                }
+                
+                // Ajouter le tri
+                const sortFilter = document.getElementById('sortFilter').value;
+                if (sortFilter) {
+                    filters.sort = sortFilter;
+                }
+                
+                // Construire l'URL
+                const queryParams = new URLSearchParams(filters).toString();
+                const url = `${API_URL}/api/products${queryParams ? '?' + queryParams : ''}`;
+                
+                console.log('Loading products from:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    const products = data.data.products;
+                    totalProducts = data.data.pagination.total;
+                    
+                    displayProducts(products);
+                    updateProductsCount(data.data.pagination);
+                    updatePagination(data.data.pagination);
+                } else {
+                    throw new Error(data.message || 'Erreur de chargement');
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                productsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Erreur de chargement</h3>
+                        <p>Impossible de charger les produits. Veuillez réessayer.</p>
+                        <button onclick="loadProducts()" class="btn" style="margin-top: 15px;">
+                            <i class="fas fa-redo"></i> Réessayer
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Afficher les produits
+        function displayProducts(products) {
+            const productsGrid = document.getElementById('productsGrid');
+            
+            if (!products || products.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <h3>Aucun produit trouvé</h3>
+                        <p>Essayez de modifier vos filtres ou revenez plus tard.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsGrid.innerHTML = '';
+            
+            products.forEach(product => {
+                // Déterminer le nom de catégorie en français
+                const categoryNames = {
+                    'robes': 'Robes',
+                    'pantalons': 'Pantalons',
+                    'jupes': 'Jupes',
+                    'chaussures': 'Chaussures',
+                    'bijoux': 'Bijoux'
+                };
+                
+                const categoryName = categoryNames[product.category] || product.category;
+                
+                const productCard = `
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="${product.images && product.images.length > 0 ? product.images[0].url : 'https://via.placeholder.com/300x300?text=No+Image'}" 
+                                 alt="${product.name}">
+                            ${product.discount > 0 ? `<span class="discount-badge">-${product.discount}%</span>` : ''}
+                            <span class="category-badge">${categoryName}</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p class="product-description">${product.description.substring(0, 80)}...</p>
+                            <div class="product-price">
+                                ${product.discount > 0 ? `
+                                    <span class="old-price">${product.price} HTG</span>
+                                    <span class="new-price">${Math.round(product.price * (1 - product.discount/100))} HTG</span>
+                                ` : `
+                                    <span class="price">${product.price} HTG</span>
+                                `}
+                            </div>
+                            <div class="product-meta">
+                                <span class="stock ${product.stock > 0 ? 'in-stock' : 'out-of-stock'}">
+                                    ${product.stock > 0 ? 'En stock' : 'Rupture'}
+                                </span>
+                                <button class="btn btn-small" onclick="addToCart('${product._id}')" style="padding: 8px 12px;">
+                                    <i class="fas fa-shopping-cart"></i> Ajouter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productsGrid.innerHTML += productCard;
+            });
+        }
+
+        // Mettre à jour le compteur de produits
+        function updateProductsCount(pagination) {
+            const start = (pagination.page - 1) * pagination.limit + 1;
+            const end = Math.min(start + pagination.limit - 1, pagination.total);
+            
+            document.getElementById('productsCount').textContent = 
+                `Affichage de ${start}-${end} sur ${pagination.total} produits`;
+        }
+
+        // Mettre à jour la pagination
+        function updatePagination(pagination) {
+            const paginationDiv = document.getElementById('pagination');
+            
+            if (pagination.pages <= 1) {
+                paginationDiv.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            const maxPagesToShow = 5;
+            let startPage = Math.max(1, pagination.page - Math.floor(maxPagesToShow / 2));
+            let endPage = Math.min(pagination.pages, startPage + maxPagesToShow - 1);
+            
+            // Ajuster startPage si on est proche de la fin
+            if (endPage - startPage + 1 < maxPagesToShow) {
+                startPage = Math.max(1, endPage - maxPagesToShow + 1);
+            }
+            
+            // Bouton précédent
+            if (pagination.page > 1) {
+                paginationHTML += `<button onclick="changePage(${pagination.page - 1})"><i class="fas fa-chevron-left"></i></button>`;
+            }
+            
+            // Première page
+            if (startPage > 1) {
+                paginationHTML += `<button onclick="changePage(1)">1</button>`;
+                if (startPage > 2) {
+                    paginationHTML += `<button disabled>...</button>`;
+                }
+            }
+            
+            // Pages
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `<button onclick="changePage(${i})" ${i === pagination.page ? 'class="active"' : ''}>${i}</button>`;
+            }
+            
+            // Dernière page
+            if (endPage < pagination.pages) {
+                if (endPage < pagination.pages - 1) {
+                    paginationHTML += `<button disabled>...</button>`;
+                }
+                paginationHTML += `<button onclick="changePage(${pagination.pages})">${pagination.pages}</button>`;
+            }
+            
+            // Bouton suivant
+            if (pagination.page < pagination.pages) {
+                paginationHTML += `<button onclick="changePage(${pagination.page + 1})"><i class="fas fa-chevron-right"></i></button>`;
+            }
+            
+            paginationDiv.innerHTML = paginationHTML;
+        }
+
+        // Changer de page
+        function changePage(page) {
+            currentPage = page;
+            loadProducts(page);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Appliquer les filtres
+        function applyFilters() {
+            currentPage = 1;
+            currentFilters = {};
+            
+            // Catégorie
+            const category = document.getElementById('categoryFilter').value;
+            if (category) {
+                currentFilters.category = category;
+                currentCategory = category;
+                updateProductsTitle(category);
+            } else {
+                currentCategory = '';
+                updateProductsTitle('');
+            }
+            
+            // Prix maximum
+            const maxPrice = document.getElementById('priceFilter').value;
+            if (maxPrice) {
+                currentFilters.maxPrice = maxPrice;
+            }
+            
+            // Mettre à jour l'URL sans recharger la page
+            const url = new URL(window.location);
+            if (category) {
+                url.searchParams.set('category', category);
+            } else {
+                url.searchParams.delete('category');
+            }
+            window.history.pushState({}, '', url);
+            
+            loadProducts();
+        }
+
+        // Réinitialiser les filtres
+        function resetFilters() {
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('priceFilter').value = '';
+            document.getElementById('sortFilter').value = '-createdAt';
+            
+            currentPage = 1;
+            currentFilters = {};
+            currentCategory = '';
+            
+            // Réinitialiser l'URL
+            const url = new URL(window.location);
+            url.searchParams.delete('category');
+            window.history.pushState({}, '', url);
+            
+            updateProductsTitle('');
+            loadProducts();
+        }
+
+        // Fonction pour ajouter au panier
+        function addToCart(productId) {
+            alert('Produit ajouté au panier! (Fonctionnalité à implémenter)');
+            console.log('Adding product to cart:', productId);
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu mobile
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const nav = document.querySelector('nav');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    nav.classList.toggle('active');
+                });
+            }
+
+            // Fermer le menu mobile en cliquant sur un lien
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function() {
+                    nav.classList.remove('active');
+                });
+            });
+
+            // Récupérer la catégorie depuis l'URL
+            getCategoryFromURL();
+            
+            // Charger les produits
+            loadProducts();
+            
+            // Événements des filtres
+            document.getElementById('applyFilters').addEventListener('click', applyFilters);
+            document.getElementById('resetFilters').addEventListener('click', resetFilters);
+            
+            // Changer de page avec les filtres de tri
+            document.getElementById('sortFilter').addEventListener('change', function() {
+                loadProducts(currentPage);
+            });
+        });
+    </script>
 </body>
 </html>
