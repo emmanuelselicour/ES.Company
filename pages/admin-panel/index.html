@@ -1,221 +1,59 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord - Panel Admin E-S COMPANY</title>
-    <link rel="icon" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <!-- Header -->
-    <header class="admin-header">
-        <div class="container admin-header-container">
-            <div class="admin-logo">
-                <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo" class="admin-logo-img">
-                <div class="admin-logo-text">E-S <span>COMPANY</span> Admin</div>
-            </div>
-            
-            <div class="admin-user">
-                <span id="currentUserName"></span>
-                <a href="#" class="logout-btn" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </a>
-            </div>
-        </div>
-    </header>
+<!-- Ajoutez un message de connexion -->
+<div id="loginMessage" class="alert" style="display: none;"></div>
 
-    <div class="admin-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
-                <li><a href="products.html"><i class="fas fa-tshirt"></i> Produits</a></li>
-                <li><a href="add-product.html"><i class="fas fa-plus-circle"></i> Ajouter un produit</a></li>
-                <li><a href="#"><i class="fas fa-shopping-cart"></i> Commandes</a></li>
-                <li><a href="#"><i class="fas fa-users"></i> Clients</a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Paramètres</a></li>
-            </ul>
-        </aside>
-
-        <!-- Main content -->
-        <main class="main-content">
-            <div class="page-header">
-                <h1><i class="fas fa-tachometer-alt"></i> Tableau de bord</h1>
-                <div class="breadcrumb">
-                    <span>Admin</span> / <span>Tableau de bord</span>
-                </div>
-            </div>
-
-            <!-- Stats Cards -->
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon" style="background-color: #e8f4fc; color: #3498db;">
-                        <i class="fas fa-tshirt"></i>
-                    </div>
-                    <div class="card-title">Total Produits</div>
-                    <div class="card-value" id="totalProducts">0</div>
-                    <div class="card-change" id="productsChange">+0% depuis hier</div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon" style="background-color: #e8f6f3; color: #27ae60;">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="card-title">Produits Actifs</div>
-                    <div class="card-value" id="activeProducts">0</div>
-                    <div class="card-change" id="activeChange">0% du total</div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon" style="background-color: #fef9e7; color: #f39c12;">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <div class="card-title">Valeur Stock</div>
-                    <div class="card-value" id="stockValue">0 HTG</div>
-                    <div class="card-change" id="valueChange">+0% depuis hier</div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon" style="background-color: #fdedec; color: #e74c3c;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div class="card-title">Stock Faible</div>
-                    <div class="card-value" id="lowStock">0</div>
-                    <div class="card-change" id="stockChange">Produits à réapprovisionner</div>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="card" style="margin-bottom: 30px;">
-                <h3 style="margin-bottom: 20px; color: var(--primary-color);">Actions rapides</h3>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <a href="add-product.html" class="btn btn-success">
-                        <i class="fas fa-plus"></i> Ajouter un produit
-                    </a>
-                    <a href="products.html" class="btn btn-primary">
-                        <i class="fas fa-list"></i> Voir tous les produits
-                    </a>
-                    <a href="#" class="btn btn-warning">
-                        <i class="fas fa-chart-line"></i> Voir les statistiques
-                    </a>
-                </div>
-            </div>
-
-            <!-- Recent Products -->
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: var(--primary-color);">Produits récemment ajoutés</h3>
-                    <a href="products.html" class="btn btn-outline btn-small">Voir tous</a>
-                </div>
-                
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Nom</th>
-                                <th>Catégorie</th>
-                                <th>Prix</th>
-                                <th>Stock</th>
-                                <th>Statut</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentProducts">
-                            <!-- Les produits seront ajoutés ici par JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
+<!-- Modifiez le formulaire -->
+<form id="loginForm" class="login-form">
+    <div class="form-group">
+        <label for="email">Adresse email</label>
+        <input type="email" id="email" class="form-control" value="admin@escompany.com" required>
     </div>
+    
+    <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" class="form-control" value="admin123" required>
+    </div>
+    
+    <button type="submit" class="btn btn-primary" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i> Se connecter
+    </button>
+</form>
 
-    <script src="auth.js"></script>
-    <script src="admin.js"></script>
-    <script src="products.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Gestion de la déconnexion
-            document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                auth.logout();
-            });
-
-            // Afficher les statistiques
-            function displayStats() {
-                const stats = productManager.getStats();
-                
-                document.getElementById('totalProducts').textContent = stats.totalProducts;
-                document.getElementById('activeProducts').textContent = stats.activeProducts;
-                document.getElementById('stockValue').textContent = admin.formatPrice(stats.totalValue);
-                document.getElementById('lowStock').textContent = stats.lowStockProducts;
-                
-                // Calculer les pourcentages
-                const activePercent = stats.totalProducts > 0 ? 
-                    Math.round((stats.activeProducts / stats.totalProducts) * 100) : 0;
-                document.getElementById('activeChange').textContent = `${activePercent}% du total`;
-                
-                // Afficher les produits récents
-                displayRecentProducts();
-            }
-
-            // Afficher les produits récents
-            function displayRecentProducts() {
-                const recentProducts = productManager.getAllProducts()
-                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                    .slice(0, 5);
-                
-                const tbody = document.getElementById('recentProducts');
-                tbody.innerHTML = '';
-                
-                recentProducts.forEach(product => {
-                    const row = document.createElement('tr');
-                    
-                    row.innerHTML = `
-                        <td>
-                            <img src="${product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/60x60?text=No+Image'}" 
-                                 alt="${product.name}" 
-                                 class="product-image">
-                        </td>
-                        <td>${product.name}</td>
-                        <td>${product.category}</td>
-                        <td>${admin.formatPrice(product.price)}</td>
-                        <td>${product.stock}</td>
-                        <td><span class="status ${product.status}">${product.status === 'active' ? 'Actif' : 'Inactif'}</span></td>
-                        <td class="actions">
-                            <a href="edit-product.html?id=${product.id}" class="btn btn-small" title="Modifier">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="#" class="btn btn-small delete-btn" 
-                               data-item-name="${product.name}" 
-                               onclick="deleteProduct(${product.id})" 
-                               title="Supprimer">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </td>
-                    `;
-                    
-                    tbody.appendChild(row);
-                });
-            }
-
-            // Fonction pour supprimer un produit
-            window.deleteProduct = function(id) {
-                if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-                    const deleted = productManager.deleteProduct(id);
-                    if (deleted) {
-                        admin.showAlert('Produit supprimé avec succès!', 'success');
-                        displayStats(); // Rafraîchir les statistiques
-                    }
-                }
-            };
-
-            // Initialiser l'affichage
-            displayStats();
-        });
-    </script>
-</body>
-</html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const loginMessage = document.getElementById('loginMessage');
+    const loginBtn = document.getElementById('loginBtn');
+    
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        // Désactiver le bouton pendant la connexion
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+        
+        const result = await auth.login(email, password);
+        
+        if (result.success) {
+            loginMessage.className = 'alert alert-success';
+            loginMessage.innerHTML = '<i class="fas fa-check-circle"></i> ' + result.message;
+            loginMessage.style.display = 'flex';
+            
+            // Redirection automatique
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        } else {
+            loginMessage.className = 'alert alert-error';
+            loginMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + result.message;
+            loginMessage.style.display = 'flex';
+            
+            // Réactiver le bouton
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se connecter';
+        }
+    });
+});
+</script>
