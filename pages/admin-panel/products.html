@@ -897,3 +897,82 @@
             };
             
             return defaultImages[product.category] || 'https://via.placeholder.com/50x50?text=No+Image';
+        }
+
+        function formatCategory(category) {
+            const categories = {
+                robes: 'Robes',
+                pantalons: 'Pantalons',
+                jupes: 'Jupes',
+                chaussures: 'Chaussures',
+                bijoux: 'Bijoux'
+            };
+            return categories[category] || category;
+        }
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('fr-HT', {
+                style: 'currency',
+                currency: 'HTG'
+            }).format(price);
+        }
+
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return 'Date invalide';
+            }
+        }
+
+        function formatDateForExport(dateString) {
+            try {
+                const date = new Date(dateString);
+                return date.toISOString().slice(0, 10);
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function displayCurrentUser() {
+            const userElement = document.getElementById('currentUserName');
+            if (!userElement) return;
+            
+            const userData = localStorage.getItem('admin_user');
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    userElement.textContent = user.name || user.email || 'Admin';
+                } catch (e) {
+                    userElement.textContent = 'Admin';
+                }
+            }
+        }
+
+        // Fonction debounce pour la recherche
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Rafraîchissement automatique toutes les 2 minutes
+        setInterval(() => {
+            if (!isLoading && document.visibilityState === 'visible') {
+                loadProducts();
+            }
+        }, 120000);
+    </script>
+</body>
+</html>
