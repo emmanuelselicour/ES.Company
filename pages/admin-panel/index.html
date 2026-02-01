@@ -1,59 +1,227 @@
-<!-- Ajoutez un message de connexion -->
-<div id="loginMessage" class="alert" style="display: none;"></div>
-
-<!-- Modifiez le formulaire -->
-<form id="loginForm" class="login-form">
-    <div class="form-group">
-        <label for="email">Adresse email</label>
-        <input type="email" id="email" class="form-control" value="admin@escompany.com" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input type="password" id="password" class="form-control" value="admin123" required>
-    </div>
-    
-    <button type="submit" class="btn btn-primary" id="loginBtn">
-        <i class="fas fa-sign-in-alt"></i> Se connecter
-    </button>
-</form>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('loginForm');
-    const loginMessage = document.getElementById('loginMessage');
-    const loginBtn = document.getElementById('loginBtn');
-    
-    loginForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        // Désactiver le bouton pendant la connexion
-        loginBtn.disabled = true;
-        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
-        
-        const result = await auth.login(email, password);
-        
-        if (result.success) {
-            loginMessage.className = 'alert alert-success';
-            loginMessage.innerHTML = '<i class="fas fa-check-circle"></i> ' + result.message;
-            loginMessage.style.display = 'flex';
-            
-            // Redirection automatique
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1000);
-        } else {
-            loginMessage.className = 'alert alert-error';
-            loginMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + result.message;
-            loginMessage.style.display = 'flex';
-            
-            // Réactiver le bouton
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se connecter';
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Panel Admin E-S COMPANY</title>
+    <link rel="icon" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
         }
-    });
-});
-</script>
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .login-logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .login-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .login-logo-text span {
+            color: #e74c3c;
+        }
+
+        .login-title {
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #1a252f;
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background-color: #fadbd8;
+            color: #e74c3c;
+            border: 1px solid #f5b7b1;
+            display: flex;
+        }
+
+        .alert-success {
+            background-color: #d5f4e6;
+            color: #27ae60;
+            border: 1px solid #a3e4c0;
+            display: flex;
+        }
+
+        .login-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo" class="login-logo-img">
+                <div class="login-logo-text">E-S <span>COMPANY</span></div>
+            </div>
+            
+            <h2 class="login-title">Panel d'Administration</h2>
+            
+            <form id="loginForm" class="login-form">
+                <div id="loginMessage" class="alert" style="display: none;"></div>
+                
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" class="form-control" 
+                           placeholder="admin@escompany.com" 
+                           autocomplete="email"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" class="form-control" 
+                           placeholder="••••••••" 
+                           autocomplete="current-password"
+                           required>
+                </div>
+                
+                <button type="submit" class="btn">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Accès réservé au personnel autorisé</p>
+                <p>© 2023 E-S COMPANY - Tous droits réservés</p>
+                <p style="font-size: 12px; color: #999; margin-top: 10px;">
+                    API: https://es-company-api.onrender.com
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginMessage = document.getElementById('loginMessage');
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Désactiver le bouton pendant la requête
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+                submitBtn.disabled = true;
+                
+                try {
+                    const result = await auth.login(email, password);
+                    
+                    if (result.success) {
+                        loginMessage.className = 'alert alert-success';
+                        loginMessage.innerHTML = '<i class="fas fa-check-circle"></i> ' + result.message;
+                        loginMessage.style.display = 'flex';
+                    } else {
+                        loginMessage.className = 'alert alert-error';
+                        loginMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + result.message;
+                        loginMessage.style.display = 'flex';
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                } catch (error) {
+                    loginMessage.className = 'alert alert-error';
+                    loginMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erreur de connexion au serveur';
+                    loginMessage.style.display = 'flex';
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
