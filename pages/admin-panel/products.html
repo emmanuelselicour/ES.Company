@@ -1,165 +1,38 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des produits - Panel Admin E-S COMPANY</title>
-    <link rel="icon" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <!-- Header -->
-    <header class="admin-header">
-        <div class="container admin-header-container">
-            <div class="admin-logo">
-                <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo" class="admin-logo-img">
-                <div class="admin-logo-text">E-S <span>COMPANY</span> Admin</div>
-            </div>
-            
-            <div class="admin-user">
-                <span id="currentUserName"></span>
-                <a href="#" class="logout-btn" id="logoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </a>
-            </div>
-        </div>
-    </header>
+// Dans products.html, remplacez toute la partie <script> par :
 
-    <div class="admin-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
-                <li><a href="products.html" class="active"><i class="fas fa-tshirt"></i> Produits</a></li>
-                <li><a href="add-product.html"><i class="fas fa-plus-circle"></i> Ajouter un produit</a></li>
-                <li><a href="#"><i class="fas fa-shopping-cart"></i> Commandes</a></li>
-                <li><a href="#"><i class="fas fa-users"></i> Clients</a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Paramètres</a></li>
-            </ul>
-        </aside>
+<script src="auth.js"></script>
+<script src="admin.js"></script>
+<script src="products.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gestion de la déconnexion
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            auth.logout();
+        });
 
-        <!-- Main content -->
-        <main class="main-content">
-            <div class="page-header">
-                <h1><i class="fas fa-tshirt"></i> Gestion des produits</h1>
-                <a href="add-product.html" class="btn btn-success">
-                    <i class="fas fa-plus"></i> Nouveau produit
-                </a>
-            </div>
+        // Variables pour la pagination
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let filteredProducts = [];
 
-            <!-- Filtres -->
-            <div class="card" style="margin-bottom: 30px;">
-                <h3 style="margin-bottom: 15px; color: var(--primary-color);">Filtres</h3>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Catégorie</label>
-                        <select id="categoryFilter" class="form-control" style="width: 200px;">
-                            <option value="">Toutes les catégories</option>
-                            <option value="robes">Robes</option>
-                            <option value="pantalons">Pantalons</option>
-                            <option value="jupes">Jupes</option>
-                            <option value="chaussures">Chaussures</option>
-                            <option value="bijoux">Bijoux</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Statut</label>
-                        <select id="statusFilter" class="form-control" style="width: 150px;">
-                            <option value="">Tous les statuts</option>
-                            <option value="active">Actif</option>
-                            <option value="inactive">Inactif</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label style="display: block; margin-bottom: 5px; font-weight: 600;">Stock</label>
-                        <select id="stockFilter" class="form-control" style="width: 150px;">
-                            <option value="">Tous</option>
-                            <option value="low">Stock faible (&lt; 5)</option>
-                            <option value="out">Rupture de stock</option>
-                            <option value="good">Stock bon</option>
-                        </select>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <button id="applyFilters" class="btn btn-primary">
-                            <i class="fas fa-filter"></i> Appliquer
-                        </button>
-                        <button id="resetFilters" class="btn btn-outline">
-                            <i class="fas fa-redo"></i> Réinitialiser
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Liste des produits -->
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: var(--primary-color);">Liste des produits (<span id="productCount">0</span>)</h3>
-                    <div style="display: flex; gap: 10px;">
-                        <button id="exportBtn" class="btn btn-small">
-                            <i class="fas fa-download"></i> Exporter
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Nom</th>
-                                <th>Catégorie</th>
-                                <th>Prix</th>
-                                <th>Stock</th>
-                                <th>Statut</th>
-                                <th>Date d'ajout</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productsTable">
-                            <!-- Les produits seront ajoutés ici par JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div style="margin-top: 20px; text-align: center;">
-                    <div id="pagination">
-                        <!-- La pagination sera ajoutée ici par JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script src="auth.js"></script>
-    <script src="admin.js"></script>
-    <script src="products.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Gestion de la déconnexion
-            document.getElementById('logoutBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                auth.logout();
-            });
-
-            // Variables pour la pagination
-            let currentPage = 1;
-            const itemsPerPage = 10;
-            let filteredProducts = [];
-
-            // Afficher tous les produits
-            function displayProducts() {
+        // Afficher tous les produits
+        async function displayProducts() {
+            try {
+                // Charger les produits depuis le gestionnaire
                 const allProducts = productManager.getAllProducts();
+                
+                // Vérifier que allProducts est un tableau
+                if (!Array.isArray(allProducts)) {
+                    console.error('❌ allProducts is not an array:', allProducts);
+                    allProducts = [];
+                }
                 
                 // Appliquer les filtres
                 filteredProducts = allProducts.filter(product => {
-                    const categoryFilter = document.getElementById('categoryFilter').value;
-                    const statusFilter = document.getElementById('statusFilter').value;
-                    const stockFilter = document.getElementById('stockFilter').value;
+                    const categoryFilter = document.getElementById('categoryFilter')?.value;
+                    const statusFilter = document.getElementById('statusFilter')?.value;
+                    const stockFilter = document.getElementById('stockFilter')?.value;
                     
                     // Filtrer par catégorie
                     if (categoryFilter && product.category !== categoryFilter) {
@@ -186,7 +59,10 @@
                 });
                 
                 // Mettre à jour le compteur
-                document.getElementById('productCount').textContent = filteredProducts.length;
+                const countElement = document.getElementById('productCount');
+                if (countElement) {
+                    countElement.textContent = filteredProducts.length;
+                }
                 
                 // Calculer la pagination
                 const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -196,6 +72,8 @@
                 
                 // Afficher les produits
                 const tbody = document.getElementById('productsTable');
+                if (!tbody) return;
+                
                 tbody.innerHTML = '';
                 
                 if (pageProducts.length === 0) {
@@ -215,44 +93,51 @@
                     pageProducts.forEach(product => {
                         const row = document.createElement('tr');
                         
+                        // Récupérer l'ID correct (MongoDB utilise _id)
+                        const productId = product._id || product.id;
+                        const productImage = product.images && product.images.length > 0 
+                            ? product.images[0].url 
+                            : 'https://via.placeholder.com/60x60?text=No+Image';
+                        
                         row.innerHTML = `
                             <td>
-                                <img src="${product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/60x60?text=No+Image'}" 
+                                <img src="${productImage}" 
                                      alt="${product.name}" 
-                                     class="product-image">
+                                     class="product-image"
+                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
                             </td>
                             <td>
-                                <strong>${product.name}</strong>
+                                <strong>${product.name || 'Sans nom'}</strong>
                                 <div style="font-size: 12px; color: #777; margin-top: 5px;">
                                     ${product.description ? product.description.substring(0, 50) + '...' : 'Aucune description'}
                                 </div>
                             </td>
                             <td>
                                 <span class="status" style="background-color: #e8f4fc; color: #3498db; padding: 3px 8px; border-radius: 4px;">
-                                    ${product.category}
+                                    ${product.category || 'Non catégorisé'}
                                 </span>
                             </td>
-                            <td><strong>${admin.formatPrice(product.price)}</strong></td>
+                            <td><strong>${admin.formatPrice(product.price || 0)}</strong></td>
                             <td>
-                                ${product.stock}
+                                ${product.stock || 0}
                                 ${product.stock < 5 ? '<i class="fas fa-exclamation-triangle" style="color: #e74c3c; margin-left: 5px;"></i>' : ''}
                             </td>
-                            <td><span class="status ${product.status}">${product.status === 'active' ? 'Actif' : 'Inactif'}</span></td>
-                            <td>${admin.formatDate(product.createdAt)}</td>
+                            <td><span class="status ${product.status || 'inactive'}">${product.status === 'active' ? 'Actif' : 'Inactif'}</span></td>
+                            <td>${product.createdAt ? admin.formatDate(product.createdAt) : 'N/A'}</td>
                             <td class="actions">
-                                <a href="edit-product.html?id=${product.id}" class="btn btn-small" title="Modifier" data-tooltip="Modifier">
+                                <a href="edit-product.html?id=${productId}" class="btn btn-small" title="Modifier" data-tooltip="Modifier">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="#" class="btn btn-small delete-btn" 
+                                <button class="btn btn-small delete-btn" 
                                    data-item-name="${product.name}" 
-                                   onclick="deleteProduct(${product.id})" 
+                                   onclick="deleteProduct('${productId}')" 
                                    title="Supprimer"
                                    data-tooltip="Supprimer">
                                     <i class="fas fa-trash"></i>
-                                </a>
-                                <a href="#" class="btn btn-small" title="Voir détails" data-tooltip="Voir détails">
+                                </button>
+                                <button class="btn btn-small" title="Voir détails" data-tooltip="Voir détails">
                                     <i class="fas fa-eye"></i>
-                                </a>
+                                </button>
                             </td>
                         `;
                         
@@ -262,88 +147,141 @@
                 
                 // Afficher la pagination
                 displayPagination(totalPages);
-            }
-
-            // Afficher la pagination
-            function displayPagination(totalPages) {
-                const paginationDiv = document.getElementById('pagination');
-                paginationDiv.innerHTML = '';
                 
-                if (totalPages > 1) {
-                    // Bouton précédent
-                    const prevBtn = document.createElement('button');
-                    prevBtn.className = 'btn btn-small';
-                    prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-                    prevBtn.disabled = currentPage === 1;
-                    prevBtn.addEventListener('click', () => {
-                        if (currentPage > 1) {
-                            currentPage--;
-                            displayProducts();
-                        }
-                    });
-                    paginationDiv.appendChild(prevBtn);
-                    
-                    // Pages
-                    for (let i = 1; i <= totalPages; i++) {
-                        const pageBtn = document.createElement('button');
-                        pageBtn.className = `btn btn-small ${i === currentPage ? 'btn-primary' : ''}`;
-                        pageBtn.textContent = i;
-                        pageBtn.style.margin = '0 5px';
-                        pageBtn.addEventListener('click', () => {
-                            currentPage = i;
-                            displayProducts();
-                        });
-                        paginationDiv.appendChild(pageBtn);
-                    }
-                    
-                    // Bouton suivant
-                    const nextBtn = document.createElement('button');
-                    nextBtn.className = 'btn btn-small';
-                    nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-                    nextBtn.disabled = currentPage === totalPages;
-                    nextBtn.addEventListener('click', () => {
-                        if (currentPage < totalPages) {
-                            currentPage++;
-                            displayProducts();
-                        }
-                    });
-                    paginationDiv.appendChild(nextBtn);
+            } catch (error) {
+                console.error('❌ Error displaying products:', error);
+                const tbody = document.getElementById('productsTable');
+                if (tbody) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 40px; color: #e74c3c;">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                <h4>Erreur de chargement</h4>
+                                <p>${error.message}</p>
+                                <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 15px;">
+                                    <i class="fas fa-redo"></i> Réessayer
+                                </button>
+                            </td>
+                        </tr>
+                    `;
                 }
             }
+        }
 
-            // Appliquer les filtres
-            document.getElementById('applyFilters').addEventListener('click', function() {
+        // Afficher la pagination
+        function displayPagination(totalPages) {
+            const paginationDiv = document.getElementById('pagination');
+            if (!paginationDiv) return;
+            
+            paginationDiv.innerHTML = '';
+            
+            if (totalPages > 1) {
+                // Bouton précédent
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'btn btn-small';
+                prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        displayProducts();
+                    }
+                });
+                paginationDiv.appendChild(prevBtn);
+                
+                // Pages
+                const maxVisiblePages = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `btn btn-small ${i === currentPage ? 'btn-primary' : ''}`;
+                    pageBtn.textContent = i;
+                    pageBtn.style.margin = '0 5px';
+                    pageBtn.addEventListener('click', () => {
+                        currentPage = i;
+                        displayProducts();
+                    });
+                    paginationDiv.appendChild(pageBtn);
+                }
+                
+                // Bouton suivant
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'btn btn-small';
+                nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        displayProducts();
+                    }
+                });
+                paginationDiv.appendChild(nextBtn);
+            }
+        }
+
+        // Appliquer les filtres
+        const applyFiltersBtn = document.getElementById('applyFilters');
+        if (applyFiltersBtn) {
+            applyFiltersBtn.addEventListener('click', function() {
                 currentPage = 1;
                 displayProducts();
             });
+        }
 
-            // Réinitialiser les filtres
-            document.getElementById('resetFilters').addEventListener('click', function() {
-                document.getElementById('categoryFilter').value = '';
-                document.getElementById('statusFilter').value = '';
-                document.getElementById('stockFilter').value = '';
+        // Réinitialiser les filtres
+        const resetFiltersBtn = document.getElementById('resetFilters');
+        if (resetFiltersBtn) {
+            resetFiltersBtn.addEventListener('click', function() {
+                const categoryFilter = document.getElementById('categoryFilter');
+                const statusFilter = document.getElementById('statusFilter');
+                const stockFilter = document.getElementById('stockFilter');
+                
+                if (categoryFilter) categoryFilter.value = '';
+                if (statusFilter) statusFilter.value = '';
+                if (stockFilter) stockFilter.value = '';
+                
                 currentPage = 1;
                 displayProducts();
             });
+        }
 
-            // Fonction pour supprimer un produit
-            window.deleteProduct = function(id) {
-                if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.')) {
-                    const deleted = productManager.deleteProduct(id);
+        // Fonction pour supprimer un produit
+        window.deleteProduct = async function(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.')) {
+                try {
+                    const deleted = await productManager.deleteProduct(id);
                     if (deleted) {
                         admin.showAlert('Produit supprimé avec succès!', 'success');
                         displayProducts(); // Rafraîchir la liste
                     }
+                } catch (error) {
+                    admin.showAlert(`Erreur lors de la suppression: ${error.message}`, 'error');
                 }
-            };
+            }
+        };
 
-            // Bouton d'export
-            document.getElementById('exportBtn').addEventListener('click', function() {
+        // Bouton d'export
+        const exportBtn = document.getElementById('exportBtn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', function() {
                 const products = productManager.getAllProducts();
-                const csvContent = "data:text/csv;charset=utf-8,"
-                    + "ID,Nom,Description, Catégorie,Prix,Stock,Statut\n"
+                
+                // Vérifier que products est un tableau
+                if (!Array.isArray(products)) {
+                    admin.showAlert('Erreur: Les produits ne sont pas disponibles', 'error');
+                    return;
+                }
+                
+                const csvContent = "data:text/csv;charset=utf-8," 
+                    + "ID,Nom,Description,Catégorie,Prix,Stock,Statut\n"
                     + products.map(p => 
-                        `${p.id},"${p.name}","${p.description}","${p.category}",${p.price},${p.stock},${p.status}`
+                        `${p._id || p.id},"${p.name || ''}","${p.description || ''}","${p.category || ''}",${p.price || 0},${p.stock || 0},${p.status || ''}`
                     ).join("\n");
                 
                 const encodedUri = encodeURI(csvContent);
@@ -356,10 +294,16 @@
                 
                 admin.showAlert('Export CSV téléchargé avec succès!', 'success');
             });
+        }
 
-            // Initialiser l'affichage
-            displayProducts();
-        });
-    </script>
-</body>
-</html>
+        // Initialiser l'affichage
+        displayProducts();
+        
+        // Rafraîchir les produits toutes les 30 secondes
+        setInterval(() => {
+            productManager.loadProducts().then(() => {
+                displayProducts();
+            });
+        }, 30000);
+    });
+</script>
