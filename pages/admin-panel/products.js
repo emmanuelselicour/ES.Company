@@ -1,51 +1,13 @@
-// CORRECTION : Déclarer API_URL une seule fois
-// Supprimez toutes les autres déclarations de API_URL et gardez seulement celle-ci :
+// products.js - VERSION CORRIGÉE
 
-// REMPLACEZ TOUTE VOTRE CONFIGURATION ACTUELLE PAR CE CODE :
-
-const API_URL = 'https://votre-api.onrender.com'; // Remplacez par votre URL Render réelle
-
-// Vérifier si nous sommes en développement
-const isDevelopment = window.location.hostname === 'localhost' || 
-                      window.location.hostname === '127.0.0.1';
+// ⚠️ DÉCLARER API_URL UNE SEULE FOIS ICI ⚠️
+const API_URL = 'https://votre-api.onrender.com'; // Remplacez par VOTRE URL
 
 // Fonction pour obtenir le token
 function getAuthToken() {
   return localStorage.getItem('admin_token') || 
          localStorage.getItem('token') || 
          sessionStorage.getItem('admin_token');
-}
-
-// Fonction fetch avec gestion d'erreurs
-async function apiFetch(endpoint, options = {}) {
-  const url = `${API_URL}${endpoint}`;
-  const token = getAuthToken();
-  
-  const defaultOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` })
-    },
-    credentials: 'omit' // Important pour CORS
-  };
-  
-  const finalOptions = { ...defaultOptions, ...options };
-  
-  try {
-    console.log(`🌐 Fetching: ${url}`);
-    const response = await fetch(url, finalOptions);
-    
-    // Vérifier si la réponse est OK
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
-    }
-    
-    return await response.json();
-  } catch (error) {
-    console.error(`❌ API Error (${endpoint}):`, error.message);
-    throw error;
-  }
 }
 
 // Gestion des produits
@@ -70,16 +32,18 @@ class ProductManager {
     try {
       console.log('🔄 Loading products from API...');
       
-      // Test CORS d'abord
-      try {
-        const corsTest = await apiFetch('/api/cors-test');
-        console.log('✅ CORS test successful:', corsTest);
-      } catch (corsError) {
-        console.warn('⚠️ CORS test failed, trying without auth...');
+      const response = await fetch(`${API_URL}/api/products?limit=100`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(getAuthToken() && { 'Authorization': `Bearer ${getAuthToken()}` })
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
       }
       
-      // Charger les produits
-      const data = await apiFetch('/api/products?limit=100');
+      const data = await response.json();
       
       if (data.status === 'success') {
         this.products = data.data.products || [];
@@ -133,7 +97,6 @@ class ProductManager {
   }
 
   updateProductsDisplay() {
-    // Votre code existant pour afficher les produits
     const tbody = document.getElementById('productsTable');
     if (!tbody) return;
     
@@ -182,9 +145,6 @@ class ProductManager {
         productData.images.forEach((image, index) => {
           if (image.file) {
             formData.append('images', image.file);
-          } else if (image.url) {
-            // Si c'est une URL, l'envoyer comme texte
-            formData.append('imageUrls', image.url);
           }
         });
       }
@@ -193,8 +153,6 @@ class ProductManager {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${getAuthToken()}`
-          // Note: NE PAS mettre 'Content-Type' pour FormData
-          // Le navigateur le définit automatiquement avec le boundary
         },
         body: formData
       });
@@ -235,26 +193,36 @@ class ProductManager {
   }
 
   initEvents() {
-    // Votre code existant pour les événements
+    // Initialiser les filtres
+    const applyFilters = document.getElementById('applyFilters');
+    const resetFilters = document.getElementById('resetFilters');
+    
+    if (applyFilters) {
+      applyFilters.addEventListener('click', () => {
+        this.applyFilters();
+      });
+    }
+    
+    if (resetFilters) {
+      resetFilters.addEventListener('click', () => {
+        this.resetFilters();
+      });
+    }
+  }
+
+  applyFilters() {
+    // Votre logique de filtrage
+    console.log('Applying filters...');
+  }
+
+  resetFilters() {
+    // Votre logique de réinitialisation
+    console.log('Resetting filters...');
   }
 }
 
-// Initialiser le gestionnaire de produits
+// ⚠️ INITIALISER UNE SEULE FOIS ⚠️
 const productManager = new ProductManager();
 
 // Exposer au global pour les boutons HTML
 window.productManager = productManager;
-
-// Test de connexion API au chargement
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    // Tester la connexion API
-    const health = await fetch(`${API_URL}/api/health`);
-    if (health.ok) {
-      const data = await health.json();
-      console.log('✅ API Health:', data);
-    }
-  } catch (error) {
-    console.warn('⚠️ Cannot reach API:', error.message);
-  }
-});
