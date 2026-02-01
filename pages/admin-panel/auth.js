@@ -1,104 +1,91 @@
-// auth.js - Gestion de l'authentification
-class AuthManager {
-    constructor() {
-        this.API_URL = 'https://es-company-api.onrender.com/api'; // Votre URL Render
-        this.currentUser = null;
-        this.token = null;
-        this.init();
-    }
+// auth.js - Gestion de l'authentification pour le panel admin
 
-    init() {
-        // Récupérer le token depuis le localStorage
-        this.token = localStorage.getItem('admin_token');
-        const user = localStorage.getItem('admin_user');
+const API_URL = 'https://es-company-api.onrender.com'; // Remplacez par votre URL Render
+
+// Fonction de connexion
+async function loginAdmin(email, password) {
+    try {
+        const response = await fetch(`${API_URL}/api/auth/admin/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
         
-        if (user && this.token) {
-            this.currentUser = JSON.parse(user);
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            // Sauvegarder le token et les informations utilisateur
+            localStorage.setItem('admin_token', data.data.token);
+            localStorage.setItem('admin_user', JSON.stringify(data.data.user));
             
-            // Rediriger vers le dashboard si on est sur la page de login
-            if (window.location.pathname.includes('index.html') || 
-                window.location.pathname.endsWith('/')) {
-                window.location.href = 'dashboard.html';
-            }
+            return { success: true, data: data.data };
         } else {
-            // Rediriger vers le login si non connecté
-            if (!window.location.pathname.includes('index.html') && 
-                !window.location.pathname.endsWith('/')) {
-                window.location.href = 'index.html';
-            }
-        }
-    }
-
-    // Connexion avec l'API réelle
-    async login(email, password) {
-        try {
-            const response = await fetch(`${this.API_URL}/auth/admin/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
-
-            const data = await response.json();
-
-            if (data.status === 'success') {
-                this.currentUser = data.data.user;
-                this.token = data.data.token;
-
-                // Sauvegarder dans le localStorage
-                localStorage.setItem('admin_token', this.token);
-                localStorage.setItem('admin_user', JSON.stringify(this.currentUser));
-
-                // Rediriger vers le dashboard
-                window.location.href = 'dashboard.html';
-
-                return { success: true, message: 'Connexion réussie' };
-            } else {
-                return { 
-                    success: false, 
-                    message: data.message || 'Email ou mot de passe incorrect' 
-                };
-            }
-        } catch (error) {
-            console.error('Login error:', error);
             return { 
                 success: false, 
-                message: 'Erreur de connexion au serveur' 
+                message: data.message || 'Erreur de connexion' 
             };
         }
-    }
-
-    // Déconnexion
-    logout() {
-        localStorage.removeItem('admin_token');
-        localStorage.removeItem('admin_user');
-        this.currentUser = null;
-        this.token = null;
-        window.location.href = 'index.html';
-    }
-
-    // Obtenir les headers avec token
-    getAuthHeaders() {
-        return {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.token}`
+    } catch (error) {
+        console.error('Login error:', error);
+        return { 
+            success: false, 
+            message: 'Erreur de connexion au serveur' 
         };
-    }
-
-    // Vérifier si l'utilisateur est connecté
-    isAuthenticated() {
-        return !!this.token && !!this.currentUser;
-    }
-
-    // Obtenir l'utilisateur courant
-    getCurrentUser() {
-        return this.currentUser;
     }
 }
 
-// Initialiser l'authentification
-const auth = new AuthManager();
+// Vérifier si l'utilisateur est connecté
+function isAuthenticated() {
+    const token = localStorage.getItem('admin_token');
+    const user = localStorage.getItem('admin_user');
+    
+    return !!(token && user);
+}
 
-// Exposer au global pour les autres scripts
-window.auth = auth;
+// Obtenir le token d'authentification
+function getAuthToken() {
+    return localStorage.getItem('admin_token');
+}
+
+// Obtenir les informations de l'utilisateur
+function getUserInfo() {
+    const userStr = localStorage.getItem('admin_user');
+    return userStr ? JSON.parse(userStr) : null;
+}
+
+// Déconnexion
+function logout() {
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_user');
+    window.location.href = 'index.html';
+}
+
+// Vérifier et rediriger si non authentifié
+function checkAuthAndRedirect() {
+    if (!isAuthenticated()) {
+        window.location.href = 'index.html';
+    }
+}
+
+// Vérifier l'authentification au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    // Si on est sur la page de login, ne pas rediriger
+    if (window.location.pathname.includes('index.html') || 
+        window.location.pathname.endsWith('/')) {
+        return;
+    }
+    
+    checkAuthAndRedirect();
+});
+
+// Exporter les fonctions
+window.auth = {
+    loginAdmin,
+    isAuthenticated,
+    getAuthToken,
+    getUserInfo,
+    logout,
+    checkAuthAndRedirect
+};
