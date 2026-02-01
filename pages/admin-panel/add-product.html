@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un produit - Panel Admin E-S COMPANY</title>
+    <link rel="icon" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="container admin-header-container">
+            <div class="admin-logo">
+                <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo" class="admin-logo-img">
+                <div class="admin-logo-text">E-S <span>COMPANY</span> Admin</div>
+            </div>
+            
+            <div class="admin-user">
+                <span id="currentUserName"></span>
+                <a href="#" class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a></li>
+                <li><a href="products.html"><i class="fas fa-tshirt"></i> Produits</a></li>
+                <li><a href="add-product.html" class="active"><i class="fas fa-plus-circle"></i> Ajouter un produit</a></li>
+                <li><a href="#"><i class="fas fa-shopping-cart"></i> Commandes</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Clients</a></li>
+                <li><a href="#"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Paramètres</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h1><i class="fas fa-plus-circle"></i> Ajouter un nouveau produit</h1>
+                <a href="products.html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+
+            <!-- Formulaire d'ajout -->
+            <div class="form-container">
+                <form id="productForm">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> 
+                        Tous les champs marqués d'un * sont obligatoires.
+                    </div>
+
+                    <h3 style="margin: 30px 0 20px; color: var(--primary-color);">
+                        <i class="fas fa-images"></i> Images du produit
+                    </h3>
+                    
+                    <div class="image-upload-container">
+                        <div class="image-upload-box">
+                            <input type="file" accept="image/*" style="display: none;">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Cliquez pour ajouter une image</p>
+                            <span style="font-size: 12px; color: #999;">Format recommandé: 800x800px</span>
+                            <img src="" alt="Prévisualisation" class="uploaded-image">
+                            <div class="remove-image">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="image-upload-box">
+                            <input type="file" accept="image/*" style="display: none;">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Cliquez pour ajouter une image</p>
+                            <span style="font-size: 12px; color: #999;">Format recommandé: 800x800px</span>
+                            <img src="" alt="Prévisualisation" class="uploaded-image">
+                            <div class="remove-image">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="image-upload-box">
+                            <input type="file" accept="image/*" style="display: none;">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Cliquez pour ajouter une image</p>
+                            <span style="font-size: 12px; color: #999;">Format recommandé: 800x800px</span>
+                            <img src="" alt="Prévisualisation" class="uploaded-image">
+                            <div class="remove-image">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 40px 0 20px; color: var(--primary-color);">
+                        <i class="fas fa-info-circle"></i> Informations du produit
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nom du produit *</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Ex: Robe d'été fleurie" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category">Catégorie *</label>
+                            <select id="category" name="category" class="form-control" required>
+                                <option value="">Sélectionnez une catégorie</option>
+                                <option value="robes">Robes</option>
+                                <option value="pantalons">Pantalons</option>
+                                <option value="jupes">Jupes</option>
+                                <option value="chaussures">Chaussures</option>
+                                <option value="bijoux">Bijoux</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price">Prix (HTG) *</label>
+                            <input type="number" id="price" name="price" class="form-control" placeholder="Ex: 2500" min="0" step="0.01" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stock">Quantité en stock *</label>
+                            <input type="number" id="stock" name="stock" class="form-control" placeholder="Ex: 15" min="0" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description du produit *</label>
+                        <textarea id="description" name="description" class="form-control" placeholder="Décrivez votre produit en détail..." rows="5" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status">Statut *</label>
+                            <select id="status" name="status" class="form-control" required>
+                                <option value="active">Actif (visible en boutique)</option>
+                                <option value="inactive">Inactif (caché en boutique)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <button type="submit" class="btn btn-success" style="padding: 12px 30px;">
+                            <i class="fas fa-save"></i> Enregistrer le produit
+                        </button>
+                        <button type="reset" class="btn btn-outline" style="margin-left: 15px;">
+                            <i class="fas fa-redo"></i> Réinitialiser
+                        </button>
+                        <a href="products.html" class="btn" style="margin-left: 15px;">
+                            <i class="fas fa-times"></i> Annuler
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+    <script src="products.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion de la déconnexion
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                auth.logout();
+            });
+
+            // Activer les zones d'upload d'images
+            const imageBoxes = document.querySelectorAll('.image-upload-box');
+            imageBoxes.forEach(box => {
+                box.addEventListener('click', function() {
+                    const fileInput = this.querySelector('input[type="file"]');
+                    if (fileInput) {
+                        fileInput.click();
+                    }
+                });
+            });
+
+            // Réinitialiser le formulaire
+            document.querySelector('button[type="reset"]').addEventListener('click', function() {
+                localStorage.removeItem('temp_product_images');
+                
+                // Réinitialiser les prévisualisations d'images
+                document.querySelectorAll('.uploaded-image').forEach(img => {
+                    img.src = '';
+                    img.style.display = 'none';
+                });
+                
+                document.querySelectorAll('.fa-cloud-upload-alt').forEach(icon => {
+                    icon.style.display = 'block';
+                });
+                
+                document.querySelectorAll('.image-upload-box p').forEach(p => {
+                    p.style.display = 'block';
+                });
+                
+                document.querySelectorAll('.remove-image').forEach(btn => {
+                    btn.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
