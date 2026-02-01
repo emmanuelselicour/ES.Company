@@ -1,3 +1,6 @@
+// Configuration
+const API_BASE_URL = 'https://votre-api.onrender.com'; // REMPLACEZ par votre URL Render
+
 // Gestion des produits
 class ProductManager {
     constructor() {
@@ -18,54 +21,102 @@ class ProductManager {
     async loadProducts() {
         try {
             const token = localStorage.getItem('admin_token');
-            const response = await fetch('https://votre-api.onrender.com/api/products', {
+            
+            // Vérifier si le token existe
+            if (!token) {
+                console.warn('⚠️ No admin token found, using local data');
+                this.loadLocalProducts();
+                return;
+            }
+            
+            const response = await fetch(`${API_BASE_URL}/api/products?limit=100`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors',
+                credentials: 'include'
             });
             
+            console.log('📡 API Response status:', response.status);
+            
             if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('Session expirée. Veuillez vous reconnecter.');
+                }
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
             const data = await response.json();
+            console.log('📦 API Data received:', data);
             
             if (data.status === 'success') {
                 this.products = data.data.products || [];
                 console.log(`✅ Loaded ${this.products.length} products from API`);
+                
+                // Sauvegarder dans le cache local
+                this.saveLocalProducts();
             } else {
-                console.error('❌ Error loading products:', data.message);
+                console.error('❌ API returned error:', data.message);
+                this.loadLocalProducts();
             }
         } catch (error) {
-            console.error('❌ Error loading products:', error);
-            // Fallback: données locales si l'API échoue
-            const storedProducts = localStorage.getItem('escompany_products');
-            if (storedProducts) {
-                this.products = JSON.parse(storedProducts);
-            }
+            console.error('❌ Error loading products from API:', error);
+            console.log('🔄 Falling back to local data...');
+            this.loadLocalProducts();
         }
     }
 
-    // Sauvegarder les produits (pour le cache local)
-    saveProducts() {
-        localStorage.setItem('escompany_products', JSON.stringify(this.products));
+    // Charger les produits depuis le cache local
+    loadLocalProducts() {
+        const storedProducts = localStorage.getItem('escompany_products');
+        if (storedProducts) {
+            try {
+                this.products = JSON.parse(storedProducts);
+                console.log(`📁 Loaded ${this.products.length} products from local storage`);
+            } catch (e) {
+                console.error('❌ Error parsing local products:', e);
+                this.products = [];
+            }
+        } else {
+            console.log('📁 No local products found');
+            this.products = [];
+        }
+    }
+
+    // Sauvegarder les produits localement
+    saveLocalProducts() {
+        try {
+            localStorage.setItem('escompany_products', JSON.stringify(this.products));
+            console.log('💾 Products saved to local storage');
+        } catch (e) {
+            console.error('❌ Error saving to local storage:', e);
+        }
     }
 
     // Obtenir tous les produits
     getAllProducts() {
-        return this.products;
+        // S'assurer que c'est toujours un tableau
+        return Array.isArray(this.products) ? this.products : [];
     }
 
     // Obtenir un produit par ID
     getProductById(id) {
-        return this.products.find(product => product._id === id || product.id === id);
+        const products = this.getAllProducts();
+        return products.find(product => product._id === id || product.id === id);
     }
 
     // Ajouter un produit via l'API
     async addProduct(productData) {
         try {
             const token = localStorage.getItem('admin_token');
-            const response = await fetch('https://votre-api.onrender.com/api/products', {
+            if (!token) {
+                throw new Error('Non authentifié. Veuillez vous reconnecter.');
+            }
+            
+            console.log('📤 Sending product to API:', productData);
+            
+            const response = await fetch(`${API_BASE_URL}/api/products`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,19 +125,39 @@ class ProductManager {
                 body: JSON.stringify(productData)
             });
             
+            console.log('📥 API Response:', response.status);
+            
             const data = await response.json();
             
             if (data.status === 'success') {
                 // Ajouter au cache local
-                this.products.push(data.data.product);
-                this.saveProducts();
-                return data.data.product;
+                const newProduct = data.data.product;
+                this.products.push(newProduct);
+                this.saveLocalProducts();
+                return newProduct;
             } else {
                 throw new Error(data.message || 'Failed to add product');
             }
         } catch (error) {
             console.error('❌ Error adding product:', error);
-            throw error;
+            
+            // Fallback: ajouter localement
+            const newId = this.products.length > 0 
+                ? Math.max(...this.products.map(p => p.id || p._id || 0)) + 1 
+                : 1;
+            
+            const newProduct = {
+                id: newId,
+                ...productData,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            this.products.push(newProduct);
+            this.saveLocalProducts();
+            
+            // Retourner le produit local
+            return newProduct;
         }
     }
 
@@ -94,7 +165,13 @@ class ProductManager {
     async updateProduct(id, productData) {
         try {
             const token = localStorage.getItem('admin_token');
-            const response = await fetch(`https://votre-api.onrender.com/api/products/${id}`, {
+            if (!token) {
+                throw new Error('Non authentifié. Veuillez vous reconnecter.');
+            }
+            
+            console.log('🔄 Updating product via API:', id, productData);
+            
+            const response = await fetch(`${API_BASE_URL}/api/products/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,10 +184,17 @@ class ProductManager {
             
             if (data.status === 'success') {
                 // Mettre à jour dans le cache local
-                const index = this.products.findIndex(product => product._id === id || product.id === id);
+                const index = this.products.findIndex(product => 
+                    product._id === id || product.id === id
+                );
+                
                 if (index !== -1) {
-                    this.products[index] = data.data.product;
-                    this.saveProducts();
+                    this.products[index] = {
+                        ...this.products[index],
+                        ...data.data.product,
+                        updatedAt: new Date().toISOString()
+                    };
+                    this.saveLocalProducts();
                 }
                 return data.data.product;
             } else {
@@ -126,7 +210,13 @@ class ProductManager {
     async deleteProduct(id) {
         try {
             const token = localStorage.getItem('admin_token');
-            const response = await fetch(`https://votre-api.onrender.com/api/products/${id}`, {
+            if (!token) {
+                throw new Error('Non authentifié. Veuillez vous reconnecter.');
+            }
+            
+            console.log('🗑️ Deleting product via API:', id);
+            
+            const response = await fetch(`${API_BASE_URL}/api/products/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -137,10 +227,13 @@ class ProductManager {
             
             if (data.status === 'success') {
                 // Supprimer du cache local
-                const index = this.products.findIndex(product => product._id === id || product.id === id);
+                const index = this.products.findIndex(product => 
+                    product._id === id || product.id === id
+                );
+                
                 if (index !== -1) {
                     this.products.splice(index, 1);
-                    this.saveProducts();
+                    this.saveLocalProducts();
                 }
                 return true;
             } else {
@@ -152,11 +245,15 @@ class ProductManager {
         }
     }
 
-    // Obtenir les statistiques via l'API
+    // Obtenir les statistiques
     async getStats() {
         try {
             const token = localStorage.getItem('admin_token');
-            const response = await fetch('https://votre-api.onrender.com/api/products/stats', {
+            if (!token) {
+                return this.getLocalStats();
+            }
+            
+            const response = await fetch(`${API_BASE_URL}/api/products/stats`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -169,7 +266,6 @@ class ProductManager {
                 }
             }
             
-            // Fallback aux calculs locaux
             return this.getLocalStats();
             
         } catch (error) {
@@ -180,16 +276,20 @@ class ProductManager {
 
     // Statistiques locales (fallback)
     getLocalStats() {
-        const totalProducts = this.products.length;
-        const activeProducts = this.products.filter(p => p.status === 'active').length;
-        const totalValue = this.products.reduce((sum, product) => sum + (product.price * product.stock), 0);
-        const lowStockProducts = this.products.filter(p => p.stock < 5).length;
+        const products = this.getAllProducts();
+        const totalProducts = products.length;
+        const activeProducts = products.filter(p => p.status === 'active').length;
+        const totalValue = products.reduce((sum, product) => sum + ((product.price || 0) * (product.stock || 0)), 0);
+        const lowStockProducts = products.filter(p => (p.stock || 0) < 5 && (p.stock || 0) > 0).length;
+        const outOfStockProducts = products.filter(p => (p.stock || 0) === 0).length;
         
         return {
             totalProducts,
             activeProducts,
             totalValue,
-            lowStockProducts
+            lowStockProducts,
+            outOfStockProducts,
+            averagePrice: totalProducts > 0 ? totalValue / totalProducts : 0
         };
     }
 
@@ -258,6 +358,13 @@ class ProductManager {
                     localStorage.setItem('temp_product_images', JSON.stringify(tempImages));
                 });
             }
+            
+            // Activer le clic sur la boîte
+            box.addEventListener('click', function(e) {
+                if (e.target !== fileInput && e.target !== removeBtn) {
+                    fileInput.click();
+                }
+            });
         });
     }
 
@@ -281,7 +388,8 @@ class ProductManager {
                     description: formData.get('description'),
                     stock: parseInt(formData.get('stock')),
                     status: formData.get('status'),
-                    featured: formData.get('featured') === 'true'
+                    featured: formData.get('featured') === 'true',
+                    discount: parseFloat(formData.get('discount') || 0)
                 };
                 
                 // Récupérer les images temporaires
@@ -289,16 +397,30 @@ class ProductManager {
                 const images = tempImages.filter(img => img !== null);
                 
                 if (images.length > 0) {
-                    productData.images = images.map(url => ({ url, alt: productData.name }));
+                    productData.images = images.map(url => ({ 
+                        url, 
+                        alt: productData.name,
+                        isBase64: true 
+                    }));
                 }
                 
                 try {
+                    // Afficher un indicateur de chargement
+                    const submitBtn = productForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Traitement en cours...';
+                    submitBtn.disabled = true;
+                    
                     // Ajouter ou mettre à jour le produit
                     if (this.currentProductId) {
                         // Mise à jour
                         const updated = await this.updateProduct(this.currentProductId, productData);
                         if (updated) {
-                            admin.showAlert('Produit mis à jour avec succès!', 'success');
+                            if (window.admin && window.admin.showAlert) {
+                                window.admin.showAlert('Produit mis à jour avec succès!', 'success');
+                            } else {
+                                alert('✅ Produit mis à jour avec succès!');
+                            }
                             setTimeout(() => {
                                 window.location.href = 'products.html';
                             }, 1500);
@@ -307,7 +429,11 @@ class ProductManager {
                         // Ajout
                         const added = await this.addProduct(productData);
                         if (added) {
-                            admin.showAlert('Produit ajouté avec succès!', 'success');
+                            if (window.admin && window.admin.showAlert) {
+                                window.admin.showAlert('Produit ajouté avec succès!', 'success');
+                            } else {
+                                alert('✅ Produit ajouté avec succès!');
+                            }
                             setTimeout(() => {
                                 window.location.href = 'products.html';
                             }, 1500);
@@ -318,7 +444,18 @@ class ProductManager {
                     localStorage.removeItem('temp_product_images');
                     
                 } catch (error) {
-                    admin.showAlert(`Erreur: ${error.message}`, 'error');
+                    console.error('❌ Form submission error:', error);
+                    
+                    if (window.admin && window.admin.showAlert) {
+                        window.admin.showAlert(`Erreur: ${error.message}`, 'error');
+                    } else {
+                        alert(`❌ Erreur: ${error.message}`);
+                    }
+                    
+                    // Réactiver le bouton
+                    const submitBtn = productForm.querySelector('button[type="submit"]');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Enregistrer le produit';
                 }
             });
         }
@@ -351,19 +488,30 @@ class ProductManager {
     // Pré-remplir le formulaire d'édition
     async populateEditForm(productId) {
         try {
-            // Charger le produit depuis l'API
-            const token = localStorage.getItem('admin_token');
-            const response = await fetch(`https://votre-api.onrender.com/api/products/${productId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            // Chercher d'abord dans les produits locaux
+            let product = this.getProductById(productId);
+            
+            // Si non trouvé localement, essayer l'API
+            if (!product) {
+                const token = localStorage.getItem('admin_token');
+                if (token) {
+                    const response = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.status === 'success') {
+                            product = data.data.product;
+                        }
+                    }
                 }
-            });
+            }
             
-            const data = await response.json();
-            
-            if (data.status === 'success') {
-                const product = data.data.product;
-                this.currentProductId = product._id;
+            if (product) {
+                this.currentProductId = product._id || product.id;
                 
                 // Remplir les champs du formulaire
                 document.getElementById('name').value = product.name || '';
@@ -372,7 +520,11 @@ class ProductManager {
                 document.getElementById('description').value = product.description || '';
                 document.getElementById('stock').value = product.stock || '';
                 document.getElementById('status').value = product.status || 'active';
-                document.getElementById('featured').value = product.featured || false;
+                document.getElementById('featured').value = product.featured ? 'true' : 'false';
+                
+                if (product.discount) {
+                    document.getElementById('discount').value = product.discount;
+                }
                 
                 // Sauvegarder les images temporairement
                 if (product.images && product.images.length > 0) {
@@ -393,10 +545,25 @@ class ProductManager {
                     submitBtn.textContent = 'Mettre à jour le produit';
                     submitBtn.className = 'btn btn-warning';
                 }
+                
+                return true;
+            } else {
+                throw new Error('Produit non trouvé');
             }
         } catch (error) {
             console.error('❌ Error loading product for edit:', error);
-            admin.showAlert('Erreur lors du chargement du produit', 'error');
+            
+            if (window.admin && window.admin.showAlert) {
+                window.admin.showAlert(`Erreur: ${error.message}`, 'error');
+            } else {
+                alert(`❌ Erreur: ${error.message}`);
+            }
+            
+            setTimeout(() => {
+                window.location.href = 'products.html';
+            }, 2000);
+            
+            return false;
         }
     }
 }
