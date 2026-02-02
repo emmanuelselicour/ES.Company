@@ -806,101 +806,227 @@
 
 <script src="/config.js"></script>
 <script>
-  // Fonction pour charger les produits
-  async function loadProducts() {
+  // Configuration de l'API
+  const API_URL = 'https://votre-api.onrender.com/api'; // REMPLACEZ par votre URL Render
+  
+  // Vérifier si l'API est accessible
+  async function checkAPI() {
     try {
-      console.log('Chargement des produits...');
-      
-      const response = await fetch(`${API_CONFIG.getBaseURL()}/products`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
+      const response = await fetch(`${API_URL}/health`);
       const data = await response.json();
-      console.log('Produits reçus:', data);
-      
-      if (data.status === 'success' && data.data.products) {
-        displayProducts(data.data.products);
-      } else {
-        console.error('Format de données incorrect:', data);
-        showErrorMessage('Format de données incorrect du serveur');
-      }
-      
+      console.log('✅ API Status:', data.message);
+      return true;
     } catch (error) {
-      console.error('Erreur chargement produits:', error);
-      showErrorMessage('Impossible de charger les produits. Veuillez réessayer.');
+      console.error('❌ API not reachable:', error);
+      return false;
     }
   }
   
-  function displayProducts(products) {
-    const container = document.getElementById('products-container');
-    if (!container) return;
+  // Charger les produits
+  async function loadProducts() {
+    try {
+      const response = await fetch(`${API_URL}/products`);
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        return data.data.products;
+      } else {
+        console.error('Error loading products:', data.message);
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      return [];
+    }
+  }
+  
+  // Fonction pour ajouter au panier
+  async function addToCart(productId, quantity = 1) {
+    const token = localStorage.getItem('token');
     
-    if (products.length === 0) {
-      container.innerHTML = `
-        <div class="empty-products">
-          <i class="fas fa-box-open"></i>
-          <h3>Aucun produit disponible pour le moment</h3>
-          <p>Nos produits seront bientôt en ligne !</p>
-        </div>
-      `;
+    if (!token) {
+      // Rediriger vers la page de login
+      if (confirm('Vous devez être connecté pour ajouter au panier. Voulez-vous vous connecter maintenant ?')) {
+        window.location.href = '/login.html';
+      }
+      return false;
+    }
+    
+    try {
+      const response = await fetch(`${API_URL}/cart/items`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          productId,
+          quantity
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        alert('Produit ajouté au panier !');
+        updateCartCount();
+        return true;
+      } else {
+        alert(data.message || 'Erreur lors de l\'ajout au panier');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Erreur de connexion au serveur');
+      return false;
+    }
+  }
+  
+  // Mettre à jour le compteur du panier
+  async function updateCartCount() {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      document.querySelectorAll('.cart-count').forEach(el => {
+        el.textContent = '0';
+        el.style.display = 'none';
+      });
       return;
     }
     
-    container.innerHTML = products.map(product => `
-      <div class="product-card">
-        <div class="product-image">
-          <img src="${product.images && product.images[0] ? product.images[0].url : 'https://via.placeholder.com/300x300?text=Produit'}" 
-               alt="${product.name}">
-          ${product.discount > 0 ? `<span class="discount-badge">-${product.discount}%</span>` : ''}
-        </div>
-        <div class="product-info">
-          <h3>${product.name}</h3>
-          <p class="product-description">${product.description.substring(0, 80)}...</p>
-          <div class="product-price">
-            ${product.discount > 0 ? `
-              <span class="original-price">${formatPrice(product.price)} HTG</span>
-              <span class="discounted-price">${formatPrice(product.price * (1 - product.discount/100))} HTG</span>
-            ` : `
-              <span class="current-price">${formatPrice(product.price)} HTG</span>
-            `}
-          </div>
-          <div class="product-actions">
-            <button class="btn btn-outline" onclick="viewProduct(${product.id})">
-              <i class="fas fa-eye"></i> Voir
-            </button>
-            <button class="btn" onclick="addToCart(${product.id})">
-              <i class="fas fa-shopping-cart"></i> Ajouter
-            </button>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-  
-  function formatPrice(price) {
-    return new Intl.NumberFormat('fr-HT').format(price);
-  }
-  
-  function showErrorMessage(message) {
-    const container = document.getElementById('products-container');
-    if (container) {
-      container.innerHTML = `
-        <div class="error-message">
-          <i class="fas fa-exclamation-triangle"></i>
-          <h3>Erreur de chargement</h3>
-          <p>${message}</p>
-          <button onclick="loadProducts()" class="btn">
-            <i class="fas fa-redo"></i> Réessayer
-          </button>
-        </div>
-      `;
+    try {
+      const response = await fetch(`${API_URL}/cart/summary`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.data.totalItems > 0) {
+          document.querySelectorAll('.cart-count').forEach(el => {
+            el.textContent = data.data.totalItems;
+            el.style.display = 'inline-block';
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error updating cart count:', error);
     }
   }
   
-  // Charger les produits au démarrage
-  document.addEventListener('DOMContentLoaded', loadProducts);
+  // Vérifier l'authentification
+  function checkAuth() {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    
+    if (token && user) {
+      // Mettre à jour la navigation
+      const authElements = document.querySelectorAll('[data-auth]');
+      authElements.forEach(el => {
+        if (el.dataset.auth === 'authenticated') {
+          el.style.display = '';
+        } else if (el.dataset.auth === 'unauthenticated') {
+          el.style.display = 'none';
+        }
+      });
+      
+      // Afficher le nom d'utilisateur
+      try {
+        const userData = JSON.parse(user);
+        const userNameElements = document.querySelectorAll('[data-user-name]');
+        userNameElements.forEach(el => {
+          el.textContent = userData.name;
+        });
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+      }
+    } else {
+      // Utilisateur non connecté
+      const authElements = document.querySelectorAll('[data-auth]');
+      authElements.forEach(el => {
+        if (el.dataset.auth === 'authenticated') {
+          el.style.display = 'none';
+        } else if (el.dataset.auth === 'unauthenticated') {
+          el.style.display = '';
+        }
+      });
+    }
+  }
+  
+  // Déconnexion
+  function logout() {
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/index.html';
+    }
+  }
+  
+  // Initialiser au chargement de la page
+  document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🔗 API URL:', API_URL);
+    
+    // Vérifier l'API
+    const apiAvailable = await checkAPI();
+    if (!apiAvailable) {
+      console.warn('⚠️ API non disponible, utilisation des données locales');
+    }
+    
+    // Vérifier l'authentification
+    checkAuth();
+    
+    // Mettre à jour le compteur du panier
+    updateCartCount();
+    
+    // Vérifier si nous sommes sur une page avec des produits
+    if (document.querySelector('.categories-grid') || document.querySelector('#productsList')) {
+      const products = await loadProducts();
+      displayProducts(products);
+    }
+  });
+  
+  // Fonction pour afficher les produits
+  function displayProducts(products) {
+    const container = document.querySelector('.categories-grid') || document.querySelector('#productsList');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    products.forEach(product => {
+      const productCard = `
+        <div class="category-card">
+          <img src="${product.images && product.images[0] ? product.images[0].url : 'https://via.placeholder.com/300x300?text=Produit'}" 
+               alt="${product.name}" 
+               class="category-img">
+          <div class="category-info">
+            <h3>${product.name}</h3>
+            <p>${product.description.substring(0, 100)}...</p>
+            <div style="margin-top: 10px;">
+              <span style="font-weight: bold; color: #e74c3c; font-size: 1.2rem;">
+                ${product.price.toLocaleString()} HTG
+              </span>
+              ${product.discount > 0 ? `
+                <span style="text-decoration: line-through; color: #777; margin-left: 10px;">
+                  ${(product.price * 100 / (100 - product.discount)).toLocaleString()} HTG
+                </span>
+                <span style="background: #e74c3c; color: white; padding: 2px 8px; border-radius: 4px; margin-left: 10px;">
+                  -${product.discount}%
+                </span>
+              ` : ''}
+            </div>
+            <button onclick="addToCart(${product.id})" class="btn" style="margin-top: 15px; width: 100%;">
+              <i class="fas fa-cart-plus"></i> Ajouter au panier
+            </button>
+            <a href="/product-detail.html?id=${product.id}" class="btn btn-outline" style="margin-top: 10px; width: 100%;">
+              <i class="fas fa-eye"></i> Voir détails
+            </a>
+          </div>
+        </div>
+      `;
+      container.innerHTML += productCard;
+    });
+  }
 </script>
 </body>
 </html>
