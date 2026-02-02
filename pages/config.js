@@ -1,33 +1,43 @@
-// config.js - À placer dans le dossier racine de Netlify
-const API_CONFIG = {
-  // ✅ CHANGEZ CETTE URL PAR VOTRE URL RENDER
-  API_URL: 'https://es-company-api.onrender.com/api',
+// Configuration de l'application
+window.APP_CONFIG = {
+  // URL de l'API - MODIFIEZ-CI pour votre URL Render
+  API_URL: 'https://votre-api.onrender.com/api',
   
-  // ✅ Config pour développement local
-  LOCAL_API: 'http://localhost:5000/api',
+  // Configuration du site
+  SITE_NAME: 'E-S COMPANY',
+  SITE_DESCRIPTION: 'Boutique de mode en ligne',
   
-  // ✅ Détecter l'environnement
-  getBaseURL: function() {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return this.LOCAL_API;
-    }
-    return this.API_URL;
-  },
+  // Contacts
+  CONTACT_EMAIL: 'info@escompany.com',
+  CONTACT_PHONE: '+509 1234 5678',
   
-  // ✅ Headers par défaut
-  getHeaders: function(token = null) {
-    const headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
-    
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    
-    return headers;
+  // Réseaux sociaux
+  SOCIAL_MEDIA: {
+    facebook: 'https://facebook.com/escompany',
+    instagram: 'https://instagram.com/escompany',
+    twitter: 'https://twitter.com/escompany'
   }
 };
 
-// Exposer au global
-window.API_CONFIG = API_CONFIG;
+// Fonctions utilitaires
+window.formatPrice = (price) => {
+  return new Intl.NumberFormat('fr-HT', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(price) + ' HTG';
+};
+
+window.getApiUrl = (endpoint) => {
+  return window.APP_CONFIG.API_URL + endpoint;
+};
+
+// Vérifier la connexion API
+window.checkApiConnection = async () => {
+  try {
+    const response = await fetch(window.getApiUrl('/health'));
+    const data = await response.json();
+    return { connected: true, data };
+  } catch (error) {
+    return { connected: false, error: error.message };
+  }
+};
