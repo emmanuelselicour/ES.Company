@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API Connection</title>
+</head>
+<body>
+    <h1>Test de connexion API</h1>
+    
+    <div id="status">Test en cours...</div>
+    
+    <button onclick="testAPI()">Tester l'API</button>
+    
+    <script>
+    const API_URL = 'https://votre-api.onrender.com/api';
+    
+    async function testAPI() {
+        const status = document.getElementById('status');
+        
+        try {
+            status.innerHTML = '🔄 Connexion à l\'API...';
+            
+            // Test 1: Health check
+            const health = await fetch(`${API_URL}/health`);
+            const healthData = await health.json();
+            
+            // Test 2: Products
+            const products = await fetch(`${API_URL}/products`);
+            const productsData = await products.json();
+            
+            status.innerHTML = `
+                ✅ API connectée avec succès!<br><br>
+                <strong>Health Check:</strong><br>
+                ${JSON.stringify(healthData, null, 2)}<br><br>
+                <strong>Produits (${productsData.data?.products?.length || 0}):</strong><br>
+                ${JSON.stringify(productsData.data?.products?.slice(0, 3), null, 2)}
+            `;
+            
+        } catch (error) {
+            status.innerHTML = `❌ Erreur: ${error.message}`;
+        }
+    }
+    
+    // Tester au chargement
+    testAPI();
+    </script>
+</body>
+</html>
