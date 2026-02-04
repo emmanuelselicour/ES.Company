@@ -373,4 +373,307 @@ class AdminProducts {
             this.addOptionValue(optionItem);
         });
         
-        // Supprimer une
+        // Supprimer une valeur
+        const deleteValueBtns = optionItem.querySelectorAll('.delete-value');
+        deleteValueBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const valueDiv = e.target.closest('.option-value');
+                if (confirm('Supprimer cette valeur ?')) {
+                    valueDiv.remove();
+                    this.generateVariants();
+                }
+            });
+        });
+        
+        // Écouter les changements dans les valeurs
+        const nameInput = optionItem.querySelector('.option-name');
+        const valueInputs = optionItem.querySelectorAll('.value-input');
+        
+        const handleChange = () => {
+            setTimeout(() => this.generateVariants(), 100);
+        };
+        
+        nameInput.addEventListener('input', handleChange);
+        valueInputs.forEach(input => {
+            input.addEventListener('input', handleChange);
+        });
+    }
+    
+    addOptionValue(optionItem) {
+        const valuesContainer = optionItem.querySelector('.option-values');
+        
+        const valueDiv = document.createElement('div');
+        valueDiv.className = 'option-value';
+        valueDiv.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px;';
+        
+        valueDiv.innerHTML = `
+            <input type="text" class="form-control value-input" placeholder="Valeur (ex: S)" style="flex: 1;">
+            <button type="button" class="btn btn-outline delete-value" style="padding: 5px 10px; font-size: 0.9rem;">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        
+        valuesContainer.appendChild(valueDiv);
+        
+        // Événement pour supprimer la valeur
+        const deleteBtn = valueDiv.querySelector('.delete-value');
+        deleteBtn.addEventListener('click', () => {
+            if (confirm('Supprimer cette valeur ?')) {
+                valueDiv.remove();
+                this.generateVariants();
+            }
+        });
+        
+        // Écouter les changements
+        const valueInput = valueDiv.querySelector('.value-input');
+        valueInput.addEventListener('input', () => {
+            setTimeout(() => this.generateVariants(), 100);
+        });
+        
+        // Générer les variantes
+        this.generateVariants();
+    }
+    
+    generateVariants() {
+        // Récupérer toutes les options et leurs valeurs
+        const optionItems = document.querySelectorAll('.option-item');
+        const options = [];
+        
+        optionItems.forEach(item => {
+            const name = item.querySelector('.option-name').value.trim();
+            const values = [];
+            
+            item.querySelectorAll('.value-input').forEach(input => {
+                const value = input.value.trim();
+                if (value) {
+                    values.push(value);
+                }
+            });
+            
+            if (name && values.length > 0) {
+                options.push({ name, values });
+            }
+        });
+        
+        this.options = options;
+        
+        // Si pas d'options, cacher la section variantes
+        if (options.length === 0) {
+            document.getElementById('variantsSection').style.display = 'none';
+            this.variants = [];
+            return;
+        }
+        
+        // Générer toutes les combinaisons possibles
+        const combinations = this.getCombinations(options);
+        
+        // Générer les variantes
+        this.variants = combinations.map(combination => {
+            const variantOptions = [];
+            let variantName = '';
+            
+            options.forEach((option, index) => {
+                const value = combination[index];
+                variantOptions.push({
+                    name: option.name,
+                    value: value
+                });
+                
+                if (variantName) variantName += ' / ';
+                variantName += value;
+            });
+            
+            return {
+                options: variantOptions,
+                sku: '',
+                price: parseFloat(document.getElementById('price').value) || 0,
+                comparePrice: parseFloat(document.getElementById('comparePrice').value) || 0,
+                quantity: 0
+            };
+        });
+        
+        // Afficher la section variantes
+        document.getElementById('variantsSection').style.display = 'block';
+        
+        // Rendre les variantes
+        this.renderVariants();
+    }
+    
+    getCombinations(options) {
+        if (options.length === 0) return [];
+        if (options.length === 1) return options[0].values.map(v => [v]);
+        
+        const [first, ...rest] = options;
+        const restCombinations = this.getCombinations(rest);
+        const combinations = [];
+        
+        first.values.forEach(value => {
+            restCombinations.forEach(restCombo => {
+                combinations.push([value, ...restCombo]);
+            });
+        });
+        
+        return combinations;
+    }
+    
+    renderVariants() {
+        const tbody = document.getElementById('variantsBody');
+        tbody.innerHTML = '';
+        
+        if (this.variants.length === 0) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td colspan="4" class="empty-state">
+                    <i class="fas fa-cubes"></i>
+                    <p>Aucune variante générée</p>
+                    <p>Ajoutez des options avec leurs valeurs pour générer des variantes</p>
+                </td>
+            `;
+            tbody.appendChild(row);
+            return;
+        }
+        
+        this.variants.forEach((variant, index) => {
+            const row = document.createElement('tr');
+            
+            const optionsText = variant.options.map(opt => `${opt.name}: ${opt.value}`).join(', ');
+            
+            row.innerHTML = `
+                <td>${optionsText}</td>
+                <td><input type="text" class="form-control variant-sku" data-index="${index}" value="${variant.sku}" placeholder="SKU" style="width: 120px;"></td>
+                <td><input type="number" class="form-control variant-price" data-index="${index}" value="${variant.price}" min="0" step="0.01" style="width: 100px;"></td>
+                <td><input type="number" class="form-control variant-quantity" data-index="${index}" value="${variant.quantity}" min="0" style="width: 100px;"></td>
+            `;
+            
+            tbody.appendChild(row);
+        });
+        
+        // Ajouter les événements pour les inputs
+        tbody.querySelectorAll('.variant-sku').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                this.variants[index].sku = e.target.value;
+            });
+        });
+        
+        tbody.querySelectorAll('.variant-price').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                this.variants[index].price = parseFloat(e.target.value) || 0;
+            });
+        });
+        
+        tbody.querySelectorAll('.variant-quantity').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                this.variants[index].quantity = parseInt(e.target.value) || 0;
+            });
+        });
+    }
+    
+    renderOptions() {
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+        
+        this.options.forEach(option => {
+            this.addOption();
+            
+            // Remplir la dernière option ajoutée
+            const optionItems = container.querySelectorAll('.option-item');
+            const lastOption = optionItems[optionItems.length - 1];
+            
+            lastOption.querySelector('.option-name').value = option.name;
+            
+            // Supprimer la valeur par défaut
+            lastOption.querySelector('.option-values').innerHTML = '';
+            
+            // Ajouter les valeurs
+            option.values.forEach(value => {
+                this.addOptionValue(lastOption);
+                const valueInputs = lastOption.querySelectorAll('.value-input');
+                valueInputs[valueInputs.length - 1].value = value;
+            });
+        });
+        
+        // Générer les variantes
+        this.generateVariants();
+    }
+    
+    async saveProduct() {
+        try {
+            // Récupérer les données du formulaire
+            const formData = {
+                name: document.getElementById('name_fr').value.trim(),
+                name_en: document.getElementById('name_en').value.trim(),
+                name_es: document.getElementById('name_es').value.trim(),
+                description: document.getElementById('description_fr').value.trim(),
+                description_en: document.getElementById('description_en').value.trim(),
+                description_es: document.getElementById('description_es').value.trim(),
+                category: document.getElementById('category').value,
+                price: parseFloat(document.getElementById('price').value),
+                comparePrice: document.getElementById('comparePrice').value ? parseFloat(document.getElementById('comparePrice').value) : undefined,
+                cost: document.getElementById('cost').value ? parseFloat(document.getElementById('cost').value) : undefined,
+                sku: document.getElementById('sku').value.trim() || undefined,
+                barcode: document.getElementById('barcode').value.trim() || undefined,
+                trackQuantity: document.getElementById('trackQuantity').checked,
+                quantity: document.getElementById('trackQuantity').checked ? parseInt(document.getElementById('quantity').value) || 0 : 0,
+                images: this.images,
+                status: document.getElementById('status').value,
+                isFeatured: document.getElementById('isFeatured').checked,
+                tags: $('#tags').val() || [],
+                options: this.options,
+                variants: this.variants
+            };
+            
+            // Validation
+            if (!formData.name || !formData.category || !formData.price) {
+                alert('Veuillez remplir tous les champs obligatoires');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+            
+            let response;
+            
+            if (this.currentProductId) {
+                // Mise à jour
+                response = await adminAuth.fetchWithAuth(`/products/${this.currentProductId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(formData)
+                });
+            } else {
+                // Création
+                response = await adminAuth.fetchWithAuth('/products', {
+                    method: 'POST',
+                    body: JSON.stringify(formData)
+                });
+            }
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert(`Produit ${this.currentProductId ? 'mis à jour' : 'créé'} avec succès !`);
+                window.location.href = 'products-list.html';
+            } else {
+                alert(data.error || 'Erreur lors de l\'enregistrement');
+            }
+            
+        } catch (error) {
+            console.error('Erreur sauvegarde produit:', error);
+            alert('Erreur lors de l\'enregistrement du produit');
+        } finally {
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Enregistrer le produit';
+            }
+        }
+    }
+}
+
+// Initialiser la gestion des produits
+document.addEventListener('DOMContentLoaded', () => {
+    window.adminProducts = new AdminProducts();
+});
