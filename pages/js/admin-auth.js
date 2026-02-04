@@ -43,7 +43,7 @@ class AdminAuth {
                 
                 const data = await response.json();
                 
-                if (!data.valid) {
+                if (!data.success) {
                     this.logout();
                 } else {
                     // Mettre à jour les infos utilisateur
@@ -76,7 +76,7 @@ class AdminAuth {
             
             const data = await response.json();
             
-            if (data.success) {
+            if (data.success && data.user.role === 'admin') {
                 this.token = data.token;
                 this.user = data.user;
                 
@@ -85,11 +85,17 @@ class AdminAuth {
                 
                 return { success: true };
             } else {
-                return { success: false, error: data.error || 'Erreur de connexion' };
+                return { 
+                    success: false, 
+                    error: data.error || 'Accès non autorisé' 
+                };
             }
         } catch (error) {
             console.error('Erreur login:', error);
-            return { success: false, error: 'Erreur de connexion au serveur' };
+            return { 
+                success: false, 
+                error: 'Erreur de connexion au serveur' 
+            };
         }
     }
     
