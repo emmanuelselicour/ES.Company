@@ -3,751 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-S COMPANY | Mode, Vêtements & Accessoires</title>
+    <title>E-S COMPANY | Vente en ligne de vêtements et accessoires</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;700&display=swap">
-    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #e74c3c;
-            --accent: #3498db;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --text: #333;
-            --text-light: #777;
-            --shadow: 0 5px 15px rgba(0,0,0,0.1);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: #f9f9f9;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        header {
-            background-color: white;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo img {
-            height: 50px;
-            width: auto;
-        }
-        
-        .logo-text {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 24px;
-            color: var(--primary);
-        }
-        
-        .logo-text span {
-            color: var(--secondary);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-        
-        nav a {
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-        }
-        
-        nav a:hover {
-            color: var(--secondary);
-        }
-        
-        nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: var(--secondary);
-            bottom: -5px;
-            left: 0;
-            transition: var(--transition);
-        }
-        
-        nav a:hover::after {
-            width: 100%;
-        }
-        
-        .nav-icons {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .nav-icons a {
-            color: var(--primary);
-            font-size: 18px;
-            transition: var(--transition);
-        }
-        
-        .nav-icons a:hover {
-            color: var(--secondary);
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--primary);
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-        }
-        
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .hero p {
-            font-size: 20px;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            opacity: 0.9;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--secondary);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            border: 2px solid var(--secondary);
-        }
-        
-        .btn:hover {
-            background-color: transparent;
-            color: var(--secondary);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid white;
-        }
-        
-        .btn-outline:hover {
-            background-color: white;
-            color: var(--primary);
-        }
-        
-        /* Categories */
-        .section-title {
-            text-align: center;
-            margin: 60px 0 40px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 36px;
-            color: var(--primary);
-        }
-        
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-        
-        .category-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            text-align: center;
-        }
-        
-        .category-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-        
-        .category-img {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .category-content {
-            padding: 20px;
-        }
-        
-        .category-title {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-        
-        /* Featured Products */
-        .featured-products {
-            margin-bottom: 60px;
-        }
-        
-        .empty-products {
-            text-align: center;
-            padding: 60px 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-        }
-        
-        .empty-products i {
-            font-size: 60px;
-            color: #ddd;
-            margin-bottom: 20px;
-        }
-        
-        .empty-products h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        /* About Section */
-        .about {
-            background-color: var(--primary);
-            color: white;
-            padding: 80px 0;
-            margin-top: 60px;
-        }
-        
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-        }
-        
-        .about-text {
-            flex: 1;
-        }
-        
-        .about-text h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .about-img {
-            flex: 1;
-            height: 300px;
-            background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            border-radius: 10px;
-        }
-        
-        /* Services */
-        .services {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-        
-        .service-card {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: var(--transition);
-        }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .service-icon {
-            font-size: 40px;
-            color: var(--secondary);
-            margin-bottom: 20px;
-        }
-        
-        .service-title {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 60px 0 20px;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        
-        .footer-logo span {
-            color: var(--secondary);
-        }
-        
-        .footer-description {
-            opacity: 0.8;
-            margin-bottom: 20px;
-        }
-        
-        .footer-title {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: white;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .footer-links a:hover {
-            color: var(--secondary);
-            padding-left: 5px;
-        }
-        
-        .contact-info {
-            list-style: none;
-        }
-        
-        .contact-info li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .contact-info i {
-            margin-right: 10px;
-            color: var(--secondary);
-        }
-        
-        .social-icons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            color: white;
-            transition: var(--transition);
-        }
-        
-        .social-icons a:hover {
-            background-color: var(--secondary);
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            opacity: 0.7;
-            font-size: 14px;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .about-content {
-                flex-direction: column;
-            }
-            
-            .about-img {
-                width: 100%;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            nav {
-                position: fixed;
-                top: 80px;
-                left: -100%;
-                width: 100%;
-                background-color: white;
-                padding: 20px;
-                box-shadow: var(--shadow);
-                transition: var(--transition);
-                z-index: 999;
-            }
-            
-            nav.active {
-                left: 0;
-            }
-            
-            nav ul {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .hero p {
-                font-size: 18px;
-            }
-            
-            .section-title {
-                font-size: 30px;
-            }
-        }
-        
-        /* Admin Panel Link */
-        .admin-link {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--secondary);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            z-index: 100;
-            transition: var(--transition);
-        }
-        
-        .admin-link:hover {
-            background-color: var(--primary);
-            transform: scale(1.1);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
     <header>
-        <div class="container header-container">
+        <div class="container">
             <div class="logo">
                 <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
-                <div class="logo-text">E-S <span>COMPANY</span></div>
+                <h1>E-S COMPANY</h1>
             </div>
             
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <nav id="mainNav">
-                <ul>
-                    <li><a href="#home">Accueil</a></li>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#" class="active">Accueil</a></li>
+                    <li><a href="#produits">Produits</a></li>
                     <li><a href="#categories">Catégories</a></li>
-                    <li><a href="#products">Produits</a></li>
-                    <li><a href="#about">À Propos</a></li>
-                    <li><a href="#services">Services</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
             
-            <div class="nav-icons">
-                <a href="#"><i class="fas fa-search"></i></a>
-                <a href="#"><i class="fas fa-user"></i></a>
-                <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="Rechercher un produit...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </div>
+                <a href="admin-panel.html" class="admin-btn">
+                    <i class="fas fa-cog"></i>
+                </a>
             </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" id="home">
+    <section class="hero">
         <div class="container">
-            <h1>Mode & Élégance à Portée de Main</h1>
-            <p>Découvrez notre collection exclusive de vêtements, chaussures et bijoux pour toutes vos occasions. Qualité, style et confort réunis.</p>
-            <a href="#categories" class="btn">Explorer la Collection</a>
-            <a href="#about" class="btn btn-outline">À Propos de Nous</a>
+            <div class="hero-content">
+                <h2>Mode & Élégance pour tous</h2>
+                <p>Découvrez notre collection exclusive de vêtements, chaussures et bijoux à des prix imbattables</p>
+                <a href="#produits" class="btn">Voir la collection</a>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mode et élégance">
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="produits" class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nos Produits</h2>
+                <p>Une sélection aléatoire de nos meilleurs produits - Rafraîchissez la page pour découvrir de nouveaux articles!</p>
+                <button id="refresh-products" class="btn-secondary">
+                    <i class="fas fa-random"></i> Mélanger les produits
+                </button>
+            </div>
+            
+            <div class="products-grid" id="products-container">
+                <!-- Les produits seront chargés dynamiquement ici -->
+                <div class="loading">Chargement des produits...</div>
+            </div>
         </div>
     </section>
 
     <!-- Categories Section -->
-    <section class="container" id="categories">
-        <h2 class="section-title">Nos Catégories</h2>
-        <div class="categories">
-            <div class="category-card">
-                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
-                <div class="category-content">
-                    <h3 class="category-title">Robes</h3>
-                    <p>Collection de robes pour toutes les occasions, du casual à l'élégant.</p>
-                </div>
+    <section id="categories" class="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2>Catégories</h2>
+                <p>Parcourez nos différentes catégories de produits</p>
             </div>
             
-            <div class="category-card">
-                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
-                <div class="category-content">
-                    <h3 class="category-title">Pantalons</h3>
-                    <p>Pantalons tendance pour hommes et femmes, confort et style garantis.</p>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <h3>Vêtements</h3>
+                    <p>Robes, pantalons, jupes, hauts et plus</p>
                 </div>
-            </div>
-            
-            <div class="category-card">
-                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
-                <div class="category-content">
-                    <h3 class="category-title">Jupes</h3>
-                    <p>Jupes modernes et élégantes pour compléter votre garde-robe.</p>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-shoe-prints"></i>
+                    </div>
+                    <h3>Chaussures</h3>
+                    <p>Baskets, talons, sandales et bottes</p>
                 </div>
-            </div>
-            
-            <div class="category-card">
-                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
-                <div class="category-content">
-                    <h3 class="category-title">Chaussures</h3>
-                    <p>Large sélection de chaussures pour tous les goûts et toutes les saisons.</p>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3>Bijoux</h3>
+                    <p>Colliers, bracelets, boucles d'oreilles</p>
                 </div>
-            </div>
-            
-            <div class="category-card">
-                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
-                <div class="category-content">
-                    <h3 class="category-title">Bijoux</h3>
-                    <p>Bijoux élégants et raffinés pour mettre en valeur votre style.</p>
-                </div>
-            </div>
-            
-            <div class="category-card">
-                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
-                <div class="category-content">
-                    <h3 class="category-title">Accessoires</h3>
-                    <p>Complétez votre look avec nos accessoires mode soigneusement sélectionnés.</p>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <h3>Accessoires</h3>
+                    <p>Sacs, ceintures, montres et plus</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured Products -->
-    <section class="container featured-products" id="products">
-        <h2 class="section-title">Produits en Vedette</h2>
-        <div class="empty-products">
-            <i class="fas fa-box-open"></i>
-            <h3>Aucun produit pour le moment</h3>
-            <p>Notre catalogue de produits est actuellement en préparation. Bientôt disponible avec une large sélection de vêtements, chaussures et bijoux.</p>
-            <p>Les produits seront ajoutés via le panel d'administration.</p>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container about-content">
-            <div class="about-text">
-                <h2>À Propos de E-S COMPANY</h2>
-                <p>Fondée avec une passion pour la mode et l'élégance, E-S COMPANY s'est rapidement imposée comme une référence dans la vente de vêtements, chaussures et bijoux en Haïti.</p>
-                <p>Notre mission est de proposer des articles de qualité à des prix accessibles, tout en offrant un service client exceptionnel. Nous sélectionnons soigneusement chaque produit pour assurer satisfaction et style à nos clients.</p>
-                <p>Avec notre site e-commerce, nous rendons la mode accessible à tous, partout dans le pays. Bientôt, vous pourrez parcourir et acheter nos produits directement depuis notre plateforme.</p>
-                <a href="#contact" class="btn">Nous Contacter</a>
-            </div>
-            <div class="about-img"></div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="container" id="services">
-        <h2 class="section-title">Nos Services</h2>
-        <div class="services">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-shipping-fast"></i>
-                </div>
-                <h3 class="service-title">Livraison Rapide</h3>
-                <p>Service de livraison efficace dans tout le pays. Recevez vos commandes rapidement et en toute sécurité.</p>
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contactez-nous</h2>
+                <p>Nous sommes à votre disposition pour toute question</p>
             </div>
             
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-exchange-alt"></i>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Adresse</h4>
+                            <p>Port-au-Prince, Haïti</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>contact@escompany.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Téléphone</h4>
+                            <p>+509 48 00 0000</p>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="service-title">Retours Faciles</h3>
-                <p>Vous n'êtes pas satisfait? Notre politique de retour simple et transparente vous protège.</p>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-headset"></i>
+                
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <input type="text" placeholder="Votre nom" required>
+                        <input type="email" placeholder="Votre email" required>
+                        <textarea placeholder="Votre message" rows="5" required></textarea>
+                        <button type="submit" class="btn">Envoyer le message</button>
+                    </form>
                 </div>
-                <h3 class="service-title">Support Client</h3>
-                <p>Notre équipe est disponible pour répondre à vos questions et vous aider dans vos achats.</p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
+    <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">E-S <span>COMPANY</span></div>
-                    <p class="footer-description">Votre destination mode pour des vêtements, chaussures et bijoux de qualité. Élégance, style et confort réunis.</p>
+                <div class="footer-logo">
+                    <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                    <h3>E-S COMPANY</h3>
+                    <p>Votre boutique en ligne de mode et d'élégance</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Liens rapides</h4>
+                    <ul>
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#produits">Produits</a></li>
+                        <li><a href="#categories">Catégories</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="admin-panel.html">Panel Admin</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h4>Suivez-nous</h4>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
-                
-                <div class="footer-links-container">
-                    <h3 class="footer-title">Liens Rapides</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Accueil</a></li>
-                        <li><a href="#categories">Catégories</a></li>
-                        <li><a href="#products">Produits</a></li>
-                        <li><a href="#about">À Propos</a></li>
-                        <li><a href="#services">Services</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-contact">
-                    <h3 class="footer-title">Contactez-Nous</h3>
-                    <ul class="contact-info">
-                        <li><i class="fas fa-map-marker-alt"></i> Port-au-Prince, Haïti</li>
-                        <li><i class="fas fa-phone"></i> +509 36 00 0000</li>
-                        <li><i class="fas fa-envelope"></i> info@escompany.ht</li>
-                        <li><i class="fas fa-clock"></i> Lundi - Samedi: 9h00 - 18h00</li>
-                    </ul>
-                </div>
             </div>
             
-            <div class="copyright">
+            <div class="footer-bottom">
                 <p>&copy; 2023 E-S COMPANY. Tous droits réservés.</p>
-                <p>Site développé pour l'entreprise E-S COMPANY - Mode & Accessoires</p>
-                <p>Frontend hébergé sur Netlify | API backend sur Render</p>
+                <p>Site hébergé sur <a href="https://es-company-ht.netlify.app/" target="_blank">Netlify</a> | API sur <a href="https://es-company-api.onrender.com" target="_blank">Render</a></p>
             </div>
         </div>
     </footer>
 
-    <!-- Admin Panel Link -->
-    <a href="https://es-company-ht.netlify.app/admin-panel/dashboard" class="admin-link" target="_blank" title="Panel d'Administration">
-        <i class="fas fa-cog"></i>
-    </a>
+    <!-- Shopping Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal-content">
+            <div class="cart-modal-header">
+                <h3>Votre Panier</h3>
+                <button class="close-cart">&times;</button>
+            </div>
+            <div class="cart-modal-body">
+                <p class="empty-cart-msg">Votre panier est vide</p>
+                <div class="cart-items" id="cartItems">
+                    <!-- Items du panier ajoutés dynamiquement -->
+                </div>
+            </div>
+            <div class="cart-modal-footer">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cartTotal">0 HTG</span>
+                </div>
+                <button class="btn checkout-btn">Passer à la caisse</button>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mainNav = document.getElementById('mainNav');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            mainNav.classList.toggle('active');
-            mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-        
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                mainNav.classList.remove('active');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // API Integration placeholder
-        console.log('E-S COMPANY Frontend chargé');
-        console.log('API Backend: https://es-company-api.onrender.com');
-        console.log('Panel Admin: https://es-company-ht.netlify.app/admin-panel/dashboard');
-        
-        // Display current year in footer
-        document.addEventListener('DOMContentLoaded', function() {
-            const yearElement = document.querySelector('.copyright p');
-            if(yearElement) {
-                yearElement.innerHTML = yearElement.innerHTML.replace('2023', new Date().getFullYear());
-            }
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
