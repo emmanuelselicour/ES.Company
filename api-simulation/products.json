@@ -86,4 +86,57 @@
   {
     "id": 7,
     "name": "Sac à Main Cuir",
-    "name_en": "Leather
+    "name_en": "Leather Handbag",
+    "name_es": "Bolso de Mano de Cuero",
+    "category": "Accessoires",
+    "category_en": "Accessories",
+    "category_es": "Accesorios",
+    "price": 89.99,
+    "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Sac à main en cuir véritable",
+    "description_en": "Genuine leather handbag",
+    "description_es": "Bolso de mano de cuero genuino"
+  },
+  {
+    "id": 8,
+    "name": "Boucles d'Oreilles",
+    "name_en": "Earrings",
+    "name_es": "Pendientes",
+    "category": "Bijoux",
+    "category_en": "Jewelry",
+    "category_es": "Joyas",
+    "price": 24.99,
+    "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Boucles d'oreilles dorées",
+    "description_en": "Golden earrings",
+    "description_es": "Pendientes dorados"
+  },
+  {
+    "id": 9,
+    "name": "Veste en Jean",
+    "name_en": "Denim Jacket",
+    "name_es": "Chaqueta de Mezclilla",
+    "category": "Vestes",
+    "category_en": "Jackets",
+    "category_es": "Chaquetas",
+    "price": 65.99,
+    "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Veste en jean décontractée",
+    "description_en": "Casual denim jacket",
+    "description_es": "Chaqueta de mezclilla casual"
+  },
+  {
+    "id": 10,
+    "name": "Baskets Sport",
+    "name_en": "Sport Sneakers",
+    "name_es": "Zapatillas Deportivas",
+    "category": "Chaussures",
+    "category_en": "Shoes",
+    "category_es": "Zapatos",
+    "price": 74.99,
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Baskets confortables pour le sport",
+    "description_en": "Comfortable sneakers for sports",
+    "description_es": "Zapatillas cómodas para deportes"
+  }
+]
