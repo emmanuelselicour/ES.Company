@@ -1,133 +1,248 @@
 <!DOCTYPE html>
-<html lang="ht">
+<html lang="fr" class="lang-fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-S COMPANY | Boutik Enli</title>
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
-    <link rel="stylesheet" href="styles.css">
+    <title>E-S COMPANY | Mode et Accessoires</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo">
-                <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
-                <span>E-S COMPANY</span>
-            </a>
-            
-            <div class="nav-menu">
-                <a href="/" class="nav-link active"><i class="fas fa-home"></i> Akèy</a>
-                <a href="#products" class="nav-link"><i class="fas fa-tshirt"></i> Rad</a>
-                <a href="#shoes" class="nav-link"><i class="fas fa-shoe-prints"></i> Soulye</a>
-                <a href="#jewelry" class="nav-link"><i class="fas fa-gem"></i> Bijou</a>
-                <a href="#contact" class="nav-link"><i class="fas fa-phone"></i> Kontak</a>
-            </div>
-            
-            <div class="nav-actions">
-                <a href="#" class="cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </a>
-                <a href="/admin-panel/dashboard" class="admin-btn" title="Admin Panel">
-                    <i class="fas fa-user-cog"></i>
-                </a>
+    <!-- Header avec navigation -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                        <span>E-S COMPANY</span>
+                    </a>
+                </div>
+                
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html" class="active"><i class="fas fa-home"></i> <span data-lang="fr">Accueil</span><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a></li>
+                        <li><a href="products.html"><i class="fas fa-store"></i> <span data-lang="fr">Produits</span><span data-lang="en">Products</span><span data-lang="es">Productos</span></a></li>
+                        <li><a href="about.html"><i class="fas fa-info-circle"></i> <span data-lang="fr">À propos</span><span data-lang="en">About</span><span data-lang="es">Nosotros</span></a></li>
+                        <li><a href="contact.html"><i class="fas fa-envelope"></i> <span data-lang="fr">Contact</span><span data-lang="en">Contact</span><span data-lang="es">Contacto</span></a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="language-selector">
+                        <button class="lang-btn" data-lang="fr">FR</button>
+                        <button class="lang-btn" data-lang="en">EN</button>
+                        <button class="lang-btn" data-lang="es">ES</button>
+                    </div>
+                    <div class="cart-icon">
+                        <a href="#"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a>
+                    </div>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
+    <!-- Section Hero -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>E-S COMPANY</h1>
-            <p class="tagline">Style ak Eligan pou chak moman</p>
-            <p class="description">Dekouvri koleksyon esklizif nou an nan rad, soulye, ak bijou ki pral mete an valè style ou.</p>
-            <a href="#products" class="cta-btn">Shop Kounye a <i class="fas fa-arrow-right"></i></a>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="products-section">
-        <div class="section-header">
-            <h2>Produk Nou Yo</h2>
-            <p>Dekouvri tout bagay ou bezwen pou style parfe ou</p>
-            <button id="refresh-products" class="refresh-btn">
-                <i class="fas fa-random"></i> Chanje Pwodiksyon
-            </button>
-        </div>
-        
-        <div class="products-grid" id="products-grid">
-            <!-- Produksyon yo pral parèt isit la -->
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Ap chaje pwodiksyon...</p>
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-lang="fr">Mode Élégante & Accessoires Tendances</h1>
+                <h1 data-lang="en">Elegant Fashion & Trendy Accessories</h1>
+                <h1 data-lang="es">Moda Elegante & Accesorios de Tendencia</h1>
+                <p data-lang="fr">Découvrez notre collection exclusive de robes, pantalons, jupes, chaussures et bijoux</p>
+                <p data-lang="en">Discover our exclusive collection of dresses, pants, skirts, shoes and jewelry</p>
+                <p data-lang="es">Descubra nuestra exclusiva colección de vestidos, pantalones, faldas, zapatos y joyas</p>
+                <a href="products.html" class="btn btn-primary">
+                    <span data-lang="fr">Voir la Collection</span>
+                    <span data-lang="en">View Collection</span>
+                    <span data-lang="es">Ver Colección</span>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Categories -->
+    <!-- Section Produits en Vedette (produits aléatoires) -->
+    <section class="featured-products">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-lang="fr">Produits en Vedette</h2>
+                <h2 data-lang="en">Featured Products</h2>
+                <h2 data-lang="es">Productos Destacados</h2>
+                <p data-lang="fr">Notre sélection aléatoire du moment - Redécouvrez nos produits à chaque visite</p>
+                <p data-lang="en">Our random selection of the moment - Rediscover our products with each visit</p>
+                <p data-lang="es">Nuestra selección aleatoria del momento - Redescubra nuestros productos en cada visita</p>
+            </div>
+            
+            <div class="products-grid" id="featuredProducts">
+                <!-- Les produits seront chargés dynamiquement via JS -->
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p data-lang="fr">Chargement des produits...</p>
+                    <p data-lang="en">Loading products...</p>
+                    <p data-lang="es">Cargando productos...</p>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="products.html" class="btn btn-secondary">
+                    <span data-lang="fr">Voir Tous les Produits</span>
+                    <span data-lang="en">View All Products</span>
+                    <span data-lang="es">Ver Todos los Productos</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Catégories -->
     <section class="categories">
-        <div class="category-card" id="clothing">
-            <div class="category-icon">
-                <i class="fas fa-tshirt"></i>
+        <div class="container">
+            <div class="section-header">
+                <h2 data-lang="fr">Catégories Populaires</h2>
+                <h2 data-lang="en">Popular Categories</h2>
+                <h2 data-lang="es">Categorías Populares</h2>
             </div>
-            <h3>Rad</h3>
-            <p>Ròb, pantalon, jip, ak plis ankò</p>
-        </div>
-        
-        <div class="category-card" id="shoes">
-            <div class="category-icon">
-                <i class="fas fa-shoe-prints"></i>
+            
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <h3 data-lang="fr">Robes</h3>
+                    <h3 data-lang="en">Dresses</h3>
+                    <h3 data-lang="es">Vestidos</h3>
+                    <p data-lang="fr">Collection printemps-été 2024</p>
+                    <p data-lang="en">Spring-summer 2024 collection</p>
+                    <p data-lang="es">Colección primavera-verano 2024</p>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <h3 data-lang="fr">Pantalons</h3>
+                    <h3 data-lang="en">Pants</h3>
+                    <h3 data-lang="es">Pantalones</h3>
+                    <p data-lang="fr">Élégants et confortables</p>
+                    <p data-lang="en">Elegant and comfortable</p>
+                    <p data-lang="es">Elegantes y cómodos</p>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 data-lang="fr">Bijoux</h3>
+                    <h3 data-lang="en">Jewelry</h3>
+                    <h3 data-lang="es">Joyas</h3>
+                    <p data-lang="fr">Pièces uniques et tendances</p>
+                    <p data-lang="en">Unique and trendy pieces</p>
+                    <p data-lang="es">Piezas únicas y de tendencia</p>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-shoe-prints"></i>
+                    </div>
+                    <h3 data-lang="fr">Chaussures</h3>
+                    <h3 data-lang="en">Shoes</h3>
+                    <h3 data-lang="es">Zapatos</h3>
+                    <p data-lang="fr">Confort et style assurés</p>
+                    <p data-lang="en">Comfort and style guaranteed</p>
+                    <p data-lang="es">Confort y estilo garantizados</p>
+                </div>
             </div>
-            <h3>Soulye</h3>
-            <p>Pou chak okazyon ak style</p>
-        </div>
-        
-        <div class="category-card" id="jewelry">
-            <div class="category-icon">
-                <i class="fas fa-gem"></i>
-            </div>
-            <h3>Bijou</h3>
-            <p>Akseswa ki konplete aparans ou</p>
         </div>
     </section>
 
-    <!-- Contact -->
-    <section id="contact" class="contact">
-        <h2>Kontakte Nou</h2>
-        <div class="contact-info">
-            <p><i class="fas fa-envelope"></i> info@escompany.ht</p>
-            <p><i class="fas fa-phone"></i> +509 48 00 0000</p>
-            <p><i class="fas fa-map-marker-alt"></i> Pòtoprens, Ayiti</p>
+    <!-- Section À propos -->
+    <section class="about-preview">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 data-lang="fr">À propos de E-S COMPANY</h2>
+                    <h2 data-lang="en">About E-S COMPANY</h2>
+                    <h2 data-lang="es">Acerca de E-S COMPANY</h2>
+                    <p data-lang="fr">Nous sommes une entreprise de mode en ligne dédiée à fournir les dernières tendances en matière de vêtements, chaussures et accessoires. Notre mission est de rendre la mode accessible à tous avec des produits de qualité à des prix compétitifs.</p>
+                    <p data-lang="en">We are an online fashion company dedicated to providing the latest trends in clothing, shoes and accessories. Our mission is to make fashion accessible to everyone with quality products at competitive prices.</p>
+                    <p data-lang="es">Somos una empresa de moda en línea dedicada a proporcionar las últimas tendencias en ropa, zapatos y accesorios. Nuestra misión es hacer que la moda sea accesible para todos con productos de calidad a precios competitivos.</p>
+                    <a href="about.html" class="btn btn-outline">
+                        <span data-lang="fr">En savoir plus</span>
+                        <span data-lang="en">Learn more</span>
+                        <span data-lang="es">Saber más</span>
+                    </a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="E-S COMPANY Boutique">
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY">
-                <h3>E-S COMPANY</h3>
-                <p>Boutik Enliy #1 nan Ayiti</p>
-            </div>
-            
-            <div class="footer-links">
-                <h4>Konekte avèk nou</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                        <span>E-S COMPANY</span>
+                    </div>
+                    <p data-lang="fr">Votre destination en ligne pour la mode et les accessoires tendances.</p>
+                    <p data-lang="en">Your online destination for fashion and trendy accessories.</p>
+                    <p data-lang="es">Su destino en línea para moda y accesorios de tendencia.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-lang="fr">Liens Rapides</h3>
+                    <h3 data-lang="en">Quick Links</h3>
+                    <h3 data-lang="es">Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html" data-lang="fr">Accueil</a><a href="index.html" data-lang="en">Home</a><a href="index.html" data-lang="es">Inicio</a></li>
+                        <li><a href="products.html" data-lang="fr">Produits</a><a href="products.html" data-lang="en">Products</a><a href="products.html" data-lang="es">Productos</a></li>
+                        <li><a href="about.html" data-lang="fr">À propos</a><a href="about.html" data-lang="en">About</a><a href="about.html" data-lang="es">Nosotros</a></li>
+                        <li><a href="contact.html" data-lang="fr">Contact</a><a href="contact.html" data-lang="en">Contact</a><a href="contact.html" data-lang="es">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-lang="fr">Contactez-nous</h3>
+                    <h3 data-lang="en">Contact Us</h3>
+                    <h3 data-lang="es">Contáctenos</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> contact@es-company.com</li>
+                        <li><i class="fas fa-phone"></i> +509 48 00 0000</li>
+                        <li><i class="fas fa-map-marker-alt"></i> <span data-lang="fr">Port-au-Prince, Haïti</span><span data-lang="en">Port-au-Prince, Haiti</span><span data-lang="es">Puerto Príncipe, Haití</span></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-lang="fr">Suivez-nous</h3>
+                    <h3 data-lang="en">Follow Us</h3>
+                    <h3 data-lang="es">Síganos</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2024 E-S COMPANY. Tout dwa rezève.</p>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-S COMPANY. <span data-lang="fr">Tous droits réservés.</span><span data-lang="en">All rights reserved.</span><span data-lang="es">Todos los derechos reservados.</span></p>
+                <p><a href="admin-panel/dashboard.html" class="admin-link"><i class="fas fa-lock"></i> <span data-lang="fr">Admin</span><span data-lang="en">Admin</span><span data-lang="es">Admin</span></a></p>
+            </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Scripts -->
+    <script src="js/language-switcher.js"></script>
+    <script src="js/product-shuffler.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
