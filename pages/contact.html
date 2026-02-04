@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr" class="lang-fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | E-S COMPANY | Mode et Accessoires</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .contact-page {
+            padding: 80px 0;
+        }
+        
+        .contact-hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .contact-hero h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .contact-hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+        
+        .contact-info h2 {
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .contact-info h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+        
+        .contact-details {
+            margin-bottom: 40px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+        
+        .contact-text h4 {
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .contact-text p {
+            color: var(--gray-color);
+            margin-bottom: 0;
+        }
+        
+        .contact-text a {
+            color: var(--primary-color);
+        }
+        
+        .contact-text a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .business-hours {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 40px;
+        }
+        
+        .business-hours h3 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .hours-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .day {
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .time {
+            color: var(--gray-color);
+        }
+        
+        /* Formulaire de contact */
+        .contact-form-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .contact-form h2 {
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .contact-form h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 14px 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .submit-btn:disabled {
+            background-color: var(--gray-color);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .alert {
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Carte */
+        .map-section {
+            margin-bottom: 80px;
+        }
+        
+        .map-container {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            height: 400px;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            background-color: var(--light-color);
+            padding: 80px 0;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background-color: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: var(--dark-color);
+            transition: var(--transition);
+        }
+        
+        .faq-question:hover {
+            background-color: rgba(44, 62, 80, 0.02);
+        }
+        
+        .faq-question.active {
+            background-color: rgba(44, 62, 80, 0.05);
+        }
+        
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-question.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .faq-answer.active {
+            padding: 0 25px 25px;
+            max-height: 500px;
+        }
+        
+        .faq-answer p {
+            color: var(--gray-color);
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 992px) {
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .contact-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .contact-hero {
+                padding: 80px 0;
+            }
+            
+            .contact-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .contact-form-container {
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .contact-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .contact-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header avec navigation -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                        <span>E-S COMPANY</span>
+                    </a>
+                </div>
+                
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-home"></i> <span data-lang="fr">Accueil</span><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a></li>
+                        <li><a href="products.html"><i class="fas fa-store"></i> <span data-lang="fr">Produits</span><span data-lang="en">Products</span><span data-lang="es">Productos</span></a></li>
+                        <li><a href="about.html"><i class="fas fa-info-circle"></i> <span data-lang="fr">À propos</span><span data-lang="en">About</span><span data-lang="es">Nosotros</span></a></li>
+                        <li><a href="contact.html" class="active"><i class="fas fa-envelope"></i> <span data-lang="fr">Contact</span><span data-lang="en">Contact</span><span data-lang="es">Contacto</span></a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="language-selector">
+                        <button class="lang-btn" data-lang="fr">FR</button>
+                        <button class="lang-btn" data-lang="en">EN</button>
+                        <button class="lang-btn" data-lang="es">ES</button>
+                    </div>
+                    <div class="cart-icon">
+                        <a href="#"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a>
+                    </div>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Contact -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1 data-lang="fr">Contactez-nous</h1>
+            <h1 data-lang="en">Contact Us</h1>
+            <h1 data-lang="es">Contáctenos</h1>
+            <p data-lang="fr">Nous sommes là pour répondre à toutes vos questions et préoccupations</p>
+            <p data-lang="en">We are here to answer all your questions and concerns</p>
+            <p data-lang="es">Estamos aquí para responder a todas sus preguntas e inquietudes</p>
+        </div>
+    </section>
+
+    <!-- Contenu Contact -->
+    <section class="contact-page">
+        <div class="container">
+            <div class="contact-content">
+                <!-- Informations de contact -->
+                <div class="contact-info">
+                    <h2 data-lang="fr">Informations de contact</h2>
+                    <h2 data-lang="en">Contact Information</h2>
+                    <h2 data-lang="es">Información de Contacto</h2>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4 data-lang="fr">Adresse</h4>
+                                <h4 data-lang="en">Address</h4>
+                                <h4 data-lang="es">Dirección</h4>
+                                <p>123 Avenue de la Mode<br>Port-au-Prince, Haïti</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4 data-lang="fr">Téléphone</h4>
+                                <h4 data-lang="en">Phone</h4>
+                                <h4 data-lang="es">Teléfono</h4>
+                                <p><a href="tel:+50948000000">+509 48 00 0000</a></p>
+                                <p data-lang="fr">Lun-Ven: 9h-18h</p>
+                                <p data-lang="en">Mon-Fri: 9am-6pm</p>
+                                <p data-lang="es">Lun-Vie: 9am-6pm</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4 data-lang="fr">Email</h4>
+                                <h4 data-lang="en">Email</h4>
+                                <h4 data-lang="es">Correo</h4>
+                                <p><a href="mailto:contact@es-company.com">contact@es-company.com</a></p>
+                                <p data-lang="fr">Réponse sous 24h</p>
+                                <p data-lang="en">Response within 24h</p>
+                                <p data-lang="es">Respuesta en 24h</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Horaires d'ouverture -->
+                    <div class="business-hours">
+                        <h3 data-lang="fr">Horaires d'ouverture</h3>
+                        <h3 data-lang="en">Business Hours</h3>
+                        <h3 data-lang="es">Horario Comercial</h3>
+                        
+                        <ul class="hours-list">
+                            <li>
+                                <span class="day" data-lang="fr">Lundi - Vendredi</span>
+                                <span class="day" data-lang="en">Monday - Friday</span>
+                                <span class="day" data-lang="es">Lunes - Viernes</span>
+                                <span class="time">9:00 - 18:00</span>
+                            </li>
+                            <li>
+                                <span class="day" data-lang="fr">Samedi</span>
+                                <span class="day" data-lang="en">Saturday</span>
+                                <span class="day" data-lang="es">Sábado</span>
+                                <span class="time">10:00 - 16:00</span>
+                            </li>
+                            <li>
+                                <span class="day" data-lang="fr">Dimanche</span>
+                                <span class="day" data-lang="en">Sunday</span>
+                                <span class="day" data-lang="es">Domingo</span>
+                                <span class="time" data-lang="fr">Fermé</span>
+                                <span class="time" data-lang="en">Closed</span>
+                                <span class="time" data-lang="es">Cerrado</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Formulaire de contact -->
+                <div class="contact-form-container">
+                    <div class="contact-form">
+                        <h2 data-lang="fr">Envoyez-nous un message</h2>
+                        <h2 data-lang="en">Send us a message</h2>
+                        <h2 data-lang="es">Envíenos un mensaje</h2>
+                        
+                        <div id="formAlert"></div>
+                        
+                        <form id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName" data-lang="fr">Prénom *</label>
+                                    <label for="firstName" data-lang="en">First Name *</label>
+                                    <label for="firstName" data-lang="es">Nombre *</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-control" required>
+                                </div>
+                                
+                                <div class="form
