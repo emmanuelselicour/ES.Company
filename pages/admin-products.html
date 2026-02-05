@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Produits | Admin E-S COMPANY</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body class="admin-body">
+    <!-- Admin Sidebar -->
+    <div class="admin-sidebar">
+        <div class="admin-logo">
+            <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+            <h2>E-S COMPANY <span>Admin</span></h2>
+        </div>
+        
+        <nav class="admin-nav">
+            <ul>
+                <li>
+                    <a href="admin.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Tableau de bord</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-products.html" class="active">
+                        <i class="fas fa-tshirt"></i>
+                        <span>Produits</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-orders.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Commandes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-customers.html">
+                        <i class="fas fa-users"></i>
+                        <span>Clients</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-categories.html">
+                        <i class="fas fa-tags"></i>
+                        <span>Catégories</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Paramètres</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-analytics.html">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytiques</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="admin-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">Admin</span>
+                    <span class="user-role">Administrateur</span>
+                </div>
+                <a href="index.html" class="logout-btn" title="Retour au site">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- Admin Content -->
+    <div class="admin-content">
+        <!-- Admin Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Gestion des Produits</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="notifications">
+                    <button class="icon-btn" id="notifications-btn">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                </div>
+                
+                <div class="admin-search">
+                    <input type="text" id="admin-product-search" placeholder="Rechercher un produit...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                
+                <button class="btn btn-primary" id="add-product-btn">
+                    <i class="fas fa-plus"></i> Ajouter un produit
+                </button>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Products Management -->
+            <div class="products-management">
+                <div class="management-header">
+                    <div class="stats-summary">
+                        <div class="stat-item">
+                            <span class="stat-label">Total produits</span>
+                            <span class="stat-value" id="total-products">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">En stock</span>
+                            <span class="stat-value" id="in-stock">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Faible stock</span>
+                            <span class="stat-value" id="low-stock">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Hors stock</span>
+                            <span class="stat-value" id="out-of-stock">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="management-actions">
+                        <button class="btn btn-secondary" id="export-products">
+                            <i class="fas fa-download"></i> Exporter
+                        </button>
+                        <button class="btn btn-secondary" id="import-products">
+                            <i class="fas fa-upload"></i> Importer
+                        </button>
+                        <div class="bulk-actions">
+                            <select id="bulk-action">
+                                <option value="">Actions groupées</option>
+                                <option value="activate">Activer</option>
+                                <option value="deactivate">Désactiver</option>
+                                <option value="delete">Supprimer</option>
+                                <option value="update_stock">Mettre à jour le stock</option>
+                            </select>
+                            <button class="btn btn-secondary" id="apply-bulk-action">Appliquer</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filters -->
+                <div class="products-filters">
+                    <div class="filter-group">
+                        <div class="filter-item">
+                            <label for="filter-category">Catégorie:</label>
+                            <select id="filter-category">
+                                <option value="">Toutes catégories</option>
+                                <option value="clothing">Vêtements</option>
+                                <option value="shoes">Chaussures</option>
+                                <option value="jewelry">Bijoux</option>
+                                <option value="accessories">Accessoires</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-item">
+                            <label for="filter-status">Statut:</label>
+                            <select id="filter-status">
+                                <option value="">Tous les statuts</option>
+                                <option value="active">Actif</option>
+                                <option value="inactive">Inactif</option>
+                                <option value="low_stock">Faible stock</option>
+                                <option value="out_of_stock">Hors stock</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-item">
+                            <label for="filter-price">Prix:</label>
+                            <select id="filter-price">
+                                <option value="">Tous les prix</option>
+                                <option value="0-50">0 - 50 €</option>
+                                <option value="50-100">50 - 100 €</option>
+                                <option value="100-200">100 - 200 €</option>
+                                <option value="200+">200+ €</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-secondary" id="clear-filters">
+                            <i class="fas fa-times"></i> Effacer
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Products Table -->
+                <div class="table-card">
+                    <div class="table-responsive">
+                        <table id="products-table" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th width="30">
+                                        <input type="checkbox" id="select-all">
+                                    </th>
+                                    <th width="60">Image</th>
+                                    <th>Nom</th>
+                                    <th>Catégorie</th>
+                                    <th>Prix</th>
+                                    <th>Stock</th>
+                                    <th>Statut</th>
+                                    <th>Créé le</th>
+                                    <th width="120">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <!-- Products will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-footer">
+                        <div class="pagination-info" id="pagination-info">
+                            Affichage de 0 à 0 sur 0 produits
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="btn btn-secondary" id="prev-page" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <span id="current-page">1</span>
+                            <button class="btn btn-secondary" id="next-page" disabled>
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Admin Footer -->
+        <footer class="admin-footer">
+            <p>&copy; 2023 E-S COMPANY Admin Panel. Tous droits réservés.</p>
+            <p>Version 1.0.0</p>
+        </footer>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Ajouter un nouveau produit</h2>
+            
+            <form id="product-form" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-name">Nom du produit *</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-sku">SKU</label>
+                        <input type="text" id="product-sku" placeholder="Généré automatiquement">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-category">Catégorie *</label>
+                        <select id="product-category" required>
+                            <option value="">Sélectionner une catégorie</option>
+                            <option value="clothing">Vêtements</option>
+                            <option value="shoes">Chaussures</option>
+                            <option value="jewelry">Bijoux</option>
+                            <option value="accessories">Accessoires</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-subcategory">Sous-catégorie</label>
+                        <input type="text" id="product-subcategory">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-price">Prix (€) *</label>
+                        <input type="number" id="product-price" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-compare-price">Prix comparé (€)</label>
+                        <input type="number" id="product-compare-price" step="0.01" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-cost">Coût (€)</label>
+                        <input type="number" id="product-cost" step="0.01" min="0">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-stock">Quantité en stock *</label>
+                        <input type="number" id="product-stock" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-low-stock">Seuil d'alerte stock</label>
+                        <input type="number" id="product-low-stock" min="1" value="5">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-description">Description *</label>
+                    <textarea id="product-description" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Images du produit</label>
+                    <div class="image-upload-container">
+                        <div class="image-preview" id="image-preview">
+                            <div class="upload-placeholder" id="upload-placeholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Glissez-déposez des images ou cliquez pour télécharger</p>
+                                <span>PNG, JPG, JPEG jusqu'à 5MB</span>
+                            </div>
+                        </div>
+                        <input type="file" id="product-images" multiple accept="image/*" style="display: none;">
+                        <button type="button" class="btn btn-secondary" id="upload-images-btn">
+                            <i class="fas fa-upload"></i> Télécharger des images
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-weight">Poids (kg)</label>
+                        <input type="number" id="product-weight" step="0.01" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="product-dimensions">Dimensions (L x l x H en cm)</label>
+                        <input type="text" id="product-dimensions" placeholder="30 x 20 x 5">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-tags">Tags</label>
+                    <input type="text" id="product-tags" placeholder="Séparez les tags par des virgules">
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="product-active" checked>
+                        <span>Produit actif</span>
+                    </label>
+                    
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="product-featured">
+                        <span>Produit en vedette</span>
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary" id="save-product-btn">
+                        <i class="fas fa-save"></i> Enregistrer le produit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Import Products Modal -->
+    <div id="import-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-modal">&times;</span>
+            <h2>Importer des produits</h2>
+            
+            <div class="import-instructions">
+                <p><strong>Instructions :</strong></p>
+                <ol>
+                    <li>Téléchargez le <a href="#" id="download-template">modèle CSV</a></li>
+                    <li>Remplissez le fichier avec vos produits</li>
+                    <li>Téléchargez le fichier complété</li>
+                </ol>
+                
+                <div class="file-upload">
+                    <input type="file" id="csv-file" accept=".csv" style="display: none;">
+                    <div class="upload-area" id="csv-upload-area">
+                        <i class="fas fa-file-csv"></i>
+                        <p>Glissez-déposez votre fichier CSV ou cliquez pour sélectionner</p>
+                        <span>Format CSV requis (max 10MB)</span>
+                    </div>
+                </div>
+                
+                <div class="import-preview" id="import-preview" style="display: none;">
+                    <h4>Prévisualisation (premières 5 lignes) :</h4>
+                    <div class="preview-table">
+                        <table>
+                            <thead id="preview-headers"></thead>
+                            <tbody id="preview-rows"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="import-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeImportModal()">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="process-import" disabled>
+                        <i class="fas fa-play"></i> Traiter l'importation
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Edit Modal -->
+    <div id="quick-edit-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-modal">&times;</span>
+            <h2>Modification rapide</h2>
+            
+            <form id="quick-edit-form" class="modal-form">
+                <input type="hidden" id="quick-edit-id">
+                
+                <div class="form-group">
+                    <label for="quick-edit-price">Prix (€)</label>
+                    <input type="number" id="quick-edit-price" step="0.01" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="quick-edit-stock">Stock</label>
+                    <input type="number" id="quick-edit-stock" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="quick-edit-status">Statut</label>
+                    <select id="quick-edit-status">
+                        <option value="active">Actif</option>
+                        <option value="inactive">Inactif</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeQuickEditModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/admin-products.js"></script>
+</body>
+</html>
