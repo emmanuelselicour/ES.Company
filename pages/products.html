@@ -4,13 +4,257 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tous les Produits | E-S COMPANY</title>
-    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styles spécifiques à la page produits */
+        .products-page {
+            padding: 80px 0;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .page-header p {
+            color: var(--gray-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .filter-group select {
+            padding: 10px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            background-color: white;
+            font-weight: 500;
+            min-width: 150px;
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 300px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            border-right: none;
+        }
+        
+        .search-box button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .pagination button {
+            padding: 10px 20px;
+            border: 1px solid var(--light-gray);
+            background-color: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .no-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .no-products i {
+            font-size: 3rem;
+            color: var(--gray-color);
+            margin-bottom: 20px;
+        }
+        
+        .no-products h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .no-products p {
+            color: var(--gray-color);
+        }
+        
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Même header que index.html -->
-    
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                    <span>E-S COMPANY</span>
+                </div>
+                
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> <span data-translate="home">Accueil</span></a>
+                    <a href="products.html" class="active"><i class="fas fa-tshirt"></i> <span data-translate="products">Produits</span></a>
+                    <a href="categories.html"><i class="fas fa-list"></i> <span data-translate="categories">Catégories</span></a>
+                    <a href="about.html"><i class="fas fa-info-circle"></i> <span data-translate="about">À propos</span></a>
+                    <a href="contact.html"><i class="fas fa-envelope"></i> <span data-translate="contact">Contact</span></a>
+                </div>
+                
+                <div class="nav-actions">
+                    <div class="language-selector">
+                        <select id="language-select">
+                            <option value="fr">FR</option>
+                            <option value="en">EN</option>
+                            <option value="es">ES</option>
+                        </select>
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button id="user-menu" class="icon-btn">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <button id="cart-toggle" class="icon-btn cart-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-count" class="cart-count">0</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- User Modal (Login/Signup) -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="auth-forms">
+                <div class="form-container active" id="login-form">
+                    <h2 data-translate="login">Connexion</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <input type="email" id="login-email" required placeholder=" " data-translate="email_placeholder">
+                            <label for="login-email" data-translate="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="login-password" required placeholder=" ">
+                            <label for="login-password" data-translate="password">Mot de passe</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-translate="login">Connexion</button>
+                    </form>
+                    <p data-translate="no_account">Pas de compte ? <a href="#" id="show-signup" data-translate="signup_here">Inscrivez-vous ici</a></p>
+                </div>
+                
+                <div class="form-container" id="signup-form">
+                    <h2 data-translate="signup">Inscription</h2>
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <input type="text" id="signup-name" required placeholder=" ">
+                            <label for="signup-name" data-translate="full_name">Nom complet</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="signup-email" required placeholder=" ">
+                            <label for="signup-email" data-translate="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="signup-password" required placeholder=" ">
+                            <label for="signup-password" data-translate="password">Mot de passe</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="signup-confirm" required placeholder=" ">
+                            <label for="signup-confirm" data-translate="confirm_password">Confirmer le mot de passe</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-translate="signup">S'inscrire</button>
+                    </form>
+                    <p data-translate="have_account">Déjà un compte ? <a href="#" id="show-login" data-translate="login_here">Connectez-vous ici</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panier -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3 data-translate="shopping_cart">Panier d'achat</h3>
+            <button class="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p data-translate="empty_cart">Votre panier est vide</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span data-translate="total">Total:</span>
+                <span id="cart-total-price">0.00 €</span>
+            </div>
+            <button class="btn btn-checkout" data-translate="checkout">Procéder au paiement</button>
+        </div>
+    </div>
+
+    <!-- Page Produits -->
     <section class="products-page">
         <div class="container">
             <div class="page-header">
@@ -21,43 +265,109 @@
             <div class="filters">
                 <div class="filter-group">
                     <select id="category-filter">
-                        <option value="">Toutes catégories</option>
-                        <option value="clothing">Vêtements</option>
-                        <option value="shoes">Chaussures</option>
-                        <option value="jewelry">Bijoux</option>
-                        <option value="accessories">Accessoires</option>
+                        <option value="" data-translate="all_categories">Toutes catégories</option>
+                        <option value="clothing" data-translate="clothing">Vêtements</option>
+                        <option value="shoes" data-translate="shoes">Chaussures</option>
+                        <option value="jewelry" data-translate="jewelry">Bijoux</option>
+                        <option value="accessories" data-translate="accessories">Accessoires</option>
                     </select>
                     
                     <select id="sort-filter">
-                        <option value="random">Aléatoire</option>
-                        <option value="price-low">Prix: croissant</option>
-                        <option value="price-high">Prix: décroissant</option>
-                        <option value="name">Nom: A-Z</option>
+                        <option value="random" data-translate="sort_random">Aléatoire</option>
+                        <option value="price-low" data-translate="sort_price_low">Prix: croissant</option>
+                        <option value="price-high" data-translate="sort_price_high">Prix: décroissant</option>
+                        <option value="name" data-translate="sort_name">Nom: A-Z</option>
                     </select>
                 </div>
                 
                 <div class="search-box">
-                    <input type="text" id="product-search" placeholder="Rechercher un produit...">
+                    <input type="text" id="product-search" data-translate="search_placeholder" placeholder="Rechercher un produit...">
                     <button><i class="fas fa-search"></i></button>
                 </div>
             </div>
             
             <div class="products-grid" id="all-products-container">
-                <!-- Tous les produits seront chargés ici -->
+                <!-- Les produits seront chargés ici dynamiquement -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p data-translate="loading_products">Chargement des produits...</p>
+                </div>
             </div>
             
             <div class="pagination">
-                <button id="prev-page" disabled>Précédent</button>
+                <button id="prev-page" disabled data-translate="prev">Précédent</button>
                 <span id="page-info">Page 1 sur 1</span>
-                <button id="next-page" disabled>Suivant</button>
+                <button id="next-page" disabled data-translate="next">Suivant</button>
             </div>
         </div>
     </section>
-    
-    <!-- Même footer que index.html -->
-    
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                        <span>E-S COMPANY</span>
+                    </div>
+                    <p data-translate="footer_desc">Votre destination shopping pour la mode et les accessoires de qualité.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 data-translate="quick_links">Liens rapides</h3>
+                    <ul>
+                        <li><a href="index.html" data-translate="home">Accueil</a></li>
+                        <li><a href="products.html" data-translate="products">Produits</a></li>
+                        <li><a href="categories.html" data-translate="categories">Catégories</a></li>
+                        <li><a href="about.html" data-translate="about">À propos</a></li>
+                        <li><a href="contact.html" data-translate="contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 data-translate="customer_service">Service client</h3>
+                    <ul>
+                        <li><a href="#" data-translate="faq">FAQ</a></li>
+                        <li><a href="#" data-translate="shipping">Livraison</a></li>
+                        <li><a href="#" data-translate="returns">Retours</a></li>
+                        <li><a href="#" data-translate="privacy">Politique de confidentialité</a></li>
+                        <li><a href="#" data-translate="terms">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 data-translate="contact_info">Informations de contact</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> <span data-translate="address">Port-au-Prince, Haïti</span></li>
+                        <li><i class="fas fa-phone"></i> <span>+509 1234 5678</span></li>
+                        <li><i class="fas fa-envelope"></i> <span>info@escompany.com</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> E-S COMPANY. <span data-translate="all_rights">Tous droits réservés.</span></p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-amex"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
     <script src="js/language.js"></script>
     <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
     <script src="js/products.js"></script>
 </body>
 </html>
