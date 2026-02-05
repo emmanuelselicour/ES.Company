@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin | E-S COMPANY</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
+<body class="admin-body">
+    <!-- Admin Sidebar -->
+    <div class="admin-sidebar">
+        <div class="admin-logo">
+            <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+            <h2>E-S COMPANY <span>Admin</span></h2>
+        </div>
+        
+        <nav class="admin-nav">
+            <ul>
+                <li>
+                    <a href="admin.html" class="active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Tableau de bord</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-products.html">
+                        <i class="fas fa-tshirt"></i>
+                        <span>Produits</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-orders.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Commandes</span>
+                        <span class="badge">3</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-customers.html">
+                        <i class="fas fa-users"></i>
+                        <span>Clients</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-categories.html">
+                        <i class="fas fa-tags"></i>
+                        <span>Catégories</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span>Paramètres</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="admin-analytics.html">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytiques</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="admin-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">Admin</span>
+                    <span class="user-role">Administrateur</span>
+                </div>
+                <a href="index.html" class="logout-btn" title="Retour au site">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- Admin Content -->
+    <div class="admin-content">
+        <!-- Admin Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Tableau de bord</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="notifications">
+                    <button class="icon-btn" id="notifications-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">5</span>
+                    </button>
+                    <div class="notifications-dropdown">
+                        <div class="notification-item">
+                            <i class="fas fa-shopping-cart text-primary"></i>
+                            <div>
+                                <p>Nouvelle commande #ORD-001</p>
+                                <small>Il y a 5 minutes</small>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <i class="fas fa-user text-success"></i>
+                            <div>
+                                <p>2 nouveaux clients inscrits</p>
+                                <small>Il y a 1 heure</small>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <i class="fas fa-exclamation-triangle text-danger"></i>
+                            <div>
+                                <p>Stock faible: Robe Élégante</p>
+                                <small>Il y a 2 heures</small>
+                            </div>
+                        </div>
+                        <a href="#" class="view-all">Voir toutes les notifications</a>
+                    </div>
+                </div>
+                
+                <div class="admin-search">
+                    <input type="text" placeholder="Rechercher...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>152</h3>
+                        <p>Commandes totales</p>
+                    </div>
+                    <div class="stat-trend up">
+                        <i class="fas fa-arrow-up"></i> 12%
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>€8,450</h3>
+                        <p>Revenu total</p>
+                    </div>
+                    <div class="stat-trend up">
+                        <i class="fas fa-arrow-up"></i> 18%
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>342</h3>
+                            <p>Clients</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 8%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>45</h3>
+                        <p>Produits</p>
+                    </div>
+                    <div class="stat-trend down">
+                        <i class="fas fa-arrow-down"></i> 3%
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts and Tables -->
+            <div class="content-grid">
+                <!-- Revenue Chart -->
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3>Revenu mensuel</h3>
+                        <select>
+                            <option>6 derniers mois</option>
+                            <option>Cette année</option>
+                            <option>Tout le temps</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Recent Orders -->
+                <div class="table-card">
+                    <div class="card-header">
+                        <h3>Commandes récentes</h3>
+                        <a href="admin-orders.html" class="btn btn-sm">Voir tout</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>Date</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#ORD-001</td>
+                                    <td>Marie Dupont</td>
+                                    <td>12/06/2023</td>
+                                    <td>€149.99</td>
+                                    <td><span class="status delivered">Livrée</span></td>
+                                    <td>
+                                        <button class="btn-icon view" title="Voir"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon edit" title="Éditer"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-002</td>
+                                    <td>Jean Martin</td>
+                                    <td>11/06/2023</td>
+                                    <td>€89.99</td>
+                                    <td><span class="status pending">En attente</span></td>
+                                    <td>
+                                        <button class="btn-icon view" title="Voir"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon edit" title="Éditer"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-003</td>
+                                    <td>Sophie Bernard</td>
+                                    <td>10/06/2023</td>
+                                    <td>€199.99</td>
+                                    <td><span class="status processing">En cours</span></td>
+                                    <td>
+                                        <button class="btn-icon view" title="Voir"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon edit" title="Éditer"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-004</td>
+                                    <td>Pierre Leroy</td>
+                                    <td>09/06/2023</td>
+                                    <td>€75.50</td>
+                                    <td><span class="status delivered">Livrée</span></td>
+                                    <td>
+                                        <button class="btn-icon view" title="Voir"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon edit" title="Éditer"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-005</td>
+                                    <td>Isabelle Petit</td>
+                                    <td>08/06/2023</td>
+                                    <td>€120.00</td>
+                                    <td><span class="status cancelled">Annulée</span></td>
+                                    <td>
+                                        <button class="btn-icon view" title="Voir"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon edit" title="Éditer"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Top Products -->
+                <div class="table-card">
+                    <div class="card-header">
+                        <h3>Produits populaires</h3>
+                        <a href="admin-products.html" class="btn btn-sm">Voir tout</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Catégorie</th>
+                                    <th>Prix</th>
+                                    <th>Ventes</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="product-cell">
+                                            <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Robe Élégante">
+                                            <span>Robe Élégante</span>
+                                        </div>
+                                    </td>
+                                    <td>Vêtements</td>
+                                    <td>€49.99</td>
+                                    <td>42</td>
+                                    <td><span class="stock low">8</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="product-cell">
+                                            <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Chaussures de Ville">
+                                            <span>Chaussures de Ville</span>
+                                        </div>
+                                    </td>
+                                    <td>Chaussures</td>
+                                    <td>€59.99</td>
+                                    <td>38</td>
+                                    <td><span class="stock medium">12</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="product-cell">
+                                            <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Collier Argent">
+                                            <span>Collier Argent</span>
+                                        </div>
+                                    </td>
+                                    <td>Bijoux</td>
+                                    <td>€24.99</td>
+                                    <td>35</td>
+                                    <td><span class="stock high">30</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="product-cell">
+                                            <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Sac à Main">
+                                            <span>Sac à Main</span>
+                                        </div>
+                                    </td>
+                                    <td>Accessoires</td>
+                                    <td>€45.99</td>
+                                    <td>28</td>
+                                    <td><span class="stock low">3</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="product-cell">
+                                            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Veste en Cuir">
+                                            <span>Veste en Cuir</span>
+                                        </div>
+                                    </td>
+                                    <td>Vêtements</td>
+                                    <td>€79.99</td>
+                                    <td>25</td>
+                                    <td><span class="stock medium">10</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Recent Customers -->
+                <div class="table-card">
+                    <div class="card-header">
+                        <h3>Clients récents</h3>
+                        <a href="admin-customers.html" class="btn btn-sm">Voir tout</a>
+                    </div>
+                    <div class="customers-list">
+                        <div class="customer-item">
+                            <div class="customer-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="customer-info">
+                                <h4>Marie Dupont</h4>
+                                <p>marie.dupont@email.com</p>
+                            </div>
+                            <div class="customer-stats">
+                                <span class="orders">5 commandes</span>
+                                <span class="amount">€649.95</span>
+                            </div>
+                        </div>
+                        
+                        <div class="customer-item">
+                            <div class="customer-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="customer-info">
+                                <h4>Jean Martin</h4>
+                                <p>jean.martin@email.com</p>
+                            </div>
+                            <div class="customer-stats">
+                                <span class="orders">3 commandes</span>
+                                <span class="amount">€269.97</span>
+                            </div>
+                        </div>
+                        
+                        <div class="customer-item">
+                            <div class="customer-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="customer-info">
+                                <h4>Sophie Bernard</h4>
+                                <p>sophie.bernard@email.com</p>
+                            </div>
+                            <div class="customer-stats">
+                                <span class="orders">7 commandes</span>
+                                <span class="amount">€899.93</span>
+                            </div>
+                        </div>
+                        
+                        <div class="customer-item">
+                            <div class="customer-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="customer-info">
+                                <h4>Pierre Leroy</h4>
+                                <p>pierre.leroy@email.com</p>
+                            </div>
+                            <div class="customer-stats">
+                                <span class="orders">2 commandes</span>
+                                <span class="amount">€151.00</span>
+                            </div>
+                        </div>
+                    </
