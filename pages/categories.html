@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header avec navigation -->
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <nav class="navbar">
@@ -54,286 +54,132 @@
         </div>
     </header>
 
-    <!-- User Modal (Login/Signup) -->
-    <div id="user-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="auth-forms">
-                <!-- Même contenu que index.html -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Panier -->
-    <div id="cart-sidebar" class="cart-sidebar">
-        <!-- Même contenu que index.html -->
-    </div>
+    <!-- User Modal et Cart Sidebar (mêmes que les autres pages) -->
 
     <!-- Page Catégories -->
     <section class="categories-page">
         <div class="container">
             <div class="page-header">
                 <h1 data-translate="all_categories">Toutes les catégories</h1>
-                <p data-translate="categories_desc">Parcourez notre collection par catégorie</p>
+                <p data-translate="categories_desc">Parcourez nos différentes catégories de produits</p>
             </div>
             
-            <!-- Catégories principales -->
-            <div class="main-categories">
-                <div class="category-card large">
+            <div class="categories-grid">
+                <a href="products.html?category=clothing" class="category-large-card">
                     <div class="category-image">
-                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Vêtements">
+                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Vêtements">
                         <div class="category-overlay"></div>
                     </div>
                     <div class="category-content">
                         <h2 data-translate="clothing">Vêtements</h2>
-                        <p data-translate="clothing_desc_full">Découvrez notre collection complète de vêtements pour toutes les occasions</p>
-                        <a href="products.html?category=clothing" class="btn btn-primary" data-translate="explore_category">Explorer</a>
+                        <p data-translate="clothing_desc_full">Robes, pantalons, jupes, chemises, vestes et plus</p>
+                        <span class="category-count">24 produits</span>
                     </div>
-                </div>
+                </a>
                 
-                <div class="category-grid">
-                    <div class="category-card">
-                        <div class="category-image">
-                            <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Chaussures">
-                        </div>
-                        <div class="category-content">
-                            <h3 data-translate="shoes">Chaussures</h3>
-                            <p data-translate="shoes_desc_full">Des chaussures élégantes et confortables pour chaque saison</p>
-                            <span class="product-count" data-translate="products_count">42 produits</span>
-                        </div>
-                        <a href="products.html?category=shoes" class="category-link"></a>
+                <a href="products.html?category=shoes" class="category-large-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chaussures">
+                        <div class="category-overlay"></div>
                     </div>
-                    
-                    <div class="category-card">
-                        <div class="category-image">
-                            <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Bijoux">
-                        </div>
-                        <div class="category-content">
-                            <h3 data-translate="jewelry">Bijoux</h3>
-                            <p data-translate="jewelry_desc_full">Accessoires élégants pour compléter votre tenue</p>
-                            <span class="product-count" data-translate="products_count">28 produits</span>
-                        </div>
-                        <a href="products.html?category=jewelry" class="category-link"></a>
+                    <div class="category-content">
+                        <h2 data-translate="shoes">Chaussures</h2>
+                        <p data-translate="shoes_desc_full">Baskets, sandales, bottes, chaussures de ville</p>
+                        <span class="category-count">18 produits</span>
                     </div>
-                    
-                    <div class="category-card">
-                        <div class="category-image">
-                            <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Accessoires">
-                        </div>
-                        <div class="category-content">
-                            <h3 data-translate="accessories">Accessoires</h3>
-                            <p data-translate="accessories_desc_full">Sacs, ceintures et autres accessoires mode</p>
-                            <span class="product-count" data-translate="products_count">35 produits</span>
-                        </div>
-                        <a href="products.html?category=accessories" class="category-link"></a>
+                </a>
+                
+                <a href="products.html?category=jewelry" class="category-large-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Bijoux">
+                        <div class="category-overlay"></div>
                     </div>
-                </div>
+                    <div class="category-content">
+                        <h2 data-translate="jewelry">Bijoux</h2>
+                        <p data-translate="jewelry_desc_full">Colliers, bracelets, boucles d'oreilles, montres</p>
+                        <span class="category-count">32 produits</span>
+                    </div>
+                </a>
+                
+                <a href="products.html?category=accessories" class="category-large-card">
+                    <div class="category-image">
+                        <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Accessoires">
+                        <div class="category-overlay"></div>
+                    </div>
+                    <div class="category-content">
+                        <h2 data-translate="accessories">Accessoires</h2>
+                        <p data-translate="accessories_desc_full">Sacs, ceintures, lunettes, écharpes</p>
+                        <span class="category-count">15 produits</span>
+                    </div>
+                </a>
             </div>
             
-            <!-- Sous-catégories -->
             <div class="subcategories-section">
                 <h2 data-translate="subcategories">Sous-catégories</h2>
                 <div class="subcategories-grid">
-                    <a href="products.html?subcategory=dresses" class="subcategory-item">
+                    <a href="products.html?subcategory=dresses" class="subcategory-card">
                         <div class="subcategory-icon">
                             <i class="fas fa-female"></i>
                         </div>
-                        <h4 data-translate="dresses">Robes</h4>
+                        <h3 data-translate="dresses">Robes</h3>
+                        <p>12 produits</p>
                     </a>
                     
-                    <a href="products.html?subcategory=pants" class="subcategory-item">
+                    <a href="products.html?subcategory=pants" class="subcategory-card">
                         <div class="subcategory-icon">
                             <i class="fas fa-tshirt"></i>
                         </div>
-                        <h4 data-translate="pants">Pantalons</h4>
+                        <h3 data-translate="pants">Pantalons</h3>
+                        <p>8 produits</p>
                     </a>
                     
-                    <a href="products.html?subcategory=skirts" class="subcategory-item">
+                    <a href="products.html?subcategory=skirts" class="subcategory-card">
                         <div class="subcategory-icon">
-                            <i class="fas fa-vest"></i>
+                            <i class="fas fa-venus"></i>
                         </div>
-                        <h4 data-translate="skirts">Jupes</h4>
+                        <h3 data-translate="skirts">Jupes</h3>
+                        <p>6 produits</p>
                     </a>
                     
-                    <a href="products.html?subcategory=tops" class="subcategory-item">
+                    <a href="products.html?subcategory=sneakers" class="subcategory-card">
                         <div class="subcategory-icon">
-                            <i class="fas fa-tshirt"></i>
+                            <i class="fas fa-walking"></i>
                         </div>
-                        <h4 data-translate="tops">Hauts</h4>
+                        <h3 data-translate="sneakers">Baskets</h3>
+                        <p>10 produits</p>
                     </a>
                     
-                    <a href="products.html?subcategory=jackets" class="subcategory-item">
-                        <div class="subcategory-icon">
-                            <i class="fas fa-vest-patches"></i>
-                        </div>
-                        <h4 data-translate="jackets">Vestes</h4>
-                    </a>
-                    
-                    <a href="products.html?subcategory=heels" class="subcategory-item">
+                    <a href="products.html?subcategory=boots" class="subcategory-card">
                         <div class="subcategory-icon">
                             <i class="fas fa-shoe-prints"></i>
                         </div>
-                        <h4 data-translate="heels">Talons</h4>
+                        <h3 data-translate="boots">Bottes</h3>
+                        <p>6 produits</p>
                     </a>
                     
-                    <a href="products.html?subcategory=sneakers" class="subcategory-item">
-                        <div class="subcategory-icon">
-                            <i class="fas fa-running"></i>
-                        </div>
-                        <h4 data-translate="sneakers">Baskets</h4>
-                    </a>
-                    
-                    <a href="products.html?subcategory=boots" class="subcategory-item">
-                        <div class="subcategory-icon">
-                            <i class="fas fa-boot"></i>
-                        </div>
-                        <h4 data-translate="boots">Bottes</h4>
-                    </a>
-                    
-                    <a href="products.html?subcategory=necklaces" class="subcategory-item">
+                    <a href="products.html?subcategory=necklaces" class="subcategory-card">
                         <div class="subcategory-icon">
                             <i class="fas fa-gem"></i>
                         </div>
-                        <h4 data-translate="necklaces">Colliers</h4>
+                        <h3 data-translate="necklaces">Colliers</h3>
+                        <p>14 produits</p>
                     </a>
                     
-                    <a href="products.html?subcategory=earrings" class="subcategory-item">
+                    <a href="products.html?subcategory=earrings" class="subcategory-card">
                         <div class="subcategory-icon">
-                            <i class="fas fa-gem"></i>
+                            <i class="fas fa-circle"></i>
                         </div>
-                        <h4 data-translate="earrings">Boucles d'oreilles</h4>
+                        <h3 data-translate="earrings">Boucles d'oreilles</h3>
+                        <p>10 produits</p>
                     </a>
                     
-                    <a href="products.html?subcategory=bags" class="subcategory-item">
+                    <a href="products.html?subcategory=bags" class="subcategory-card">
                         <div class="subcategory-icon">
                             <i class="fas fa-shopping-bag"></i>
                         </div>
-                        <h4 data-translate="bags">Sacs</h4>
+                        <h3 data-translate="bags">Sacs</h3>
+                        <p>8 produits</p>
                     </a>
-                    
-                    <a href="products.html?subcategory=belts" class="subcategory-item">
-                        <div class="subcategory-icon">
-                            <i class="fas fa-belt"></i>
-                        </div>
-                        <h4 data-translate="belts">Ceintures</h4>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Produits par catégorie -->
-            <div class="category-products">
-                <div class="section-header">
-                    <h2 data-translate="featured_by_category">Produits par catégorie</h2>
-                    <p data-translate="featured_by_category_desc">Découvrez nos meilleurs produits dans chaque catégorie</p>
-                </div>
-                
-                <div class="category-tabs">
-                    <button class="tab-btn active" data-category="clothing" data-translate="clothing">Vêtements</button>
-                    <button class="tab-btn" data-category="shoes" data-translate="shoes">Chaussures</button>
-                    <button class="tab-btn" data-category="jewelry" data-translate="jewelry">Bijoux</button>
-                    <button class="tab-btn" data-category="accessories" data-translate="accessories">Accessoires</button>
-                </div>
-                
-                <div class="tab-content active" id="clothing-products">
-                    <div class="products-grid">
-                        <!-- Produits vêtements chargés dynamiquement -->
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="shoes-products">
-                    <div class="products-grid">
-                        <!-- Produits chaussures chargés dynamiquement -->
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="jewelry-products">
-                    <div class="products-grid">
-                        <!-- Produits bijoux chargés dynamiquement -->
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="accessories-products">
-                    <div class="products-grid">
-                        <!-- Produits accessoires chargés dynamiquement -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Guide des tailles -->
-            <div class="size-guide">
-                <div class="guide-header">
-                    <h2 data-translate="size_guide">Guide des tailles</h2>
-                    <p data-translate="size_guide_desc">Trouvez la taille parfaite pour vous</p>
-                </div>
-                
-                <div class="guide-content">
-                    <div class="guide-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th data-translate="size">Taille</th>
-                                    <th data-translate="bust">Buste (cm)</th>
-                                    <th data-translate="waist">Taille (cm)</th>
-                                    <th data-translate="hips">Hanches (cm)</th>
-                                    <th data-translate="us_size">US</th>
-                                    <th data-translate="uk_size">UK</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>XS</td>
-                                    <td>78-82</td>
-                                    <td>62-66</td>
-                                    <td>86-90</td>
-                                    <td>0-2</td>
-                                    <td>4-6</td>
-                                </tr>
-                                <tr>
-                                    <td>S</td>
-                                    <td>82-86</td>
-                                    <td>66-70</td>
-                                    <td>90-94</td>
-                                    <td>4-6</td>
-                                    <td>8-10</td>
-                                </tr>
-                                <tr>
-                                    <td>M</td>
-                                    <td>86-90</td>
-                                    <td>70-74</td>
-                                    <td>94-98</td>
-                                    <td>8-10</td>
-                                    <td>12-14</td>
-                                </tr>
-                                <tr>
-                                    <td>L</td>
-                                    <td>90-94</td>
-                                    <td>74-78</td>
-                                    <td>98-102</td>
-                                    <td>12-14</td>
-                                    <td>16-18</td>
-                                </tr>
-                                <tr>
-                                    <td>XL</td>
-                                    <td>94-98</td>
-                                    <td>78-82</td>
-                                    <td>102-106</td>
-                                    <td>16-18</td>
-                                    <td>20-22</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="guide-tips">
-                        <h3 data-translate="size_tips">Conseils pour les tailles</h3>
-                        <ul>
-                            <li data-translate="tip1">Prenez vos mesures au niveau le plus large</li>
-                            <li data-translate="tip2">Portez des sous-vêtements légers lors de la prise de mesures</li>
-                            <li data-translate="tip3">Consultez les commentaires des autres clients pour des conseils sur l'ajustement</li>
-                            <li data-translate="tip4">En cas de doute entre deux tailles, choisissez la plus grande</li>
-                            <li data-translate="tip5">Les tailles peuvent varier selon les marques et les styles</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -341,13 +187,12 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <!-- Même contenu que index.html -->
+        <!-- Même footer que les autres pages -->
     </footer>
 
     <!-- Scripts -->
     <script src="js/language.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/categories.js"></script>
 </body>
 </html>
