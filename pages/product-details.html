@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails Produit | E-S COMPANY</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product-details.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                    <span>E-S COMPANY</span>
+                </div>
+                
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> <span data-translate="home">Accueil</span></a>
+                    <a href="products.html"><i class="fas fa-tshirt"></i> <span data-translate="products">Produits</span></a>
+                    <a href="categories.html"><i class="fas fa-list"></i> <span data-translate="categories">Catégories</span></a>
+                    <a href="about.html"><i class="fas fa-info-circle"></i> <span data-translate="about">À propos</span></a>
+                    <a href="contact.html"><i class="fas fa-envelope"></i> <span data-translate="contact">Contact</span></a>
+                </div>
+                
+                <div class="nav-actions">
+                    <div class="language-selector">
+                        <select id="language-select">
+                            <option value="fr">FR</option>
+                            <option value="en">EN</option>
+                            <option value="es">ES</option>
+                        </select>
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button id="user-menu" class="icon-btn">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <button id="cart-toggle" class="icon-btn cart-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-count" class="cart-count">0</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- User Modal -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="auth-forms">
+                <!-- Formulaire de connexion et inscription -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <!-- Panier d'achat -->
+    </div>
+
+    <!-- Détails du Produit -->
+    <section class="product-details-page">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" data-translate="home">Accueil</a> &gt;
+                <a href="products.html" data-translate="products">Produits</a> &gt;
+                <span id="product-category">Produit</span> &gt;
+                <span id="product-name">Détails</span>
+            </div>
+            
+            <div class="product-details-container">
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <img id="main-product-image" src="" alt="Produit">
+                    </div>
+                    <div class="thumbnail-images" id="thumbnail-images">
+                        <!-- Les miniatures seront ajoutées ici -->
+                    </div>
+                </div>
+                
+                <div class="product-info">
+                    <h1 id="product-title">Chargement...</h1>
+                    <div class="product-meta">
+                        <span class="product-category" id="product-category-badge">Catégorie</span>
+                        <span class="product-stock" id="product-stock">En stock</span>
+                        <span class="product-sku" id="product-sku">SKU: --</span>
+                    </div>
+                    
+                    <div class="product-price" id="product-price">
+                        <span class="current-price">€0.00</span>
+                    </div>
+                    
+                    <div class="product-description">
+                        <h3 data-translate="description">Description</h3>
+                        <p id="product-description-text">Chargement de la description...</p>
+                    </div>
+                    
+                    <div class="product-variants">
+                        <div class="variant-selector">
+                            <label data-translate="size">Taille:</label>
+                            <select id="size-select">
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                            </select>
+                        </div>
+                        
+                        <div class="variant-selector">
+                            <label data-translate="color">Couleur:</label>
+                            <div class="color-options">
+                                <button class="color-option active" data-color="black" style="background-color: #000;"></button>
+                                <button class="color-option" data-color="blue" style="background-color: #3a86ff;"></button>
+                                <button class="color-option" data-color="red" style="background-color: #ff006e;"></button>
+                                <button class="color-option" data-color="white" style="background-color: #fff; border: 1px solid #ddd;"></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-quantity">
+                        <label data-translate="quantity">Quantité:</label>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn minus" id="quantity-minus">-</button>
+                            <input type="number" id="quantity-input" value="1" min="1" max="10">
+                            <button class="quantity-btn plus" id="quantity-plus">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn btn-primary btn-add-to-cart" id="add-to-cart-btn" data-translate="add_to_cart">
+                            <i class="fas fa-shopping-cart"></i> Ajouter au panier
+                        </button>
+                        <button class="btn btn-secondary btn-buy-now" id="buy-now-btn" data-translate="buy_now">
+                            <i class="fas fa-bolt"></i> Acheter maintenant
+                        </button>
+                    </div>
+                    
+                    <div class="product-features">
+                        <div class="feature">
+                            <i class="fas fa-shipping-fast"></i>
+                            <div>
+                                <h4 data-translate="free_shipping">Livraison gratuite</h4>
+                                <p data-translate="free_shipping_desc">Pour les commandes de plus de €50</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-undo"></i>
+                            <div>
+                                <h4 data-translate="free_returns">Retours gratuits</h4>
+                                <p data-translate="free_returns_desc">Sous 30 jours</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h4 data-translate="secure_payment">Paiement sécurisé</h4>
+                                <p data-translate="secure_payment_desc">100% sécurisé</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="related-products">
+                <h2 data-translate="related_products">Produits similaires</h2>
+                <div class="products-grid" id="related-products-container">
+                    <!-- Produits similaires -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- Même footer que les autres pages -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/language.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/product-details.js"></script>
+</body>
+</html>
