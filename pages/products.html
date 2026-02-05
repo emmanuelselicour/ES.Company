@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header avec navigation -->
+    <!-- Header -->
     <header class="header">
         <div class="container">
             <nav class="navbar">
@@ -54,7 +54,7 @@
         </div>
     </header>
 
-    <!-- User Modal (Login/Signup) -->
+    <!-- User Modal -->
     <div id="user-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
@@ -63,7 +63,7 @@
                     <h2 data-translate="login">Connexion</h2>
                     <form id="loginForm">
                         <div class="form-group">
-                            <input type="email" id="login-email" required placeholder=" " data-translate="email_placeholder">
+                            <input type="email" id="login-email" required placeholder=" ">
                             <label for="login-email" data-translate="email">Email</label>
                         </div>
                         <div class="form-group">
@@ -102,7 +102,7 @@
         </div>
     </div>
 
-    <!-- Panier -->
+    <!-- Cart Sidebar -->
     <div id="cart-sidebar" class="cart-sidebar">
         <div class="cart-header">
             <h3 data-translate="shopping_cart">Panier d'achat</h3>
@@ -123,74 +123,48 @@
         </div>
     </div>
 
-    <!-- Page Produits -->
+    <!-- Page des Produits -->
     <section class="products-page">
         <div class="container">
             <div class="page-header">
                 <h1 data-translate="all_products">Tous les produits</h1>
-                <p data-translate="all_products_desc">Découvrez notre collection complète de vêtements, chaussures et accessoires</p>
+                <p data-translate="all_products_desc">Découvrez notre collection complète</p>
             </div>
             
-            <div class="filters-section">
+            <div class="products-controls">
                 <div class="filters">
                     <div class="filter-group">
-                        <div class="filter-item">
-                            <label for="category-filter" data-translate="category">Catégorie:</label>
-                            <select id="category-filter">
-                                <option value="">Toutes catégories</option>
-                                <option value="clothing">Vêtements</option>
-                                <option value="shoes">Chaussures</option>
-                                <option value="jewelry">Bijoux</option>
-                                <option value="accessories">Accessoires</option>
-                            </select>
-                        </div>
+                        <select id="category-filter">
+                            <option value="">Toutes catégories</option>
+                            <option value="clothing">Vêtements</option>
+                            <option value="shoes">Chaussures</option>
+                            <option value="jewelry">Bijoux</option>
+                            <option value="accessories">Accessoires</option>
+                        </select>
                         
-                        <div class="filter-item">
-                            <label for="sort-filter" data-translate="sort_by">Trier par:</label>
-                            <select id="sort-filter">
-                                <option value="random">Aléatoire</option>
-                                <option value="price-low">Prix: croissant</option>
-                                <option value="price-high">Prix: décroissant</option>
-                                <option value="name">Nom: A-Z</option>
-                                <option value="newest">Plus récents</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-item">
-                            <label for="price-range" data-translate="price_range">Fourchette de prix:</label>
-                            <select id="price-range">
-                                <option value="">Tous les prix</option>
-                                <option value="0-50">0 - 50 €</option>
-                                <option value="50-100">50 - 100 €</option>
-                                <option value="100-200">100 - 200 €</option>
-                                <option value="200-500">200 - 500 €</option>
-                            </select>
-                        </div>
+                        <select id="sort-filter">
+                            <option value="random">Aléatoire</option>
+                            <option value="price-low">Prix: croissant</option>
+                            <option value="price-high">Prix: décroissant</option>
+                            <option value="name">Nom: A-Z</option>
+                        </select>
                     </div>
                     
                     <div class="search-box">
-                        <input type="text" id="product-search" placeholder="Rechercher un produit..." data-translate="search_placeholder">
-                        <button id="search-button"><i class="fas fa-search"></i></button>
-                        <button id="clear-filters" class="btn btn-secondary" data-translate="clear_filters">Effacer les filtres</button>
+                        <input type="text" id="product-search" placeholder="Rechercher un produit...">
+                        <button><i class="fas fa-search"></i></button>
                     </div>
                 </div>
                 
-                <div class="active-filters" id="active-filters">
-                    <!-- Filtres actifs seront affichés ici -->
-                </div>
-            </div>
-            
-            <div class="products-meta">
-                <p id="products-count" data-translate="loading_products">Chargement des produits...</p>
-                <div class="view-options">
-                    <button id="grid-view" class="view-btn active"><i class="fas fa-th"></i></button>
-                    <button id="list-view" class="view-btn"><i class="fas fa-list"></i></button>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid"><i class="fas fa-th-large"></i></button>
+                    <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
                 </div>
             </div>
             
             <div class="products-container">
                 <div class="products-grid" id="all-products-container">
-                    <!-- Tous les produits seront chargés ici -->
+                    <!-- Les produits seront chargés ici -->
                     <div class="loading">
                         <div class="spinner"></div>
                         <p data-translate="loading_products">Chargement des produits...</p>
@@ -203,28 +177,9 @@
             </div>
             
             <div class="pagination">
-                <button id="prev-page" class="btn btn-secondary" disabled data-translate="previous">Précédent</button>
-                <div class="page-info">
-                    <span id="current-page">1</span>
-                    <span data-translate="of">sur</span>
-                    <span id="total-pages">1</span>
-                    <span data-translate="pages">pages</span>
-                </div>
-                <button id="next-page" class="btn btn-secondary" disabled data-translate="next">Suivant</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="newsletter-section">
-        <div class="container">
-            <div class="newsletter-content">
-                <h3 data-translate="newsletter_title">Restez informé</h3>
-                <p data-translate="newsletter_desc">Inscrivez-vous à notre newsletter pour recevoir nos offres spéciales et nouveautés</p>
-                <form id="newsletter-form" class="newsletter-form">
-                    <input type="email" placeholder="Votre adresse email" required data-translate="email_placeholder">
-                    <button type="submit" class="btn btn-primary" data-translate="subscribe">S'abonner</button>
-                </form>
+                <button id="prev-page" class="btn btn-secondary" disabled><i class="fas fa-chevron-left"></i> <span data-translate="prev">Précédent</span></button>
+                <span id="page-info" class="page-info">Page 1 sur 1</span>
+                <button id="next-page" class="btn btn-secondary"><span data-translate="next">Suivant</span> <i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </section>
