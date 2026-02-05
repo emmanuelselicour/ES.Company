@@ -881,4 +881,250 @@
                     <div class="product-badge">${randomBadge}</div>
                     <img src="${product.image}" alt="${product.name}" class="product-image">
                     <div class="product-info">
-                        <h3 class="product
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">$${product.price.toFixed(2)}</div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})" data-product-id="${product.id}">
+                            ${translations[currentLanguage].addToCart}
+                        </button>
+                    </div>
+                `;
+                
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Filtrer les produits par catégorie
+        function filterProducts(category) {
+            currentFilter = category;
+            
+            // Mettre à jour les boutons de catégorie actifs
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(`cat-${category}`).classList.add('active');
+            
+            // Mélanger les produits à chaque filtrage
+            shuffleProducts();
+            
+            // Afficher les produits filtrés
+            displayProducts();
+        }
+
+        // Changer la langue
+        function changeLanguage(lang) {
+            if (translations[lang]) {
+                currentLanguage = lang;
+                localStorage.setItem('esCompanyLang', lang);
+                updateLanguageUI();
+            }
+        }
+
+        // Mettre à jour l'interface utilisateur selon la langue
+        function updateLanguageUI() {
+            // Mettre à jour le bouton de langue
+            document.getElementById('current-lang').textContent = currentLanguage.toUpperCase();
+            
+            // Mettre à jour tous les textes traduisibles
+            const trans = translations[currentLanguage];
+            
+            // Header et Hero
+            document.getElementById('hero-title').textContent = trans.heroTitle;
+            document.getElementById('hero-subtitle').textContent = trans.heroSubtitle;
+            document.getElementById('shop-now-btn').textContent = trans.shopNowBtn;
+            
+            // Produits
+            document.getElementById('products-title').textContent = trans.productsTitle;
+            document.getElementById('refresh-notice').textContent = trans.refreshNotice;
+            document.getElementById('cat-all').textContent = trans.catAll;
+            document.getElementById('cat-clothing').textContent = trans.catClothing;
+            document.getElementById('cat-shoes').textContent = trans.catShoes;
+            document.getElementById('cat-jewelry').textContent = trans.catJewelry;
+            document.getElementById('cat-accessories').textContent = trans.catAccessories;
+            
+            // Boutons "Ajouter au panier"
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.textContent = trans.addToCart;
+            });
+            
+            // Panier
+            document.getElementById('cart-title').textContent = trans.cartTitle;
+            document.getElementById('total-text').textContent = trans.totalText;
+            document.getElementById('checkout-btn').textContent = trans.checkoutBtn;
+            document.getElementById('empty-cart-msg').textContent = trans.emptyCartMsg;
+            
+            // Footer
+            document.getElementById('footer-desc').textContent = trans.footerDesc;
+            document.getElementById('footer-links-title').textContent = trans.footerLinksTitle;
+            document.getElementById('footer-contact-title').textContent = trans.footerContactTitle;
+            document.getElementById('footer-newsletter-title').textContent = trans.footerNewsletterTitle;
+            document.getElementById('newsletter-desc').textContent = trans.newsletterDesc;
+            document.getElementById('newsletter-btn').textContent = trans.newsletterBtn;
+        }
+
+        // Gestion du panier
+        function addToCart(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+            
+            // Vérifier si le produit est déjà dans le panier
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            // Sauvegarder le panier
+            saveCart();
+            
+            // Mettre à jour l'interface
+            updateCartCount();
+            
+            // Afficher une notification
+            showNotification(`${product.name} ajouté au panier`);
+            
+            // Ouvrir le panier si ce n'est pas déjà fait
+            if (!document.getElementById('cart-modal').classList.contains('active')) {
+                toggleCart();
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+            updateCartCount();
+            updateCartDisplay();
+            
+            // Si le panier est vide, afficher le message approprié
+            if (cart.length === 0) {
+                document.getElementById('empty-cart-msg').style.display = 'block';
+            }
+        }
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            document.querySelector('.cart-count').textContent = totalItems;
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cart-items');
+            const emptyCartMsg = document.getElementById('empty-cart-msg');
+            const cartTotalPrice = document.getElementById('cart-total-price');
+            
+            // Vider le contenu actuel
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                emptyCartMsg.style.display = 'block';
+                cartTotalPrice.textContent = '$0.00';
+                return;
+            }
+            
+            emptyCartMsg.style.display = 'none';
+            
+            // Ajouter chaque article du panier
+            let totalPrice = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)} x ${item.quantity}</div>
+                        <button onclick="removeFromCart(${item.id})" style="margin-top: 10px; background: none; border: none; color: var(--secondary-color); cursor: pointer;">Supprimer</button>
+                    </div>
+                `;
+                
+                cartItems.appendChild(cartItem);
+            });
+            
+            // Mettre à jour le total
+            cartTotalPrice.textContent = `$${totalPrice.toFixed(2)}`;
+        }
+
+        function toggleCart() {
+            const cartModal = document.getElementById('cart-modal');
+            cartModal.classList.toggle('active');
+            
+            if (cartModal.classList.contains('active')) {
+                updateCartDisplay();
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('esCompanyCart', JSON.stringify(cart));
+        }
+
+        function loadCart() {
+            const savedCart = localStorage.getItem('esCompanyCart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+        }
+
+        // Fonctions utilitaires
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showNotification(message) {
+            // Créer une notification temporaire
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: var(--primary-color);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 30px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 3000;
+                font-weight: 500;
+                animation: fadeInOut 3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Supprimer la notification après 3 secondes
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Animation CSS pour les notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translate(-50%, 20px); }
+                15% { opacity: 1; transform: translate(-50%, 0); }
+                85% { opacity: 1; transform: translate(-50%, 0); }
+                100% { opacity: 0; transform: translate(-50%, -10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Simuler un rafraîchissement aléatoire des produits toutes les 30 secondes
+        setInterval(() => {
+            shuffleProducts();
+            displayProducts();
+        }, 30000);
+    </script>
+</body>
+</html>
