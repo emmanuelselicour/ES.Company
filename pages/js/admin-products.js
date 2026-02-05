@@ -1,4 +1,4 @@
-// Gestion des produits dans l'administration
+// Gestion des produits dans l'administration - VERSION CORRIGÉE
 
 class AdminProducts {
     constructor() {
@@ -7,25 +7,29 @@ class AdminProducts {
         this.images = [];
         this.options = [];
         this.variants = [];
+        this.categories = []; // Stocker les catégories
         
         this.init();
     }
     
-    init() {
+    async init() {
         // Vérifier si on est en mode édition
         this.checkEditMode();
+        
+        // Charger les catégories AVANT d'initialiser les événements
+        await this.loadCategories();
         
         // Initialiser les événements
         this.initEvents();
         
-        // Charger les catégories
-        this.loadCategories();
-        
-        // Initialiser Select2
+        // Initialiser Select2 avec les catégories
         this.initSelect2();
         
         // Initialiser les onglets
         this.initTabs();
+        
+        // Remplir le select des catégories
+        this.populateCategorySelect();
     }
     
     checkEditMode() {
@@ -39,7 +43,7 @@ class AdminProducts {
         }
     }
     
-    initEvents() {
+    async initEvents() {
         // Navigation des onglets
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -60,72 +64,158 @@ class AdminProducts {
         const trackQuantityCheckbox = document.getElementById('trackQuantity');
         const inventoryFields = document.getElementById('inventoryFields');
         
-        trackQuantityCheckbox.addEventListener('change', () => {
-            inventoryFields.style.display = trackQuantityCheckbox.checked ? 'block' : 'none';
-        });
+        if (trackQuantityCheckbox && inventoryFields) {
+            trackQuantityCheckbox.addEventListener('change', () => {
+                inventoryFields.style.display = trackQuantityCheckbox.checked ? 'block' : 'none';
+            });
+        }
         
         // Upload d'images
         const imageUploadArea = document.getElementById('imageUploadArea');
         const imageInput = document.getElementById('imageInput');
         
-        imageUploadArea.addEventListener('click', () => {
-            imageInput.click();
-        });
-        
-        imageInput.addEventListener('change', (e) => {
-            this.handleImageUpload(e.target.files);
-        });
+        if (imageUploadArea && imageInput) {
+            imageUploadArea.addEventListener('click', () => {
+                imageInput.click();
+            });
+            
+            imageInput.addEventListener('change', (e) => {
+                this.handleImageUpload(e.target.files);
+            });
+        }
         
         // Drag and drop pour images
-        imageUploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            imageUploadArea.style.borderColor = 'var(--primary-color)';
-            imageUploadArea.style.backgroundColor = 'rgba(44, 62, 80, 0.05)';
-        });
-        
-        imageUploadArea.addEventListener('dragleave', () => {
-            imageUploadArea.style.borderColor = 'var(--light-gray)';
-            imageUploadArea.style.backgroundColor = '';
-        });
-        
-        imageUploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            imageUploadArea.style.borderColor = 'var(--light-gray)';
-            imageUploadArea.style.backgroundColor = '';
+        if (imageUploadArea) {
+            imageUploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                imageUploadArea.style.borderColor = 'var(--primary-color)';
+                imageUploadArea.style.backgroundColor = 'rgba(44, 62, 80, 0.05)';
+            });
             
-            if (e.dataTransfer.files.length) {
-                this.handleImageUpload(e.dataTransfer.files);
-            }
-        });
+            imageUploadArea.addEventListener('dragleave', () => {
+                imageUploadArea.style.borderColor = 'var(--light-gray)';
+                imageUploadArea.style.backgroundColor = '';
+            });
+            
+            imageUploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                imageUploadArea.style.borderColor = 'var(--light-gray)';
+                imageUploadArea.style.backgroundColor = '';
+                
+                if (e.dataTransfer.files.length) {
+                    this.handleImageUpload(e.dataTransfer.files);
+                }
+            });
+        }
         
         // Options et variantes
-        document.getElementById('addOptionBtn').addEventListener('click', () => {
-            this.addOption();
-        });
+        const addOptionBtn = document.getElementById('addOptionBtn');
+        if (addOptionBtn) {
+            addOptionBtn.addEventListener('click', () => {
+                this.addOption();
+            });
+        }
         
         // Annuler
-        document.getElementById('cancelBtn').addEventListener('click', () => {
-            window.location.href = 'products-list.html';
-        });
+        const cancelBtn = document.getElementById('cancelBtn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                window.location.href = 'products-list.html';
+            });
+        }
         
         // Soumission du formulaire
-        document.getElementById('productForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.saveProduct();
+        const productForm = document.getElementById('productForm');
+        if (productForm) {
+            productForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.saveProduct();
+            });
+        }
+    }
+    
+    async loadCategories() {
+        try {
+            console.log('Chargement des catégories...');
+            const response = await fetch(`${this.apiUrl}/categories`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.categories = data.data;
+                console.log('Catégories chargées:', this.categories);
+            } else {
+                console.error('Erreur API:', data.error);
+                this.loadDefaultCategories();
+            }
+        } catch (error) {
+            console.error('Erreur chargement catégories:', error);
+            this.loadDefaultCategories();
+        }
+    }
+    
+    loadDefaultCategories() {
+        // Catégories par défaut si l'API échoue
+        this.categories = [
+            { _id: '1', name: 'Robes', name_en: 'Dresses', name_es: 'Vestidos' },
+            { _id: '2', name: 'Pantalons', name_en: 'Pants', name_es: 'Pantalones' },
+            { _id: '3', name: 'Jupes', name_en: 'Skirts', name_es: 'Faldas' },
+            { _id: '4', name: 'Chemises', name_en: 'Shirts', name_es: 'Camisas' },
+            { _id: '5', name: 'Chaussures', name_en: 'Shoes', name_es: 'Zapatos' },
+            { _id: '6', name: 'Bijoux', name_en: 'Jewelry', name_es: 'Joyas' },
+            { _id: '7', name: 'Accessoires', name_en: 'Accessories', name_es: 'Accesorios' },
+            { _id: '8', name: 'Sacs', name_en: 'Bags', name_es: 'Bolsos' }
+        ];
+        console.log('Catégories par défaut chargées');
+    }
+    
+    populateCategorySelect() {
+        const categorySelect = document.getElementById('category');
+        if (!categorySelect) {
+            console.error('Select de catégorie non trouvé');
+            return;
+        }
+        
+        // Vider les options existantes (sauf la première)
+        while (categorySelect.options.length > 1) {
+            categorySelect.remove(1);
+        }
+        
+        // Ajouter les catégories
+        this.categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category._id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
         });
+        
+        console.log('Catégories ajoutées au select:', this.categories.length);
     }
     
     initSelect2() {
-        $('#category').select2({
-            placeholder: 'Sélectionner une catégorie',
-            allowClear: true
-        });
+        const categorySelect = $('#category');
+        if (categorySelect.length) {
+            categorySelect.select2({
+                placeholder: 'Sélectionner une catégorie',
+                allowClear: true,
+                width: '100%'
+            });
+            
+            console.log('Select2 initialisé sur la catégorie');
+        }
         
-        $('#tags').select2({
-            tags: true,
-            tokenSeparators: [','],
-            placeholder: 'Ajouter des tags'
-        });
+        const tagsSelect = $('#tags');
+        if (tagsSelect.length) {
+            tagsSelect.select2({
+                tags: true,
+                tokenSeparators: [','],
+                placeholder: 'Ajouter des tags'
+            });
+        }
     }
     
     initTabs() {
@@ -144,8 +234,11 @@ class AdminProducts {
         });
         
         // Activer l'onglet sélectionné
-        document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
-        document.getElementById(`${tabId}-tab`).classList.add('active');
+        const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+        const tabContent = document.getElementById(`${tabId}-tab`);
+        
+        if (tabBtn) tabBtn.classList.add('active');
+        if (tabContent) tabContent.classList.add('active');
     }
     
     switchLanguage(lang) {
@@ -159,89 +252,34 @@ class AdminProducts {
         });
         
         // Activer la langue sélectionnée
-        document.querySelector(`.language-tab[data-lang="${lang}"]`).classList.add('active');
-        document.querySelector(`.language-content[data-lang="${lang}"]`).classList.add('active');
-    }
-    
-    async loadCategories() {
-        try {
-            const response = await fetch(`${this.apiUrl}/categories`);
-            const data = await response.json();
-            
-            if (data.success) {
-                const categorySelect = document.getElementById('category');
-                
-                data.data.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category._id;
-                    option.textContent = category.name;
-                    categorySelect.appendChild(option);
-                });
-                
-                // Re-initialiser Select2
-                $('#category').trigger('change');
-            }
-        } catch (error) {
-            console.error('Erreur chargement catégories:', error);
-        }
+        const langTab = document.querySelector(`.language-tab[data-lang="${lang}"]`);
+        const langContent = document.querySelector(`.language-content[data-lang="${lang}"]`);
+        
+        if (langTab) langTab.classList.add('active');
+        if (langContent) langContent.classList.add('active');
     }
     
     async loadProduct(productId) {
         try {
+            console.log('Chargement du produit:', productId);
             const response = await fetch(`${this.apiUrl}/products/${productId}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
             
             if (data.success) {
                 const product = data.data;
+                console.log('Produit chargé:', product);
                 
                 // Remplir le formulaire
-                document.getElementById('name_fr').value = product.name;
-                document.getElementById('name_en').value = product.name_en;
-                document.getElementById('name_es').value = product.name_es;
+                this.fillProductForm(product);
                 
-                document.getElementById('description_fr').value = product.description;
-                document.getElementById('description_en').value = product.description_en;
-                document.getElementById('description_es').value = product.description_es;
-                
-                $('#category').val(product.category._id).trigger('change');
-                
-                document.getElementById('sku').value = product.sku || '';
-                document.getElementById('barcode').value = product.barcode || '';
-                
-                if (product.tags && product.tags.length > 0) {
-                    $('#tags').val(product.tags).trigger('change');
-                }
-                
-                document.getElementById('status').value = product.status;
-                document.getElementById('isFeatured').checked = product.isFeatured;
-                
-                document.getElementById('price').value = product.price;
-                document.getElementById('comparePrice').value = product.comparePrice || '';
-                document.getElementById('cost').value = product.cost || '';
-                
-                document.getElementById('trackQuantity').checked = product.trackQuantity;
-                document.getElementById('quantity').value = product.quantity || 0;
-                
-                if (product.trackQuantity) {
-                    document.getElementById('inventoryFields').style.display = 'block';
-                }
-                
-                // Charger les images
-                if (product.images && product.images.length > 0) {
-                    this.images = product.images;
-                    this.renderImages();
-                }
-                
-                // Charger les options et variantes
-                if (product.options && product.options.length > 0) {
-                    this.options = product.options;
-                    this.renderOptions();
-                }
-                
-                if (product.variants && product.variants.length > 0) {
-                    this.variants = product.variants;
-                    this.renderVariants();
-                }
+            } else {
+                console.error('Erreur chargement produit:', data.error);
+                alert('Erreur lors du chargement du produit');
             }
         } catch (error) {
             console.error('Erreur chargement produit:', error);
@@ -249,8 +287,95 @@ class AdminProducts {
         }
     }
     
+    fillProductForm(product) {
+        // Remplir les champs de base
+        const nameFr = document.getElementById('name_fr');
+        const nameEn = document.getElementById('name_en');
+        const nameEs = document.getElementById('name_es');
+        
+        if (nameFr) nameFr.value = product.name || '';
+        if (nameEn) nameEn.value = product.name_en || product.name || '';
+        if (nameEs) nameEs.value = product.name_es || product.name || '';
+        
+        // Description
+        const descFr = document.getElementById('description_fr');
+        const descEn = document.getElementById('description_en');
+        const descEs = document.getElementById('description_es');
+        
+        if (descFr) descFr.value = product.description || '';
+        if (descEn) descEn.value = product.description_en || product.description || '';
+        if (descEs) descEs.value = product.description_es || product.description || '';
+        
+        // Catégorie
+        const categorySelect = document.getElementById('category');
+        if (categorySelect && product.category) {
+            categorySelect.value = product.category._id || product.category;
+            
+            // Mettre à jour Select2
+            $('#category').val(product.category._id || product.category).trigger('change');
+        }
+        
+        // SKU, barcode
+        const sku = document.getElementById('sku');
+        const barcode = document.getElementById('barcode');
+        
+        if (sku) sku.value = product.sku || '';
+        if (barcode) barcode.value = product.barcode || '';
+        
+        // Tags
+        if (product.tags && product.tags.length > 0) {
+            $('#tags').val(product.tags).trigger('change');
+        }
+        
+        // Statut
+        const status = document.getElementById('status');
+        if (status) status.value = product.status || 'active';
+        
+        // Produit en vedette
+        const isFeatured = document.getElementById('isFeatured');
+        if (isFeatured) isFeatured.checked = product.isFeatured || false;
+        
+        // Prix
+        const price = document.getElementById('price');
+        const comparePrice = document.getElementById('comparePrice');
+        const cost = document.getElementById('cost');
+        
+        if (price) price.value = product.price || 0;
+        if (comparePrice) comparePrice.value = product.comparePrice || '';
+        if (cost) cost.value = product.cost || '';
+        
+        // Inventaire
+        const trackQuantity = document.getElementById('trackQuantity');
+        const quantity = document.getElementById('quantity');
+        const inventoryFields = document.getElementById('inventoryFields');
+        
+        if (trackQuantity) trackQuantity.checked = product.trackQuantity || false;
+        if (quantity) quantity.value = product.quantity || 0;
+        if (inventoryFields) {
+            inventoryFields.style.display = trackQuantity?.checked ? 'block' : 'none';
+        }
+        
+        // Charger les images
+        if (product.images && product.images.length > 0) {
+            this.images = product.images;
+            this.renderImages();
+        }
+        
+        // Charger les options et variantes
+        if (product.options && product.options.length > 0) {
+            this.options = product.options;
+            this.renderOptions();
+        }
+        
+        if (product.variants && product.variants.length > 0) {
+            this.variants = product.variants;
+            this.renderVariants();
+        }
+    }
+    
     async handleImageUpload(files) {
-        // Simuler l'upload (dans la vraie app, uploader vers Cloudinary/S3)
+        // Pour l'instant, simulons l'upload avec des URLs locales
+        // Dans une vraie app, vous uploaderiez vers un serveur
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             
@@ -278,11 +403,14 @@ class AdminProducts {
         }
         
         // Réinitialiser l'input file
-        document.getElementById('imageInput').value = '';
+        const imageInput = document.getElementById('imageInput');
+        if (imageInput) imageInput.value = '';
     }
     
     renderImages() {
         const container = document.getElementById('imagesPreview');
+        if (!container) return;
+        
         container.innerHTML = '';
         
         this.images.forEach((image, index) => {
@@ -344,10 +472,14 @@ class AdminProducts {
     
     addOption() {
         const template = document.getElementById('optionTemplate');
+        if (!template) return;
+        
         const clone = template.content.cloneNode(true);
         const optionItem = clone.querySelector('.option-item');
         
         const container = document.getElementById('optionsContainer');
+        if (!container) return;
+        
         container.appendChild(optionItem);
         
         // Ajouter les événements pour cette option
@@ -360,18 +492,22 @@ class AdminProducts {
     initOptionEvents(optionItem) {
         // Supprimer l'option
         const deleteBtn = optionItem.querySelector('.delete-option');
-        deleteBtn.addEventListener('click', () => {
-            if (confirm('Supprimer cette option ?')) {
-                optionItem.remove();
-                this.generateVariants();
-            }
-        });
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                if (confirm('Supprimer cette option ?')) {
+                    optionItem.remove();
+                    this.generateVariants();
+                }
+            });
+        }
         
         // Ajouter une valeur
         const addValueBtn = optionItem.querySelector('.add-value');
-        addValueBtn.addEventListener('click', () => {
-            this.addOptionValue(optionItem);
-        });
+        if (addValueBtn) {
+            addValueBtn.addEventListener('click', () => {
+                this.addOptionValue(optionItem);
+            });
+        }
         
         // Supprimer une valeur
         const deleteValueBtns = optionItem.querySelectorAll('.delete-value');
@@ -393,7 +529,7 @@ class AdminProducts {
             setTimeout(() => this.generateVariants(), 100);
         };
         
-        nameInput.addEventListener('input', handleChange);
+        if (nameInput) nameInput.addEventListener('input', handleChange);
         valueInputs.forEach(input => {
             input.addEventListener('input', handleChange);
         });
@@ -401,6 +537,7 @@ class AdminProducts {
     
     addOptionValue(optionItem) {
         const valuesContainer = optionItem.querySelector('.option-values');
+        if (!valuesContainer) return;
         
         const valueDiv = document.createElement('div');
         valueDiv.className = 'option-value';
@@ -417,18 +554,22 @@ class AdminProducts {
         
         // Événement pour supprimer la valeur
         const deleteBtn = valueDiv.querySelector('.delete-value');
-        deleteBtn.addEventListener('click', () => {
-            if (confirm('Supprimer cette valeur ?')) {
-                valueDiv.remove();
-                this.generateVariants();
-            }
-        });
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                if (confirm('Supprimer cette valeur ?')) {
+                    valueDiv.remove();
+                    this.generateVariants();
+                }
+            });
+        }
         
         // Écouter les changements
         const valueInput = valueDiv.querySelector('.value-input');
-        valueInput.addEventListener('input', () => {
-            setTimeout(() => this.generateVariants(), 100);
-        });
+        if (valueInput) {
+            valueInput.addEventListener('input', () => {
+                setTimeout(() => this.generateVariants(), 100);
+            });
+        }
         
         // Générer les variantes
         this.generateVariants();
@@ -440,9 +581,10 @@ class AdminProducts {
         const options = [];
         
         optionItems.forEach(item => {
-            const name = item.querySelector('.option-name').value.trim();
-            const values = [];
+            const nameInput = item.querySelector('.option-name');
+            const name = nameInput ? nameInput.value.trim() : '';
             
+            const values = [];
             item.querySelectorAll('.value-input').forEach(input => {
                 const value = input.value.trim();
                 if (value) {
@@ -458,14 +600,22 @@ class AdminProducts {
         this.options = options;
         
         // Si pas d'options, cacher la section variantes
+        const variantsSection = document.getElementById('variantsSection');
+        if (variantsSection) {
+            variantsSection.style.display = options.length === 0 ? 'none' : 'block';
+        }
+        
         if (options.length === 0) {
-            document.getElementById('variantsSection').style.display = 'none';
             this.variants = [];
             return;
         }
         
         // Générer toutes les combinaisons possibles
         const combinations = this.getCombinations(options);
+        
+        // Récupérer le prix de base
+        const priceInput = document.getElementById('price');
+        const basePrice = priceInput ? parseFloat(priceInput.value) || 0 : 0;
         
         // Générer les variantes
         this.variants = combinations.map(combination => {
@@ -486,14 +636,11 @@ class AdminProducts {
             return {
                 options: variantOptions,
                 sku: '',
-                price: parseFloat(document.getElementById('price').value) || 0,
-                comparePrice: parseFloat(document.getElementById('comparePrice').value) || 0,
+                price: basePrice,
+                comparePrice: 0,
                 quantity: 0
             };
         });
-        
-        // Afficher la section variantes
-        document.getElementById('variantsSection').style.display = 'block';
         
         // Rendre les variantes
         this.renderVariants();
@@ -518,6 +665,8 @@ class AdminProducts {
     
     renderVariants() {
         const tbody = document.getElementById('variantsBody');
+        if (!tbody) return;
+        
         tbody.innerHTML = '';
         
         if (this.variants.length === 0) {
@@ -573,6 +722,8 @@ class AdminProducts {
     
     renderOptions() {
         const container = document.getElementById('optionsContainer');
+        if (!container) return;
+        
         container.innerHTML = '';
         
         this.options.forEach(option => {
@@ -582,17 +733,23 @@ class AdminProducts {
             const optionItems = container.querySelectorAll('.option-item');
             const lastOption = optionItems[optionItems.length - 1];
             
-            lastOption.querySelector('.option-name').value = option.name;
-            
-            // Supprimer la valeur par défaut
-            lastOption.querySelector('.option-values').innerHTML = '';
-            
-            // Ajouter les valeurs
-            option.values.forEach(value => {
-                this.addOptionValue(lastOption);
-                const valueInputs = lastOption.querySelectorAll('.value-input');
-                valueInputs[valueInputs.length - 1].value = value;
-            });
+            if (lastOption) {
+                const nameInput = lastOption.querySelector('.option-name');
+                if (nameInput) nameInput.value = option.name;
+                
+                // Supprimer la valeur par défaut
+                const valuesContainer = lastOption.querySelector('.option-values');
+                if (valuesContainer) valuesContainer.innerHTML = '';
+                
+                // Ajouter les valeurs
+                option.values.forEach(value => {
+                    this.addOptionValue(lastOption);
+                    const valueInputs = lastOption.querySelectorAll('.value-input');
+                    if (valueInputs.length > 0) {
+                        valueInputs[valueInputs.length - 1].value = value;
+                    }
+                });
+            }
         });
         
         // Générer les variantes
@@ -602,50 +759,43 @@ class AdminProducts {
     async saveProduct() {
         try {
             // Récupérer les données du formulaire
-            const formData = {
-                name: document.getElementById('name_fr').value.trim(),
-                name_en: document.getElementById('name_en').value.trim(),
-                name_es: document.getElementById('name_es').value.trim(),
-                description: document.getElementById('description_fr').value.trim(),
-                description_en: document.getElementById('description_en').value.trim(),
-                description_es: document.getElementById('description_es').value.trim(),
-                category: document.getElementById('category').value,
-                price: parseFloat(document.getElementById('price').value),
-                comparePrice: document.getElementById('comparePrice').value ? parseFloat(document.getElementById('comparePrice').value) : undefined,
-                cost: document.getElementById('cost').value ? parseFloat(document.getElementById('cost').value) : undefined,
-                sku: document.getElementById('sku').value.trim() || undefined,
-                barcode: document.getElementById('barcode').value.trim() || undefined,
-                trackQuantity: document.getElementById('trackQuantity').checked,
-                quantity: document.getElementById('trackQuantity').checked ? parseInt(document.getElementById('quantity').value) || 0 : 0,
-                images: this.images,
-                status: document.getElementById('status').value,
-                isFeatured: document.getElementById('isFeatured').checked,
-                tags: $('#tags').val() || [],
-                options: this.options,
-                variants: this.variants
-            };
+            const formData = this.getFormData();
             
             // Validation
-            if (!formData.name || !formData.category || !formData.price) {
+            if (!this.validateFormData(formData)) {
                 alert('Veuillez remplir tous les champs obligatoires');
                 return;
             }
             
             const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+            const originalText = submitBtn ? submitBtn.innerHTML : '';
+            
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+            }
+            
+            // Vérifier l'authentification
+            if (!window.adminAuth || !window.adminAuth.token) {
+                alert('Vous devez être connecté pour ajouter un produit');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+                return;
+            }
             
             let response;
             
             if (this.currentProductId) {
                 // Mise à jour
-                response = await adminAuth.fetchWithAuth(`/products/${this.currentProductId}`, {
+                response = await window.adminAuth.fetchWithAuth(`/products/${this.currentProductId}`, {
                     method: 'PUT',
                     body: JSON.stringify(formData)
                 });
             } else {
                 // Création
-                response = await adminAuth.fetchWithAuth('/products', {
+                response = await window.adminAuth.fetchWithAuth('/products', {
                     method: 'POST',
                     body: JSON.stringify(formData)
                 });
@@ -662,7 +812,7 @@ class AdminProducts {
             
         } catch (error) {
             console.error('Erreur sauvegarde produit:', error);
-            alert('Erreur lors de l\'enregistrement du produit');
+            alert('Erreur lors de l\'enregistrement du produit: ' + error.message);
         } finally {
             const submitBtn = document.getElementById('submitBtn');
             if (submitBtn) {
@@ -671,9 +821,66 @@ class AdminProducts {
             }
         }
     }
+    
+    getFormData() {
+        return {
+            name: document.getElementById('name_fr')?.value.trim() || '',
+            name_en: document.getElementById('name_en')?.value.trim() || '',
+            name_es: document.getElementById('name_es')?.value.trim() || '',
+            description: document.getElementById('description_fr')?.value.trim() || '',
+            description_en: document.getElementById('description_en')?.value.trim() || '',
+            description_es: document.getElementById('description_es')?.value.trim() || '',
+            category: document.getElementById('category')?.value || '',
+            price: parseFloat(document.getElementById('price')?.value) || 0,
+            comparePrice: document.getElementById('comparePrice')?.value ? parseFloat(document.getElementById('comparePrice').value) : undefined,
+            cost: document.getElementById('cost')?.value ? parseFloat(document.getElementById('cost').value) : undefined,
+            sku: document.getElementById('sku')?.value.trim() || undefined,
+            barcode: document.getElementById('barcode')?.value.trim() || undefined,
+            trackQuantity: document.getElementById('trackQuantity')?.checked || false,
+            quantity: document.getElementById('trackQuantity')?.checked ? parseInt(document.getElementById('quantity')?.value) || 0 : 0,
+            images: this.images,
+            status: document.getElementById('status')?.value || 'active',
+            isFeatured: document.getElementById('isFeatured')?.checked || false,
+            tags: $('#tags').val() || [],
+            options: this.options,
+            variants: this.variants
+        };
+    }
+    
+    validateFormData(data) {
+        // Validation de base
+        if (!data.name || !data.category || !data.price || data.price <= 0) {
+            return false;
+        }
+        
+        // Vérifier que la catégorie existe dans la liste
+        const categoryExists = this.categories.some(cat => cat._id === data.category);
+        if (!categoryExists) {
+            alert('Catégorie invalide');
+            return false;
+        }
+        
+        return true;
+    }
 }
 
 // Initialiser la gestion des produits
 document.addEventListener('DOMContentLoaded', () => {
-    window.adminProducts = new AdminProducts();
+    // Vérifier si nous sommes sur la page d'ajout/modification de produit
+    if (window.location.pathname.includes('products.html') && 
+        !window.location.pathname.includes('products-list.html')) {
+        
+        // Attendre que l'authentification soit chargée
+        if (window.adminAuth) {
+            window.adminProducts = new AdminProducts();
+        } else {
+            // Si adminAuth n'est pas encore chargé, attendre
+            const checkAuth = setInterval(() => {
+                if (window.adminAuth) {
+                    clearInterval(checkAuth);
+                    window.adminProducts = new AdminProducts();
+                }
+            }, 100);
+        }
+    }
 });
