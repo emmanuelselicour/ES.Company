@@ -1,587 +1,399 @@
+<!-- admin-panel/products.html - VERSION SIMPLIFIÉE -->
 <!DOCTYPE html>
-<html lang="fr" class="lang-fr">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produits | E-S COMPANY | Mode et Accessoires</title>
-    <link rel="icon" type="image/x-icon" href="images/logo.png">
+    <title>E-S COMPANY | Gestion des Produits</title>
+    <link rel="icon" type="image/x-icon" href="../images/logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-        .products-page {
-            padding: 60px 0;
-            background-color: var(--light-color);
-            min-height: 70vh;
-        }
+        /* Styles inchangés... */
+        .product-form-container { max-width: 1000px; margin: 0 auto; }
+        .form-section { background-color: white; border-radius: var(--border-radius); padding: 25px; margin-bottom: 25px; box-shadow: var(--box-shadow); }
+        .form-section h3 { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--light-gray); color: var(--primary-color); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--dark-color); }
+        .form-group .label-info { font-size: 0.85rem; color: var(--gray-color); margin-top: 5px; }
+        .form-control { width: 100%; padding: 12px 15px; border: 1px solid var(--light-gray); border-radius: var(--border-radius); font-family: 'Poppins', sans-serif; font-size: 1rem; transition: var(--transition); }
+        .form-control:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1); }
+        textarea.form-control { min-height: 120px; resize: vertical; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 15px; padding-top: 20px; border-top: 1px solid var(--light-gray); }
         
-        .page-header {
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-        }
-        
-        .page-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: var(--dark-color);
-        }
-        
-        .page-header p {
-            color: var(--gray-color);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .products-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .products-count {
-            font-weight: 500;
-            color: var(--dark-color);
-        }
-        
-        .products-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-btn {
-            padding: 10px 20px;
-            background-color: white;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius);
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            color: var(--dark-color);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-        }
-        
-        .filter-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .sort-select {
-            padding: 10px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            color: var(--dark-color);
-            background-color: white;
-            cursor: pointer;
-        }
-        
-        .sort-select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-        
-        .refresh-btn {
-            padding: 10px 15px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: var(--transition);
-        }
-        
-        .refresh-btn:hover {
-            background-color: #1a252f;
-        }
-        
-        .filters-panel {
-            background-color: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            margin-bottom: 40px;
-            box-shadow: var(--box-shadow);
-            display: none;
-        }
-        
-        .filters-panel.active {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .filters-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--light-gray);
-        }
-        
-        .filters-header h3 {
-            margin-bottom: 0;
-            color: var(--dark-color);
-        }
-        
-        .close-filters {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            color: var(--gray-color);
-            cursor: pointer;
-        }
-        
-        .filters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .filter-group {
-            margin-bottom: 20px;
-        }
-        
-        .filter-group h4 {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-            color: var(--dark-color);
-        }
-        
-        .filter-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .filter-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .filter-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary-color);
-        }
-        
-        .filter-option label {
-            cursor: pointer;
-            color: var(--gray-color);
-        }
-        
-        .price-range {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .price-input {
-            flex: 1;
+        /* Ajout pour le chargement */
+        .loading-categories {
             padding: 10px;
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius);
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .filter-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--light-gray);
-        }
-        
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 50px;
-        }
-        
-        .pagination-btn {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--light-gray);
-            background-color: white;
-            border-radius: var(--border-radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .pagination-btn:hover:not(.disabled) {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .pagination-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .pagination-numbers {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .page-number {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--light-gray);
-            background-color: white;
-            border-radius: var(--border-radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .page-number.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        
-        .page-number:hover:not(.active) {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .no-products {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-        }
-        
-        .no-products i {
-            font-size: 4rem;
-            color: var(--light-gray);
-            margin-bottom: 20px;
-        }
-        
-        .no-products h3 {
-            margin-bottom: 15px;
-            color: var(--dark-color);
-        }
-        
-        @media (max-width: 768px) {
-            .products-toolbar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .products-controls {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .filters-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .page-header h1 {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .products-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .filter-btn, .sort-select, .refresh-btn {
-                width: 100%;
-                justify-content: center;
-            }
+            color: var(--gray-color);
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <!-- Header avec navigation -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <a href="index.html">
-                        <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
-                        <span>E-S COMPANY</span>
+    <div class="admin-container">
+        <!-- Sidebar... (inchangé) -->
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Nouveau Produit</h1>
+                    <p>Ajouter ou modifier un produit dans le catalogue</p>
+                </div>
+                <div class="header-right">
+                    <a href="products-list.html" class="btn btn-outline">
+                        <i class="fas fa-list"></i> Voir tous les produits
                     </a>
                 </div>
-                
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="index.html"><i class="fas fa-home"></i> <span data-lang="fr">Accueil</span><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a></li>
-                        <li><a href="products.html" class="active"><i class="fas fa-store"></i> <span data-lang="fr">Produits</span><span data-lang="en">Products</span><span data-lang="es">Productos</span></a></li>
-                        <li><a href="about.html"><i class="fas fa-info-circle"></i> <span data-lang="fr">À propos</span><span data-lang="en">About</span><span data-lang="es">Nosotros</span></a></li>
-                        <li><a href="contact.html"><i class="fas fa-envelope"></i> <span data-lang="fr">Contact</span><span data-lang="en">Contact</span><span data-lang="es">Contacto</span></a></li>
-                    </ul>
-                </nav>
-                
-                <div class="header-actions">
-                    <div class="language-selector">
-                        <button class="lang-btn" data-lang="fr">FR</button>
-                        <button class="lang-btn" data-lang="en">EN</button>
-                        <button class="lang-btn" data-lang="es">ES</button>
-                    </div>
-                    <div class="cart-icon">
-                        <a href="#"><i class="fas fa-shopping-cart"></i> <span class="cart-count">0</span></a>
-                    </div>
-                    <button class="menu-toggle" id="menuToggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Page Produits -->
-    <section class="products-page">
-        <div class="container">
-            <!-- En-tête de page -->
-            <div class="page-header">
-                <h1 data-lang="fr">Notre Collection</h1>
-                <h1 data-lang="en">Our Collection</h1>
-                <h1 data-lang="es">Nuestra Colección</h1>
-                <p data-lang="fr">Découvrez notre sélection exclusive de produits de mode et accessoires</p>
-                <p data-lang="en">Discover our exclusive selection of fashion products and accessories</p>
-                <p data-lang="es">Descubra nuestra exclusiva selección de productos de moda y accesorios</p>
-            </div>
+            </header>
             
-            <!-- Barre d'outils -->
-            <div class="products-toolbar">
-                <div class="products-count">
-                    <span id="productsCount" data-lang="fr">Chargement des produits...</span>
-                    <span id="productsCount" data-lang="en">Loading products...</span>
-                    <span id="productsCount" data-lang="es">Cargando productos...</span>
-                </div>
-                
-                <div class="products-controls">
-                    <button class="filter-btn" id="filterToggle">
-                        <i class="fas fa-filter"></i>
-                        <span data-lang="fr">Filtrer</span>
-                        <span data-lang="en">Filter</span>
-                        <span data-lang="es">Filtrar</span>
-                    </button>
+            <div class="admin-content">
+                <div class="product-form-container">
+                    <!-- Navigation des onglets -->
+                    <div class="tab-nav">
+                        <button class="tab-btn active" data-tab="basic">Informations de base</button>
+                        <button class="tab-btn" data-tab="pricing">Prix & Inventaire</button>
+                        <button class="tab-btn" data-tab="media">Images</button>
+                    </div>
                     
-                    <select class="sort-select" id="sortSelect">
-                        <option value="createdAt:desc" data-lang="fr">Nouveautés</option>
-                        <option value="createdAt:desc" data-lang="en">Newest</option>
-                        <option value="createdAt:desc" data-lang="es">Novedades</option>
-                        
-                        <option value="price:asc" data-lang="fr">Prix croissant</option>
-                        <option value="price:asc" data-lang="en">Price: Low to High</option>
-                        <option value="price:asc" data-lang="es">Precio: Bajo a Alto</option>
-                        
-                        <option value="price:desc" data-lang="fr">Prix décroissant</option>
-                        <option value="price:desc" data-lang="en">Price: High to Low</option>
-                        <option value="price:desc" data-lang="es">Precio: Alto a Bajo</option>
-                        
-                        <option value="name:asc" data-lang="fr">Nom A-Z</option>
-                        <option value="name:asc" data-lang="en">Name A-Z</option>
-                        <option value="name:asc" data-lang="es">Nombre A-Z</option>
-                    </select>
-                    
-                    <button class="refresh-btn" id="refreshProducts">
-                        <i class="fas fa-random"></i>
-                        <span data-lang="fr">Mélanger</span>
-                        <span data-lang="en">Shuffle</span>
-                        <span data-lang="es">Mezclar</span>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Panneau de filtres -->
-            <div class="filters-panel" id="filtersPanel">
-                <div class="filters-header">
-                    <h3 data-lang="fr">Filtres</h3>
-                    <h3 data-lang="en">Filters</h3>
-                    <h3 data-lang="es">Filtros</h3>
-                    <button class="close-filters" id="closeFilters">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="filters-grid">
-                    <!-- Catégories -->
-                    <div class="filter-group">
-                        <h4 data-lang="fr">Catégories</h4>
-                        <h4 data-lang="en">Categories</h4>
-                        <h4 data-lang="es">Categorías</h4>
-                        <div class="filter-options" id="categoryFilters">
-                            <!-- Les catégories seront chargées dynamiquement -->
-                            <div class="loading-spinner-small">
-                                <div class="spinner"></div>
+                    <!-- Formulaire produit -->
+                    <form id="productForm">
+                        <!-- Onglet Informations de base -->
+                        <div class="tab-content active" id="basic-tab">
+                            <div class="form-section">
+                                <h3>Informations du produit</h3>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="name_fr">Nom du produit (Français) *</label>
+                                        <input type="text" id="name_fr" name="name" class="form-control" required placeholder="Ex: Robe d'été élégante">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="name_en">Product Name (English) *</label>
+                                        <input type="text" id="name_en" name="name_en" class="form-control" required placeholder="Ex: Elegant summer dress">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="name_es">Nombre del Producto (Español) *</label>
+                                        <input type="text" id="name_es" name="name_es" class="form-control" required placeholder="Ex: Vestido elegante de verano">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="category">Catégorie *</label>
+                                        <select id="category" name="category" class="form-control" required>
+                                            <option value="">Chargement des catégories...</option>
+                                            <!-- Les catégories seront chargées dynamiquement -->
+                                        </select>
+                                        <div class="label-info">Sélectionnez la catégorie principale du produit</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Descriptions -->
+                                <div class="form-group">
+                                    <label for="description_fr">Description (Français) *</label>
+                                    <textarea id="description_fr" name="description" class="form-control" required placeholder="Décrivez le produit en français..."></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="description_en">Description (English) *</label>
+                                    <textarea id="description_en" name="description_en" class="form-control" required placeholder="Describe the product in English..."></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="description_es">Descripción (Español) *</label>
+                                    <textarea id="description_es" name="description_es" class="form-control" required placeholder="Describa el producto en español..."></textarea>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="sku">SKU (Référence)</label>
+                                        <input type="text" id="sku" name="sku" class="form-control" placeholder="Ex: ES-ROBE001">
+                                        <div class="label-info">Laisser vide pour générer automatiquement</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="barcode">Code-barres</label>
+                                        <input type="text" id="barcode" name="barcode" class="form-control" placeholder="Ex: 123456789012">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="tags">Tags</label>
+                                    <input type="text" id="tags" name="tags" class="form-control" placeholder="robe, été, élégant, femme">
+                                    <div class="label-info">Séparez les tags par des virgules</div>
+                                </div>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="status">Statut</label>
+                                        <select id="status" name="status" class="form-control">
+                                            <option value="active">Actif</option>
+                                            <option value="draft">Brouillon</option>
+                                            <option value="archived">Archivé</option>
+                                            <option value="out_of_stock">Rupture de stock</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label style="display: flex; align-items: center; gap: 10px; margin-top: 25px;">
+                                            <input type="checkbox" id="isFeatured" name="isFeatured" style="width: 18px; height: 18px;">
+                                            <span>Produit en vedette</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Prix -->
-                    <div class="filter-group">
-                        <h4 data-lang="fr">Prix</h4>
-                        <h4 data-lang="en">Price</h4>
-                        <h4 data-lang="es">Precio</h4>
-                        <div class="price-range">
-                            <input type="number" id="minPrice" class="price-input" placeholder="Min" min="0">
-                            <span>-</span>
-                            <input type="number" id="maxPrice" class="price-input" placeholder="Max" min="0">
-                        </div>
-                    </div>
-                    
-                    <!-- Disponibilité -->
-                    <div class="filter-group">
-                        <h4 data-lang="fr">Disponibilité</h4>
-                        <h4 data-lang="en">Availability</h4>
-                        <h4 data-lang="es">Disponibilidad</h4>
-                        <div class="filter-options">
-                            <div class="filter-option">
-                                <input type="checkbox" id="inStock" value="in_stock">
-                                <label for="inStock" data-lang="fr">En stock</label>
-                                <label for="inStock" data-lang="en">In stock</label>
-                                <label for="inStock" data-lang="es">En stock</label>
+                        
+                        <!-- Onglet Prix & Inventaire -->
+                        <div class="tab-content" id="pricing-tab">
+                            <div class="form-section">
+                                <h3>Prix</h3>
+                                
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="price">Prix de vente ($) *</label>
+                                        <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" required placeholder="59.99">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="comparePrice">Prix comparatif ($)</label>
+                                        <input type="number" id="comparePrice" name="comparePrice" class="form-control" min="0" step="0.01" placeholder="79.99">
+                                        <div class="label-info">Prix barré pour montrer la promotion</div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="cost">Coût ($)</label>
+                                        <input type="number" id="cost" name="cost" class="form-control" min="0" step="0.01" placeholder="29.99">
+                                        <div class="label-info">Coût d'achat pour calculer la marge</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="filter-option">
-                                <input type="checkbox" id="featured" value="featured">
-                                <label for="featured" data-lang="fr">Produits en vedette</label>
-                                <label for="featured" data-lang="en">Featured products</label>
-                                <label for="featured" data-lang="es">Productos destacados</label>
+                            
+                            <div class="form-section">
+                                <h3>Inventaire</h3>
+                                
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                                    <input type="checkbox" id="trackQuantity" name="trackQuantity" style="width: 18px; height: 18px;">
+                                    <label for="trackQuantity" style="margin: 0;">Suivre la quantité en stock</label>
+                                </div>
+                                
+                                <div class="inventory-section" id="inventoryFields" style="display: none; background-color: #f8f9fa; border-radius: var(--border-radius); padding: 20px;">
+                                    <div class="form-grid">
+                                        <div class="form-group">
+                                            <label for="quantity">Quantité en stock</label>
+                                            <input type="number" id="quantity" name="quantity" class="form-control" min="0" value="0">
+                                            <div class="label-info">Nombre d'unités disponibles</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="filter-actions">
-                    <button class="btn btn-outline" id="clearFilters">
-                        <span data-lang="fr">Effacer tout</span>
-                        <span data-lang="en">Clear all</span>
-                        <span data-lang="es">Limpiar todo</span>
-                    </button>
-                    <button class="btn btn-primary" id="applyFilters">
-                        <span data-lang="fr">Appliquer les filtres</span>
-                        <span data-lang="en">Apply filters</span>
-                        <span data-lang="es">Aplicar filtros</span>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Grille de produits -->
-            <div class="products-grid" id="productsContainer">
-                <!-- Les produits seront chargés dynamiquement -->
-                <div class="loading-spinner">
-                    <div class="spinner"></div>
-                    <p data-lang="fr">Chargement des produits...</p>
-                    <p data-lang="en">Loading products...</p>
-                    <p data-lang="es">Cargando productos...</p>
-                </div>
-            </div>
-            
-            <!-- Pagination -->
-            <div class="pagination" id="pagination" style="display: none;">
-                <button class="pagination-btn" id="prevPage" disabled>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <div class="pagination-numbers" id="pageNumbers">
-                    <!-- Les numéros de page seront générés dynamiquement -->
-                </div>
-                
-                <button class="pagination-btn" id="nextPage">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
-                        <span>E-S COMPANY</span>
-                    </div>
-                    <p data-lang="fr">Votre destination en ligne pour la mode et les accessoires tendances.</p>
-                    <p data-lang="en">Your online destination for fashion and trendy accessories.</p>
-                    <p data-lang="es">Su destino en línea para moda y accesorios de tendencia.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3 data-lang="fr">Liens Rapides</h3>
-                    <h3 data-lang="en">Quick Links</h3>
-                    <h3 data-lang="es">Enlaces Rápidos</h3>
-                    <ul>
-                        <li><a href="index.html" data-lang="fr">Accueil</a><a href="index.html" data-lang="en">Home</a><a href="index.html" data-lang="es">Inicio</a></li>
-                        <li><a href="products.html" data-lang="fr">Produits</a><a href="products.html" data-lang="en">Products</a><a href="products.html" data-lang="es">Productos</a></li>
-                        <li><a href="about.html" data-lang="fr">À propos</a><a href="about.html" data-lang="en">About</a><a href="about.html" data-lang="es">Nosotros</a></li>
-                        <li><a href="contact.html" data-lang="fr">Contact</a><a href="contact.html" data-lang="en">Contact</a><a href="contact.html" data-lang="es">Contacto</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3 data-lang="fr">Contactez-nous</h3>
-                    <h3 data-lang="en">Contact Us</h3>
-                    <h3 data-lang="es">Contáctenos</h3>
-                    <ul class="contact-info">
-                        <li><i class="fas fa-envelope"></i> contact@es-company.com</li>
-                        <li><i class="fas fa-phone"></i> +509 48 00 0000</li>
-                        <li><i class="fas fa-map-marker-alt"></i> <span data-lang="fr">Port-au-Prince, Haïti</span><span data-lang="en">Port-au-Prince, Haiti</span><span data-lang="es">Puerto Príncipe, Haití</span></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3 data-lang="fr">Suivez-nous</h3>
-                    <h3 data-lang="en">Follow Us</h3>
-                    <h3 data-lang="es">Síganos</h3>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                    </div>
+                        
+                        <!-- Onglet Images -->
+                        <div class="tab-content" id="media-tab">
+                            <div class="form-section">
+                                <h3>Images du produit</h3>
+                                
+                                <div class="image-upload-area" id="imageUploadArea">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h4>Glissez-déposez des images ici</h4>
+                                    <p>ou cliquez pour sélectionner des fichiers</p>
+                                    <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
+                                </div>
+                                
+                                <div class="images-preview" id="imagesPreview">
+                                    <!-- Les images prévisualisées apparaîtront ici -->
+                                    <p style="text-align: center; color: var(--gray-color); padding: 20px;">
+                                        Aucune image ajoutée
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Actions du formulaire -->
+                        <div class="form-section">
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline" id="cancelBtn">
+                                    Annuler
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    <i class="fas fa-save"></i> Enregistrer le produit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             
-            <div class="footer-bottom">
-                <p>&copy; 2024 E-S COMPANY. <span data-lang="fr">Tous droits réservés.</span><span data-lang="en">All rights reserved.</span><span data-lang="es">Todos los derechos reservados.</span></p>
-                <p><a href="admin-panel/dashboard.html" class="admin-link"><i class="fas fa-lock"></i> <span data-lang="fr">Admin</span><span data-lang="en">Admin</span><span data-lang="es">Admin</span></a></p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="js/language-switcher.js"></script>
-    <script src="js/product-shuffler.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/products-page.js"></script>
+            <footer class="admin-footer">
+                <p>&copy; 2024 E-S COMPANY - Panel d'administration</p>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="../js/admin-auth.js"></script>
+    <script src="../js/admin-products.js"></script>
+    
+    <script>
+        // Script de secours pour gérer les catégories
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le toggle de l'inventaire
+            const trackQuantity = document.getElementById('trackQuantity');
+            const inventoryFields = document.getElementById('inventoryFields');
+            
+            if (trackQuantity && inventoryFields) {
+                trackQuantity.addEventListener('change', function() {
+                    inventoryFields.style.display = this.checked ? 'block' : 'none';
+                });
+            }
+            
+            // Gérer les onglets
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Désactiver tous les onglets
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Activer l'onglet sélectionné
+                    this.classList.add('active');
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                });
+            });
+            
+            // Gérer l'upload d'images simple
+            const imageUploadArea = document.getElementById('imageUploadArea');
+            const imageInput = document.getElementById('imageInput');
+            const imagesPreview = document.getElementById('imagesPreview');
+            
+            if (imageUploadArea && imageInput) {
+                let images = [];
+                
+                imageUploadArea.addEventListener('click', () => imageInput.click());
+                
+                imageInput.addEventListener('change', function(e) {
+                    const files = Array.from(e.target.files);
+                    
+                    files.forEach((file, index) => {
+                        if (!file.type.startsWith('image/')) {
+                            alert('Seules les images sont autorisées');
+                            return;
+                        }
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const image = {
+                                url: e.target.result,
+                                isMain: images.length === 0
+                            };
+                            images.push(image);
+                            renderImages();
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                    
+                    imageInput.value = '';
+                });
+                
+                function renderImages() {
+                    imagesPreview.innerHTML = '';
+                    
+                    if (images.length === 0) {
+                        imagesPreview.innerHTML = '<p style="text-align: center; color: var(--gray-color); padding: 20px;">Aucune image ajoutée</p>';
+                        return;
+                    }
+                    
+                    images.forEach((image, index) => {
+                        const div = document.createElement('div');
+                        div.className = 'image-preview';
+                        div.innerHTML = `
+                            <img src="${image.url}" alt="Image ${index + 1}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                            <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;">
+                                <button type="button" class="set-main-btn" data-index="${index}" style="width: 30px; height: 30px; border-radius: 50%; background: rgba(0,0,0,0.7); color: white; border: none; cursor: pointer;">
+                                    <i class="fas fa-star"></i>
+                                </button>
+                                <button type="button" class="delete-image-btn" data-index="${index}" style="width: 30px; height: 30px; border-radius: 50%; background: rgba(0,0,0,0.7); color: white; border: none; cursor: pointer;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            ${image.isMain ? '<span style="position: absolute; bottom: 10px; left: 10px; background: var(--secondary-color); color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;">Principale</span>' : ''}
+                        `;
+                        imagesPreview.appendChild(div);
+                    });
+                }
+            }
+            
+            // Charger les catégories si Select2 échoue
+            setTimeout(function() {
+                const categorySelect = document.getElementById('category');
+                if (categorySelect && categorySelect.options.length <= 1) {
+                    // Essayer de charger les catégories via l'API
+                    fetch('https://es-company-api.onrender.com/api/categories')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success && data.data.length > 0) {
+                                categorySelect.innerHTML = '<option value="">Sélectionner une catégorie</option>';
+                                data.data.forEach(category => {
+                                    const option = document.createElement('option');
+                                    option.value = category._id;
+                                    option.textContent = category.name;
+                                    categorySelect.appendChild(option);
+                                });
+                            } else {
+                                // Utiliser des catégories par défaut
+                                const defaultCategories = [
+                                    { id: '1', name: 'Robes' },
+                                    { id: '2', name: 'Pantalons' },
+                                    { id: '3', name: 'Jupes' },
+                                    { id: '4', name: 'Chemises' },
+                                    { id: '5', name: 'Chaussures' },
+                                    { id: '6', name: 'Bijoux' },
+                                    { id: '7', name: 'Accessoires' },
+                                    { id: '8', name: 'Sacs' }
+                                ];
+                                
+                                categorySelect.innerHTML = '<option value="">Sélectionner une catégorie</option>';
+                                defaultCategories.forEach(category => {
+                                    const option = document.createElement('option');
+                                    option.value = category.id;
+                                    option.textContent = category.name;
+                                    categorySelect.appendChild(option);
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur chargement catégories:', error);
+                            // Utiliser des catégories par défaut
+                            const defaultCategories = [
+                                { id: '1', name: 'Robes' },
+                                { id: '2', name: 'Pantalons' },
+                                { id: '3', name: 'Jupes' },
+                                { id: '4', name: 'Chemises' },
+                                { id: '5', name: 'Chaussures' },
+                                { id: '6', name: 'Bijoux' },
+                                { id: '7', name: 'Accessoires' },
+                                { id: '8', name: 'Sacs' }
+                            ];
+                            
+                            categorySelect.innerHTML = '<option value="">Sélectionner une catégorie</option>';
+                            defaultCategories.forEach(category => {
+                                const option = document.createElement('option');
+                                option.value = category.id;
+                                option.textContent = category.name;
+                                categorySelect.appendChild(option);
+                            });
+                        });
+                }
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
