@@ -4,1127 +4,269 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-S COMPANY | Mode & Accessoires</title>
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #e74c3c;
-            --accent-color: #3498db;
-            --light-bg: #f9f9f9;
-            --dark-text: #333333;
-            --light-text: #ffffff;
-            --gray-border: #e1e1e1;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-            line-height: 1.6;
-        }
-
-        /* Header styles */
-        header {
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow);
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo {
-            height: 50px;
-            width: auto;
-        }
-
-        .company-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--light-text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            padding: 0.5rem 0;
-        }
-
-        .nav-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .lang-selector {
-            position: relative;
-            display: inline-block;
-        }
-
-        .lang-btn {
-            background-color: transparent;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-        }
-
-        .lang-dropdown {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .lang-dropdown a {
-            color: var(--dark-text);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            border-bottom: 1px solid #eee;
-        }
-
-        .lang-dropdown a:hover {
-            background-color: #f5f5f5;
-        }
-
-        .lang-selector:hover .lang-dropdown {
-            display: block;
-        }
-
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: var(--secondary-color);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        /* Hero section */
-        .hero {
-            background: linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 5rem 2rem;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-        }
-
-        .shop-now-btn {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
-        }
-
-        .shop-now-btn:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
-        }
-
-        /* Products section */
-        .products-section {
-            padding: 4rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background-color: var(--secondary-color);
-            margin: 0.5rem auto;
-        }
-
-        .refresh-notice {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--accent-color);
-            font-style: italic;
-            background-color: rgba(52, 152, 219, 0.1);
-            padding: 0.8rem;
-            border-radius: 8px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .categories {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-
-        .category-btn {
-            background-color: white;
-            border: 1px solid var(--gray-border);
-            padding: 0.8rem 1.8rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .category-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .category-btn:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .product-card {
-            background-color: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform 0.4s, box-shadow 0.4s;
-            position: relative;
-        }
-
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .product-image {
-            height: 220px;
-            width: 100%;
-            object-fit: cover;
-            background-color: #f5f5f5;
-        }
-
-        .product-info {
-            padding: 1.5rem;
-        }
-
-        .product-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-        }
-
-        .product-description {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            height: 40px;
-            overflow: hidden;
-        }
-
-        .product-price {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-
-        .add-to-cart {
-            width: 100%;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .add-to-cart:hover {
-            background-color: #1a252f;
-        }
-
-        .product-badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            padding: 3rem 2rem 1.5rem;
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-        }
-
-        .footer-logo {
-            height: 60px;
-            margin-bottom: 1rem;
-        }
-
-        .footer-title {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            color: white;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: #ddd;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-
-        /* Cart modal */
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 400px;
-            height: 100%;
-            background-color: white;
-            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-            z-index: 2000;
-            overflow-y: auto;
-            transform: translateX(100%);
-            transition: transform 0.4s ease;
-        }
-
-        .cart-modal.active {
-            transform: translateX(0);
-            display: block;
-        }
-
-        .cart-header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .close-cart {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .cart-items {
-            padding: 1.5rem;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            padding-bottom: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--gray-border);
-        }
-
-        .cart-item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-right: 1rem;
-        }
-
-        .cart-item-details {
-            flex-grow: 1;
-        }
-
-        .cart-item-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .cart-item-price {
-            color: var(--secondary-color);
-            font-weight: 700;
-        }
-
-        .cart-total {
-            padding: 1.5rem;
-            background-color: #f9f9f9;
-            border-top: 1px solid var(--gray-border);
-            font-size: 1.3rem;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .checkout-btn {
-            display: block;
-            width: calc(100% - 3rem);
-            margin: 1rem 1.5rem;
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 1rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        /* Responsive styles */
-        @media (max-width: 992px) {
-            .header-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .nav-links {
-                gap: 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .hero {
-                padding: 3rem 1.5rem;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .products-section {
-                padding: 3rem 1rem;
-            }
-            
-            .cart-modal {
-                width: 100%;
-            }
-        }
-
-        /* Loading animation */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 200px;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(44, 62, 80, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Admin panel link */
-        .admin-link {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 0.8rem 1.2rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-            transition: all 0.3s;
-            opacity: 0.7;
-        }
-
-        .admin-link:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-        }
-    </style>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo" class="logo">
-                <div class="company-name">E-S COMPANY</div>
-            </div>
-            
-            <nav class="nav-links">
-                <a href="#home">Accueil</a>
-                <a href="#products">Produits</a>
-                <a href="#categories">Catégories</a>
-                <a href="#about">À propos</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            
-            <div class="header-actions">
-                <div class="lang-selector">
-                    <button class="lang-btn">
-                        <span id="current-lang">FR</span>
-                        <span>▼</span>
-                    </button>
-                    <div class="lang-dropdown">
-                        <a href="#" onclick="changeLanguage('fr')">Français (FR)</a>
-                        <a href="#" onclick="changeLanguage('en')">English (EN)</a>
-                        <a href="#" onclick="changeLanguage('es')">Español (ES)</a>
+    <!-- Header avec navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                    <span>E-S COMPANY</span>
+                </div>
+                
+                <div class="nav-links">
+                    <a href="index.html" class="active"><i class="fas fa-home"></i> <span data-translate="home">Accueil</span></a>
+                    <a href="products.html"><i class="fas fa-tshirt"></i> <span data-translate="products">Produits</span></a>
+                    <a href="categories.html"><i class="fas fa-list"></i> <span data-translate="categories">Catégories</span></a>
+                    <a href="about.html"><i class="fas fa-info-circle"></i> <span data-translate="about">À propos</span></a>
+                    <a href="contact.html"><i class="fas fa-envelope"></i> <span data-translate="contact">Contact</span></a>
+                </div>
+                
+                <div class="nav-actions">
+                    <div class="language-selector">
+                        <select id="language-select">
+                            <option value="fr">FR</option>
+                            <option value="en">EN</option>
+                            <option value="es">ES</option>
+                        </select>
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button id="user-menu" class="icon-btn">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <button id="cart-toggle" class="icon-btn cart-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-count" class="cart-count">0</span>
+                        </button>
                     </div>
                 </div>
                 
-                <div class="cart-icon" onclick="toggleCart()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                    </svg>
-                    <div class="cart-count">0</div>
-                </div>
-            </div>
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
         </div>
     </header>
 
+    <!-- User Modal (Login/Signup) -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="auth-forms">
+                <div class="form-container active" id="login-form">
+                    <h2 data-translate="login">Connexion</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <input type="email" id="login-email" required placeholder=" " data-translate="email_placeholder">
+                            <label for="login-email" data-translate="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="login-password" required placeholder=" ">
+                            <label for="login-password" data-translate="password">Mot de passe</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-translate="login">Connexion</button>
+                    </form>
+                    <p data-translate="no_account">Pas de compte ? <a href="#" id="show-signup" data-translate="signup_here">Inscrivez-vous ici</a></p>
+                </div>
+                
+                <div class="form-container" id="signup-form">
+                    <h2 data-translate="signup">Inscription</h2>
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <input type="text" id="signup-name" required placeholder=" ">
+                            <label for="signup-name" data-translate="full_name">Nom complet</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="signup-email" required placeholder=" ">
+                            <label for="signup-email" data-translate="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="signup-password" required placeholder=" ">
+                            <label for="signup-password" data-translate="password">Mot de passe</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="signup-confirm" required placeholder=" ">
+                            <label for="signup-confirm" data-translate="confirm_password">Confirmer le mot de passe</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-translate="signup">S'inscrire</button>
+                    </form>
+                    <p data-translate="have_account">Déjà un compte ? <a href="#" id="show-login" data-translate="login_here">Connectez-vous ici</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panier -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3 data-translate="shopping_cart">Panier d'achat</h3>
+            <button class="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Les articles du panier seront ajoutés ici dynamiquement -->
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p data-translate="empty_cart">Votre panier est vide</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span data-translate="total">Total:</span>
+                <span id="cart-total-price">0.00 €</span>
+            </div>
+            <button class="btn btn-checkout" data-translate="checkout">Procéder au paiement</button>
+        </div>
+    </div>
+
     <!-- Hero Section -->
-    <section class="hero" id="home">
-        <h1 id="hero-title">Mode & Élégance Réunis</h1>
-        <p id="hero-subtitle">Découvrez notre collection exclusive de vêtements, chaussures et bijoux. Des pièces uniques pour toutes les occasions.</p>
-        <button class="shop-now-btn" onclick="scrollToProducts()" id="shop-now-btn">Acheter maintenant</button>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-translate="hero_title">Découvrez la mode qui vous ressemble</h1>
+                <p data-translate="hero_subtitle">Robes, pantalons, jupes, chaussures et bijoux de qualité</p>
+                <a href="products.html" class="btn btn-primary" data-translate="shop_now">Acheter maintenant</a>
+            </div>
+        </div>
     </section>
 
-    <!-- Products Section -->
-    <section class="products-section" id="products">
-        <h2 class="section-title" id="products-title">Nos Produits</h2>
-        
-        <div class="refresh-notice" id="refresh-notice">
-            Notre collection est mise à jour régulièrement. Rafraîchissez la page pour découvrir de nouveaux produits !
+    <!-- Produits aléatoires -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-translate="featured_products">Produits en vedette</h2>
+                <p data-translate="featured_desc">Découvrez notre sélection aléatoire de produits</p>
+            </div>
+            
+            <div class="products-grid" id="products-container">
+                <!-- Les produits seront chargés dynamiquement ici -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p data-translate="loading_products">Chargement des produits...</p>
+                </div>
+            </div>
+            
+            <div class="section-footer">
+                <button id="refresh-products" class="btn btn-secondary">
+                    <i class="fas fa-random"></i>
+                    <span data-translate="refresh_products">Mélanger les produits</span>
+                </button>
+            </div>
         </div>
-        
-        <div class="categories">
-            <button class="category-btn active" onclick="filterProducts('all')" id="cat-all">Tous</button>
-            <button class="category-btn" onclick="filterProducts('clothing')" id="cat-clothing">Vêtements</button>
-            <button class="category-btn" onclick="filterProducts('shoes')" id="cat-shoes">Chaussures</button>
-            <button class="category-btn" onclick="filterProducts('jewelry')" id="cat-jewelry">Bijoux</button>
-            <button class="category-btn" onclick="filterProducts('accessories')" id="cat-accessories">Accessoires</button>
-        </div>
-        
-        <div class="loading" id="products-loading">
-            <div class="spinner"></div>
-        </div>
-        
-        <div class="products-grid" id="products-grid">
-            <!-- Les produits seront générés dynamiquement ici -->
+    </section>
+
+    <!-- Catégories -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-translate="shop_categories">Parcourir par catégorie</h2>
+            </div>
+            
+            <div class="categories-grid">
+                <a href="products.html?category=clothing" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <h3 data-translate="clothing">Vêtements</h3>
+                    <p data-translate="clothing_desc">Robes, pantalons, jupes</p>
+                </a>
+                
+                <a href="products.html?category=shoes" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-shoe-prints"></i>
+                    </div>
+                    <h3 data-translate="shoes">Chaussures</h3>
+                    <p data-translate="shoes_desc">Pour toutes les occasions</p>
+                </a>
+                
+                <a href="products.html?category=jewelry" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 data-translate="jewelry">Bijoux</h3>
+                    <p data-translate="jewelry_desc">Accessoires élégants</p>
+                </a>
+                
+                <a href="products.html?category=accessories" class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-vest-patches"></i>
+                    </div>
+                    <h3 data-translate="accessories">Accessoires</h3>
+                    <p data-translate="accessories_desc">Complétez votre look</p>
+                </a>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
-        <div class="footer-content">
-            <div class="footer-col">
-                <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo" class="footer-logo">
-                <p id="footer-desc">E-S COMPANY offre une sélection exclusive de vêtements, chaussures et accessoires de mode pour hommes et femmes.</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <img src="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png" alt="E-S COMPANY Logo">
+                        <span>E-S COMPANY</span>
+                    </div>
+                    <p data-translate="footer_desc">Votre destination shopping pour la mode et les accessoires de qualité.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 data-translate="quick_links">Liens rapides</h3>
+                    <ul>
+                        <li><a href="index.html" data-translate="home">Accueil</a></li>
+                        <li><a href="products.html" data-translate="products">Produits</a></li>
+                        <li><a href="categories.html" data-translate="categories">Catégories</a></li>
+                        <li><a href="about.html" data-translate="about">À propos</a></li>
+                        <li><a href="contact.html" data-translate="contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 data-translate="customer_service">Service client</h3>
+                    <ul>
+                        <li><a href="#" data-translate="faq">FAQ</a></li>
+                        <li><a href="#" data-translate="shipping">Livraison</a></li>
+                        <li><a href="#" data-translate="returns">Retours</a></li>
+                        <li><a href="#" data-translate="privacy">Politique de confidentialité</a></li>
+                        <li><a href="#" data-translate="terms">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 data-translate="contact_info">Informations de contact</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> <span data-translate="address">Port-au-Prince, Haïti</span></li>
+                        <li><i class="fas fa-phone"></i> <span>+509 1234 5678</span></li>
+                        <li><i class="fas fa-envelope"></i> <span>info@escompany.com</span></li>
+                    </ul>
+                </div>
             </div>
             
-            <div class="footer-col">
-                <h3 class="footer-title" id="footer-links-title">Liens Rapides</h3>
-                <ul class="footer-links">
-                    <li><a href="#home">Accueil</a></li>
-                    <li><a href="#products">Produits</a></li>
-                    <li><a href="#categories">Catégories</a></li>
-                    <li><a href="#about">À propos</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> E-S COMPANY. <span data-translate="all_rights">Tous droits réservés.</span></p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-amex"></i>
+                </div>
             </div>
-            
-            <div class="footer-col">
-                <h3 class="footer-title" id="footer-contact-title">Contact</h3>
-                <ul class="footer-links">
-                    <li>Email: info@escompany.com</li>
-                    <li>Téléphone: +509 48 00 0000</li>
-                    <li>Adresse: Port-au-Prince, Haïti</li>
-                </ul>
-            </div>
-            
-            <div class="footer-col">
-                <h3 class="footer-title" id="footer-newsletter-title">Newsletter</h3>
-                <p id="newsletter-desc">Inscrivez-vous pour recevoir nos offres spéciales.</p>
-                <input type="email" placeholder="Votre email" style="padding: 0.8rem; width: 100%; margin-top: 1rem; border-radius: 4px; border: 1px solid #ccc;">
-                <button class="add-to-cart" style="margin-top: 1rem;" id="newsletter-btn">S'inscrire</button>
-            </div>
-        </div>
-        
-        <div class="copyright">
-            <p>&copy; 2023 E-S COMPANY. Tous droits réservés.</p>
         </div>
     </footer>
 
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cart-modal">
-        <div class="cart-header">
-            <h3 id="cart-title">Mon Panier</h3>
-            <button class="close-cart" onclick="toggleCart()">&times;</button>
-        </div>
-        
-        <div class="cart-items" id="cart-items">
-            <!-- Les articles du panier seront ajoutés ici -->
-            <div id="empty-cart-msg">Votre panier est vide</div>
-        </div>
-        
-        <div class="cart-total">
-            <span id="total-text">Total:</span>
-            <span id="cart-total-price">$0.00</span>
-        </div>
-        
-        <button class="checkout-btn" id="checkout-btn">Passer la commande</button>
-    </div>
-
-    <!-- Admin Panel Link -->
-    <a href="https://es-company-ht.netlify.app/admin-panel/dashboard" class="admin-link" target="_blank">Panel Admin</a>
-
-    <script>
-        // Données de langue
-        const translations = {
-            fr: {
-                heroTitle: "Mode & Élégance Réunis",
-                heroSubtitle: "Découvrez notre collection exclusive de vêtements, chaussures et bijoux. Des pièces uniques pour toutes les occasions.",
-                shopNowBtn: "Acheter maintenant",
-                productsTitle: "Nos Produits",
-                refreshNotice: "Notre collection est mise à jour régulièrement. Rafraîchissez la page pour découvrir de nouveaux produits !",
-                catAll: "Tous",
-                catClothing: "Vêtements",
-                catShoes: "Chaussures",
-                catJewelry: "Bijoux",
-                catAccessories: "Accessoires",
-                addToCart: "Ajouter au panier",
-                cartTitle: "Mon Panier",
-                totalText: "Total:",
-                checkoutBtn: "Passer la commande",
-                emptyCartMsg: "Votre panier est vide",
-                footerDesc: "E-S COMPANY offre une sélection exclusive de vêtements, chaussures et accessoires de mode pour hommes et femmes.",
-                footerLinksTitle: "Liens Rapides",
-                footerContactTitle: "Contact",
-                footerNewsletterTitle: "Newsletter",
-                newsletterDesc: "Inscrivez-vous pour recevoir nos offres spéciales.",
-                newsletterBtn: "S'inscrire"
-            },
-            en: {
-                heroTitle: "Fashion & Elegance United",
-                heroSubtitle: "Discover our exclusive collection of clothing, shoes and jewelry. Unique pieces for all occasions.",
-                shopNowBtn: "Shop now",
-                productsTitle: "Our Products",
-                refreshNotice: "Our collection is updated regularly. Refresh the page to discover new products!",
-                catAll: "All",
-                catClothing: "Clothing",
-                catShoes: "Shoes",
-                catJewelry: "Jewelry",
-                catAccessories: "Accessories",
-                addToCart: "Add to cart",
-                cartTitle: "My Cart",
-                totalText: "Total:",
-                checkoutBtn: "Checkout",
-                emptyCartMsg: "Your cart is empty",
-                footerDesc: "E-S COMPANY offers an exclusive selection of clothing, shoes and fashion accessories for men and women.",
-                footerLinksTitle: "Quick Links",
-                footerContactTitle: "Contact",
-                footerNewsletterTitle: "Newsletter",
-                newsletterDesc: "Subscribe to receive our special offers.",
-                newsletterBtn: "Subscribe"
-            },
-            es: {
-                heroTitle: "Moda y Elegancia Unidas",
-                heroSubtitle: "Descubra nuestra colección exclusiva de ropa, zapatos y joyas. Piezas únicas para todas las ocasiones.",
-                shopNowBtn: "Comprar ahora",
-                productsTitle: "Nuestros Productos",
-                refreshNotice: "Nuestra colección se actualiza regularmente. ¡Actualice la página para descubrir nuevos productos!",
-                catAll: "Todos",
-                catClothing: "Ropa",
-                catShoes: "Zapatos",
-                catJewelry: "Joyas",
-                catAccessories: "Accesorios",
-                addToCart: "Añadir al carrito",
-                cartTitle: "Mi Carrito",
-                totalText: "Total:",
-                checkoutBtn: "Pagar",
-                emptyCartMsg: "Tu carrito está vacío",
-                footerDesc: "E-S COMPANY ofrece una selección exclusiva de ropa, zapatos y accesorios de moda para hombres y mujeres.",
-                footerLinksTitle: "Enlaces Rápidos",
-                footerContactTitle: "Contacto",
-                footerNewsletterTitle: "Boletín",
-                newsletterDesc: "Suscríbete para recibir nuestras ofertas especiales.",
-                newsletterBtn: "Suscribirse"
-            }
-        };
-
-        // Données des produits (simulées en attendant l'API)
-        const productsData = [
-            { id: 1, name: "Robe Élégante", description: "Robe longue en soie avec motif floral", price: 89.99, category: "clothing", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 2, name: "Pantalon Taille Haute", description: "Pantalon en lin beige pour femme", price: 65.50, category: "clothing", image: "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 3, name: "Jupe Plissée", description: "Jupe midi plissée couleur pastel", price: 55.00, category: "clothing", image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 4, name: "Chaussures à Talons", description: "Talons hauts en cuir verni noir", price: 120.00, category: "shoes", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 5, name: "Basket Blanche", description: "Basket en cuir blanc pour un style décontracté", price: 85.00, category: "shoes", image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 6, name: "Collier Doré", description: "Collier fin en or avec pendentif", price: 45.99, category: "jewelry", image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 7, name: "Bracelet Argenté", description: "Bracelet en argent avec pierres naturelles", price: 35.50, category: "jewelry", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 8, name: "Sac à Main", description: "Sac à main en cuir marron avec fermoir doré", price: 150.00, category: "accessories", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 9, name: "Chemise Blanche", description: "Chemise en coton pour homme", price: 45.00, category: "clothing", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 10, name: "Veste en Jean", description: "Veste délavée avec boutons métalliques", price: 75.00, category: "clothing", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 11, name: "Boucles d'Oreilles", description: "Boucles d'oreilles en forme de goutte", price: 28.99, category: "jewelry", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" },
-            { id: 12, name: "Ceinture en Cuir", description: "Ceinture en cuir véritable avec boucle argentée", price: 40.00, category: "accessories", image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" }
-        ];
-
-        // Variables globales
-        let currentLanguage = 'fr';
-        let cart = [];
-        let allProducts = [];
-        let currentFilter = 'all';
-
-        // Initialisation
-        document.addEventListener('DOMContentLoaded', function() {
-            // Charger la langue sauvegardée ou utiliser le français par défaut
-            const savedLang = localStorage.getItem('esCompanyLang');
-            if (savedLang && translations[savedLang]) {
-                currentLanguage = savedLang;
-            }
-            updateLanguageUI();
-            
-            // Initialiser les produits
-            initializeProducts();
-            
-            // Charger le panier depuis le localStorage
-            loadCart();
-            
-            // Mettre à jour le compteur du panier
-            updateCartCount();
-            
-            // Masquer le loading après 1.5 secondes
-            setTimeout(() => {
-                document.getElementById('products-loading').style.display = 'none';
-            }, 1500);
-        });
-
-        // Initialiser et mélanger les produits
-        function initializeProducts() {
-            // Copier les données des produits
-            allProducts = [...productsData];
-            
-            // Mélanger les produits au chargement initial
-            shuffleProducts();
-            
-            // Afficher les produits
-            displayProducts();
-        }
-
-        // Mélanger les produits de manière aléatoire
-        function shuffleProducts() {
-            // Algorithme de Fisher-Yates pour mélanger le tableau
-            for (let i = allProducts.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allProducts[i], allProducts[j]] = [allProducts[j], allProducts[i]];
-            }
-        }
-
-        // Afficher les produits dans la grille
-        function displayProducts() {
-            const productsGrid = document.getElementById('products-grid');
-            productsGrid.innerHTML = '';
-            
-            // Filtrer les produits selon la catégorie sélectionnée
-            let filteredProducts = allProducts;
-            if (currentFilter !== 'all') {
-                filteredProducts = allProducts.filter(product => product.category === currentFilter);
-            }
-            
-            // Créer les cartes de produits
-            filteredProducts.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
-                
-                // Ajouter un badge aléatoire (nouveauté, promo, etc.)
-                const badges = ['Nouveau', 'Promo', 'Populaire', 'Limited'];
-                const randomBadge = badges[Math.floor(Math.random() * badges.length)];
-                
-                productCard.innerHTML = `
-                    <div class="product-badge">${randomBadge}</div>
-                    <img src="${product.image}" alt="${product.name}" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-title">${product.name}</h3>
-                        <p class="product-description">${product.description}</p>
-                        <div class="product-price">$${product.price.toFixed(2)}</div>
-                        <button class="add-to-cart" onclick="addToCart(${product.id})" data-product-id="${product.id}">
-                            ${translations[currentLanguage].addToCart}
-                        </button>
-                    </div>
-                `;
-                
-                productsGrid.appendChild(productCard);
-            });
-        }
-
-        // Filtrer les produits par catégorie
-        function filterProducts(category) {
-            currentFilter = category;
-            
-            // Mettre à jour les boutons de catégorie actifs
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            document.getElementById(`cat-${category}`).classList.add('active');
-            
-            // Mélanger les produits à chaque filtrage
-            shuffleProducts();
-            
-            // Afficher les produits filtrés
-            displayProducts();
-        }
-
-        // Changer la langue
-        function changeLanguage(lang) {
-            if (translations[lang]) {
-                currentLanguage = lang;
-                localStorage.setItem('esCompanyLang', lang);
-                updateLanguageUI();
-            }
-        }
-
-        // Mettre à jour l'interface utilisateur selon la langue
-        function updateLanguageUI() {
-            // Mettre à jour le bouton de langue
-            document.getElementById('current-lang').textContent = currentLanguage.toUpperCase();
-            
-            // Mettre à jour tous les textes traduisibles
-            const trans = translations[currentLanguage];
-            
-            // Header et Hero
-            document.getElementById('hero-title').textContent = trans.heroTitle;
-            document.getElementById('hero-subtitle').textContent = trans.heroSubtitle;
-            document.getElementById('shop-now-btn').textContent = trans.shopNowBtn;
-            
-            // Produits
-            document.getElementById('products-title').textContent = trans.productsTitle;
-            document.getElementById('refresh-notice').textContent = trans.refreshNotice;
-            document.getElementById('cat-all').textContent = trans.catAll;
-            document.getElementById('cat-clothing').textContent = trans.catClothing;
-            document.getElementById('cat-shoes').textContent = trans.catShoes;
-            document.getElementById('cat-jewelry').textContent = trans.catJewelry;
-            document.getElementById('cat-accessories').textContent = trans.catAccessories;
-            
-            // Boutons "Ajouter au panier"
-            document.querySelectorAll('.add-to-cart').forEach(btn => {
-                btn.textContent = trans.addToCart;
-            });
-            
-            // Panier
-            document.getElementById('cart-title').textContent = trans.cartTitle;
-            document.getElementById('total-text').textContent = trans.totalText;
-            document.getElementById('checkout-btn').textContent = trans.checkoutBtn;
-            document.getElementById('empty-cart-msg').textContent = trans.emptyCartMsg;
-            
-            // Footer
-            document.getElementById('footer-desc').textContent = trans.footerDesc;
-            document.getElementById('footer-links-title').textContent = trans.footerLinksTitle;
-            document.getElementById('footer-contact-title').textContent = trans.footerContactTitle;
-            document.getElementById('footer-newsletter-title').textContent = trans.footerNewsletterTitle;
-            document.getElementById('newsletter-desc').textContent = trans.newsletterDesc;
-            document.getElementById('newsletter-btn').textContent = trans.newsletterBtn;
-        }
-
-        // Gestion du panier
-        function addToCart(productId) {
-            const product = allProducts.find(p => p.id === productId);
-            if (!product) return;
-            
-            // Vérifier si le produit est déjà dans le panier
-            const existingItem = cart.find(item => item.id === productId);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    quantity: 1
-                });
-            }
-            
-            // Sauvegarder le panier
-            saveCart();
-            
-            // Mettre à jour l'interface
-            updateCartCount();
-            
-            // Afficher une notification
-            showNotification(`${product.name} ajouté au panier`);
-            
-            // Ouvrir le panier si ce n'est pas déjà fait
-            if (!document.getElementById('cart-modal').classList.contains('active')) {
-                toggleCart();
-            }
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            saveCart();
-            updateCartCount();
-            updateCartDisplay();
-            
-            // Si le panier est vide, afficher le message approprié
-            if (cart.length === 0) {
-                document.getElementById('empty-cart-msg').style.display = 'block';
-            }
-        }
-
-        function updateCartCount() {
-            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            document.querySelector('.cart-count').textContent = totalItems;
-        }
-
-        function updateCartDisplay() {
-            const cartItems = document.getElementById('cart-items');
-            const emptyCartMsg = document.getElementById('empty-cart-msg');
-            const cartTotalPrice = document.getElementById('cart-total-price');
-            
-            // Vider le contenu actuel
-            cartItems.innerHTML = '';
-            
-            if (cart.length === 0) {
-                emptyCartMsg.style.display = 'block';
-                cartTotalPrice.textContent = '$0.00';
-                return;
-            }
-            
-            emptyCartMsg.style.display = 'none';
-            
-            // Ajouter chaque article du panier
-            let totalPrice = 0;
-            
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                totalPrice += itemTotal;
-                
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item';
-                cartItem.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                    <div class="cart-item-details">
-                        <div class="cart-item-title">${item.name}</div>
-                        <div class="cart-item-price">$${item.price.toFixed(2)} x ${item.quantity}</div>
-                        <button onclick="removeFromCart(${item.id})" style="margin-top: 10px; background: none; border: none; color: var(--secondary-color); cursor: pointer;">Supprimer</button>
-                    </div>
-                `;
-                
-                cartItems.appendChild(cartItem);
-            });
-            
-            // Mettre à jour le total
-            cartTotalPrice.textContent = `$${totalPrice.toFixed(2)}`;
-        }
-
-        function toggleCart() {
-            const cartModal = document.getElementById('cart-modal');
-            cartModal.classList.toggle('active');
-            
-            if (cartModal.classList.contains('active')) {
-                updateCartDisplay();
-            }
-        }
-
-        function saveCart() {
-            localStorage.setItem('esCompanyCart', JSON.stringify(cart));
-        }
-
-        function loadCart() {
-            const savedCart = localStorage.getItem('esCompanyCart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-            }
-        }
-
-        // Fonctions utilitaires
-        function scrollToProducts() {
-            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showNotification(message) {
-            // Créer une notification temporaire
-            const notification = document.createElement('div');
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: var(--primary-color);
-                color: white;
-                padding: 12px 24px;
-                border-radius: 30px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                z-index: 3000;
-                font-weight: 500;
-                animation: fadeInOut 3s ease;
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Supprimer la notification après 3 secondes
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        // Animation CSS pour les notifications
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInOut {
-                0% { opacity: 0; transform: translate(-50%, 20px); }
-                15% { opacity: 1; transform: translate(-50%, 0); }
-                85% { opacity: 1; transform: translate(-50%, 0); }
-                100% { opacity: 0; transform: translate(-50%, -10px); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Simuler un rafraîchissement aléatoire des produits toutes les 30 secondes
-        setInterval(() => {
-            shuffleProducts();
-            displayProducts();
-        }, 30000);
-    </script>
+    <!-- Scripts -->
+    <script src="js/language.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
