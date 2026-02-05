@@ -1,50 +1,53 @@
-/* Categories Page Styles */
+/* Styles pour la page catégories */
 .categories-page {
-    padding: 60px 0;
+    padding: 40px 0 80px;
 }
 
-.main-categories {
+.page-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: var(--dark-color);
+}
+
+.page-header p {
+    color: var(--gray-color);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.categories-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
     margin-bottom: 60px;
 }
 
-.category-card {
+.category-large-card {
     position: relative;
     border-radius: var(--border-radius);
     overflow: hidden;
-    box-shadow: var(--box-shadow);
+    text-decoration: none;
+    color: white;
+    height: 300px;
     transition: var(--transition);
 }
 
-.category-card:hover {
+.category-large-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-.category-card.large {
-    grid-column: 1 / -1;
-    height: 400px;
-}
-
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .category-image {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-}
-
-.category-card.large .category-image {
-    height: 100%;
-}
-
-.category-card:not(.large) .category-image {
-    height: 200px;
 }
 
 .category-image img {
@@ -57,314 +60,136 @@
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6));
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
 }
 
 .category-content {
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
+    width: 100%;
     padding: 30px;
-    color: white;
     z-index: 2;
 }
 
-.category-card:not(.large) .category-content {
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    padding: 20px;
-}
-
-.category-content h2,
-.category-content h3 {
+.category-content h2 {
+    font-size: 2rem;
     margin-bottom: 10px;
-    color: white;
-}
-
-.category-card.large .category-content h2 {
-    font-size: 2.5rem;
 }
 
 .category-content p {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     opacity: 0.9;
 }
 
-.category-card.large .category-content p {
-    font-size: 1.1rem;
-    max-width: 500px;
-}
-
-.product-count {
+.category-count {
     display: inline-block;
-    padding: 5px 15px;
     background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
     border-radius: 20px;
     font-size: 0.9rem;
-    margin-top: 10px;
+    backdrop-filter: blur(5px);
 }
 
-.category-link {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 3;
-}
-
-/* Sous-catégories */
 .subcategories-section {
-    margin-bottom: 60px;
+    margin-top: 60px;
 }
 
 .subcategories-section h2 {
     text-align: center;
     margin-bottom: 40px;
-    color: var(--dark-color);
+    font-size: 2rem;
 }
 
 .subcategories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 25px;
 }
 
-.subcategory-item {
+.subcategory-card {
     background-color: white;
     border-radius: var(--border-radius);
-    padding: 30px 20px;
+    padding: 25px 20px;
     text-align: center;
     text-decoration: none;
     color: var(--dark-color);
     box-shadow: var(--box-shadow);
     transition: var(--transition);
+    border: 1px solid transparent;
 }
 
-.subcategory-item:hover {
+.subcategory-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .subcategory-icon {
-    width: 70px;
-    height: 70px;
-    background-color: rgba(67, 97, 238, 0.1);
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    height: 60px;
+    width: 60px;
+    background-color: rgba(58, 134, 255, 0.1);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
-    color: var(--primary-color);
-    font-size: 1.8rem;
+    margin: 0 auto 15px;
 }
 
-.subcategory-item h4 {
-    margin: 0;
-    font-size: 1.1rem;
+.subcategory-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
 }
 
-/* Category Products */
-.category-products {
-    margin-bottom: 60px;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.section-header h2 {
-    font-size: 2.2rem;
-    margin-bottom: 15px;
-    color: var(--dark-color);
-}
-
-.section-header p {
+.subcategory-card p {
     color: var(--gray-color);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.category-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
-}
-
-.tab-btn {
-    padding: 12px 30px;
-    background-color: white;
-    border: 2px solid var(--light-gray);
-    border-radius: 30px;
-    font-weight: 600;
-    color: var(--dark-color);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.tab-btn:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-
-.tab-btn.active {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
-}
-
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-/* Size Guide */
-.size-guide {
-    background-color: white;
-    border-radius: var(--border-radius);
-    padding: 40px;
-    box-shadow: var(--box-shadow);
-}
-
-.guide-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.guide-header h2 {
-    margin-bottom: 15px;
-    color: var(--dark-color);
-}
-
-.guide-header p {
-    color: var(--gray-color);
-}
-
-.guide-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
-
-.guide-table {
-    overflow-x: auto;
-}
-
-.guide-table table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 500px;
-}
-
-.guide-table th,
-.guide-table td {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid var(--light-gray);
-}
-
-.guide-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    color: var(--dark-color);
-}
-
-.guide-table tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
-.guide-tips h3 {
-    margin-bottom: 20px;
-    color: var(--dark-color);
-}
-
-.guide-tips ul {
-    list-style: none;
-    padding: 0;
-}
-
-.guide-tips li {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--light-gray);
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-}
-
-.guide-tips li:before {
-    content: "✓";
-    color: var(--success-color);
-    font-weight: bold;
-    margin-top: 2px;
+    font-size: 0.9rem;
 }
 
 /* Responsive */
 @media (max-width: 992px) {
-    .guide-content {
+    .categories-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
     }
     
-    .category-card.large {
-        height: 300px;
+    .category-large-card {
+        height: 250px;
     }
 }
 
 @media (max-width: 768px) {
-    .categories-page {
-        padding: 40px 0;
-    }
-    
-    .category-card.large .category-content h2 {
+    .page-header h1 {
         font-size: 2rem;
-    }
-    
-    .category-grid {
-        grid-template-columns: 1fr;
     }
     
     .subcategories-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-    
-    .size-guide {
-        padding: 30px 20px;
-    }
-    
-    .category-tabs {
-        gap: 5px;
-    }
-    
-    .tab-btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
     }
 }
 
-@media (max-width: 576px) {
-    .subcategories-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 480px) {
+    .categories-grid {
+        gap: 20px;
     }
     
-    .category-card.large {
-        height: 250px;
+    .category-large-card {
+        height: 200px;
     }
     
-    .category-card.large .category-content {
+    .category-content {
         padding: 20px;
     }
     
-    .category-card.large .category-content h2 {
+    .category-content h2 {
         font-size: 1.5rem;
+    }
+    
+    .subcategories-grid {
+        grid-template-columns: 1fr;
     }
 }
