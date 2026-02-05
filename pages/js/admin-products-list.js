@@ -379,4 +379,99 @@ class AdminProductsList {
         }
     }
     
-   
+    addPageNumber(container, pageNumber) {
+        const pageEl = document.createElement('button');
+        pageEl.className = 'page-number';
+        pageEl.textContent = pageNumber;
+        pageEl.setAttribute('data-page', pageNumber);
+        
+        if (pageNumber === this.currentPage) {
+            pageEl.classList.add('active');
+        }
+        
+        container.appendChild(pageEl);
+    }
+    
+    prevPage() {
+        if (this.currentPage > 1) {
+            this.currentPage--;
+            this.displayProducts();
+        }
+    }
+    
+    nextPage() {
+        if (this.currentPage < this.totalPages) {
+            this.currentPage++;
+            this.displayProducts();
+        }
+    }
+    
+    goToPage(page) {
+        if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+            this.currentPage = page;
+            this.displayProducts();
+        }
+    }
+    
+    editProduct(productId) {
+        window.location.href = `products.html?edit=${productId}`;
+    }
+    
+    async deleteProduct(productId) {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.')) {
+            return;
+        }
+        
+        try {
+            const response = await window.adminAuth.fetchWithAuth(`/products/${productId}`, {
+                method: 'DELETE'
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Produit supprimé avec succès');
+                // Recharger les produits
+                await this.loadProducts();
+                this.applyFilters();
+                this.displayProducts();
+            } else {
+                alert(data.error || 'Erreur lors de la suppression');
+            }
+        } catch (error) {
+            console.error('Erreur suppression produit:', error);
+            alert('Erreur lors de la suppression du produit');
+        }
+    }
+    
+    showError(message) {
+        const tbody = document.getElementById('productsTableBody');
+        if (!tbody) return;
+        
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>${message}</p>
+                    <button class="btn btn-outline" id="retryBtn" style="margin-top: 20px;">
+                        Réessayer
+                    </button>
+                </td>
+            </tr>
+        `;
+        
+        const retryBtn = document.getElementById('retryBtn');
+        if (retryBtn) {
+            retryBtn.addEventListener('click', () => {
+                this.loadProducts();
+            });
+        }
+    }
+}
+
+// Initialiser la liste des produits
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.pathname.includes('products-list.html')) {
+        window.productsList = new AdminProductsList();
+    }
+});
