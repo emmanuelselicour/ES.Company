@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | E-S COMPANY</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/44F5BnV2/file-000000001f3471fda269be0d033dc40a.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Même header que index.html -->
+    
+    <section class="contact-page">
+        <div class="container">
+            <div class="page-header">
+                <h1 data-translate="contact_us">Contactez-nous</h1>
+                <p data-translate="contact_desc">Nous sommes là pour répondre à toutes vos questions</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 data-translate="our_address">Notre adresse</h3>
+                        <p>123 Rue de la Mode<br>Port-au-Prince, Haïti</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3 data-translate="phone_number">Téléphone</h3>
+                        <p>+509 1234 5678<br>Lundi - Vendredi, 9h-18h</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 data-translate="email">Email</h3>
+                        <p>info@escompany.com<br>support@escompany.com</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 data-translate="opening_hours">Heures d'ouverture</h3>
+                        <p>Lundi - Vendredi: 9h-18h<br>Samedi: 10h-16h</p>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container">
+                    <div class="contact-form-card">
+                        <h2 data-translate="send_message">Envoyez-nous un message</h2>
+                        <form id="contactForm" class="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" id="contact-name" required placeholder=" ">
+                                    <label for="contact-name" data-translate="full_name">Nom complet</label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <input type="email" id="contact-email" required placeholder=" ">
+                                    <label for="contact-email" data-translate="email">Email</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="text" id="contact-subject" required placeholder=" ">
+                                <label for="contact-subject" data-translate="subject">Sujet</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea id="contact-message" rows="6" required placeholder=" "></textarea>
+                                <label for="contact-message" data-translate="message">Message</label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" data-translate="send_message">Envoyer le message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-section">
+                <h2 data-translate="our_location">Notre emplacement</h2>
+                <div class="map-container">
+                    <!-- Carte Google Maps intégrée -->
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.904312490012!2d-72.33585792428334!3d18.539609964836575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eb9e7a8d6d5b5b5%3A0x5c5c5c5c5c5c5c5c!2sPort-au-Prince%2C%20Ha%C3%AFti!5e0!3m2!1sfr!2sfr!4v1623256789012!5m2!1sfr!2sfr" 
+                            width="100%" 
+                            height="400" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+            
+            <div class="faq-section">
+                <h2 data-translate="faq_title">Questions fréquentes</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3 data-translate="faq_shipping">Quels sont les délais de livraison ?</h3>
+                        <p data-translate="faq_shipping_answer">Nous livrons sous 2-5 jours ouvrés en Haïti et 5-10 jours à l'international.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 data-translate="faq_returns">Puis-je retourner un article ?</h3>
+                        <p data-translate="faq_returns_answer">Oui, vous avez 30 jours pour retourner un article non porté et dans son emballage d'origine.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 data-translate="faq_payment">Quels moyens de paiement acceptez-vous ?</h3>
+                        <p data-translate="faq_payment_answer">Nous acceptons les cartes Visa, Mastercard, PayPal et les virements bancaires.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 data-translate="faq_size">Comment choisir la bonne taille ?</h3>
+                        <p data-translate="faq_size_answer">Consultez notre guide des tailles disponible sur chaque page produit.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Même footer que index.html -->
+    
+    <script src="js/language.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/contact.js"></script>
+</body>
+</html>
